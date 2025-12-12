@@ -1,5 +1,5 @@
 import { EufySecurity } from "eufy-security-client";
-import date from "date-and-time";
+import {parse } from "date-and-time";
 
 import { UnknownCommandError } from "../error.js";
 import { Client } from "../server.js";
@@ -205,8 +205,8 @@ export class StationMessageHandler {
             case StationCommand.databaseQueryLocal:
                 if (client.schemaVersion >= 18) {
                     const serialNumbers = (message as IncomingCommandDatabaseQueryLocal).serialNumbers;
-                    const startDate = date.parse((message as IncomingCommandDatabaseQueryLocal).startDate, "YYYYMMDD");
-                    const endDate = date.parse((message as IncomingCommandDatabaseQueryLocal).endDate, "YYYYMMDD");
+                    const startDate = parse((message as IncomingCommandDatabaseQueryLocal).startDate, "YYYYMMDD");
+                    const endDate = parse((message as IncomingCommandDatabaseQueryLocal).endDate, "YYYYMMDD");
                     const eventType = (message as IncomingCommandDatabaseQueryLocal).eventType;
                     const detectionType = (message as IncomingCommandDatabaseQueryLocal).detectionType;
                     const storageType = (message as IncomingCommandDatabaseQueryLocal).storageType;
@@ -217,8 +217,8 @@ export class StationMessageHandler {
                 }
             case StationCommand.databaseCountByDate:
                 if (client.schemaVersion >= 18) {
-                    const startDate = date.parse((message as IncomingCommandDatabaseCountByDate).startDate, "YYYYMMDD");
-                    const endDate = date.parse((message as IncomingCommandDatabaseCountByDate).endDate, "YYYYMMDD");
+                    const startDate = parse((message as IncomingCommandDatabaseCountByDate).startDate, "YYYYMMDD");
+                    const endDate = parse((message as IncomingCommandDatabaseCountByDate).endDate, "YYYYMMDD");
                     station.databaseCountByDate(startDate, endDate);
                     return { async: true };
                 } else {
