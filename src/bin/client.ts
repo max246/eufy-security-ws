@@ -6,7 +6,7 @@ import ansi_colors from 'ansi-colors';
 import { Logger } from "tslog";
 import * as readline from "readline";
 import { EventEmitter } from "events";
-import date from "date-and-time";
+import { parse } from "date-and-time";
 
 import { maxSchemaVersion } from "../lib/const.js";
 import { OutgoingEventMessage, OutgoingMessage, OutgoingResultMessageSuccess } from "../lib/outgoing_message.js";
@@ -1444,7 +1444,7 @@ const isTrueFalse = (value: string): boolean => {
 }
 
 const isDate = (value: string): boolean => {
-    return !isNaN(date.parse(value, "YYYYMMDD").getTime());
+    return !isNaN(parse(value, "YYYYMMDD").getTime());
 }
 
 const program = new Command();
