@@ -12,7 +12,6 @@ COPY --from=build /tmp/package-lock.json ./package-lock.json
 RUN npm ci --only=production
 
 FROM node:20-alpine
-
 WORKDIR /usr/src/app
 COPY --from=prod /tmp_prod ./
 RUN apk add --no-cache jq
