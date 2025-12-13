@@ -171,5 +171,16 @@ if [ $node_result -gt 0 ] ; then
     WORKAROUND_ISSUE_310="--security-revert=CVE-2023-46809"
 fi
 
+if [ -n "${EUFY_CLIENT_GIT_URL}" ] && [ -n "${EUFY_CLIENT_GIT_BRANCH}" ];  then
+    echo "Installing a git version of Eufy Client $EUFY_CLIENT_GIT_URL with branch $EUFY_CLIENT_GIT_BRANCH"
+    rm -r /usr/src/app/node_modules/eufy-security-client/build
+    cd /tmp
+    git clone -b $EUFY_CLIENT_GIT_BRANCH $EUFY_CLIENT_GIT_URL
+    cd eufy-security-client
+    npm i
+    npm run prepublishOnly -y
+    mv build /usr/src/app/node_modules/eufy-security-client/build
+fi
+
 echo "$JSON_STRING" > /dev/shm/eufy-security-ws-config.json
 exec /usr/local/bin/node $WORKAROUND_ISSUE_310 /usr/src/app/dist/bin/server.js --host 0.0.0.0 --config /dev/shm/eufy-security-ws-config.json $DEBUG_OPTION $PORT_OPTION

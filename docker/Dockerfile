@@ -12,10 +12,12 @@ COPY --from=build /tmp/package-lock.json ./package-lock.json
 RUN npm ci --only=production
 
 FROM node:20-alpine
+
 WORKDIR /usr/src/app
 COPY --from=prod /tmp_prod ./
 RUN apk add --no-cache jq
 RUN apk add --no-cache bash
+RUN apk add --no-cache git
 EXPOSE 3000
 VOLUME ["/data"]
 CMD [ "/usr/src/app/run.sh" ]
