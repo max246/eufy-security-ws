@@ -17,8 +17,6 @@ eufy-security-ws is available via a Docker image
 | `PORT`                     | Listening port (default: 3000)                                                                                                |
 | `STATION_IP_ADDRESSES`     | Suggested IP addresses for a stations (default: unset; value format: `station_serial1:ipaddress1;station_serial2:ipaddress2`) |
 | `DEBUG`                    | When the variable is set, debug mode is activated (default: unset)                                                            |
-| `EUFY_CLIENT_GIT_URL`      | When the variable is set, eufy client is installed from a git repo like `https://github.com/bropat/eufy-security-client.git` (default: unset) |
-| `EUFY_CLIENT_GIT_BRANCH`   | When the variable is set, eufy client git branch is used, like `develop` (default: unset)                                     |
 
 The image also exposes a `/data` volume that corresponds to the `persistentDir`.
 
