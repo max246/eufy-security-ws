@@ -15,7 +15,7 @@ Small server wrapper around [eufy-security-client](https://www.npmjs.com/package
 
 The development of this server was inspired by the following project:
 
-* [zwave-js-server](https://github.com/zwave-js/zwave-js-server)
+- [zwave-js-server](https://github.com/zwave-js/zwave-js-server)
 
 Credits go to them as well.
 
