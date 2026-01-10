@@ -1,4 +1,4 @@
 export interface IncomingCommandBase {
-    messageId: string;
-    command: string;
+  messageId: string;
+  command: string;
 }
