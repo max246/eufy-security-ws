@@ -1,5 +1,5 @@
 export enum Instance {
-    driver = "driver",
-    station = "station",
-    device = "device",
+  driver = "driver",
+  station = "station",
+  device = "device",
 }

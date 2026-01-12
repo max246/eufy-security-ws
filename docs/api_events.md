@@ -1299,7 +1299,7 @@ interface {
     event: "livestream video data";
     serialNumber: string;
     buffer: JSONValue,
-    metadata: { 
+    metadata: {
       videoCodec: string;
       videoFPS: number;
       videoHeight: number;
@@ -1323,7 +1323,7 @@ interface {
     event: "livestream audio data";
     serialNumber: string;
     buffer: JSONValue,
-    metadata: { 
+    metadata: {
       audioCodec: string;
     }
   }
@@ -1378,7 +1378,7 @@ interface {
     event: "download video data";
     serialNumber: string;
     buffer: JSONValue,
-    metadata: { 
+    metadata: {
       videoCodec: string;
       videoFPS: number;
       videoHeight: number;
@@ -1402,7 +1402,7 @@ interface {
     event: "download audio data";
     serialNumber: string;
     buffer: JSONValue,
-    metadata: { 
+    metadata: {
       audioCodec: string;
     }
   }

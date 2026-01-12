@@ -5,12 +5,12 @@ import { IncomingMessageDevice } from "./device/incoming_message.js";
 import { IncomingMessageDriver } from "./driver/incoming_message.js";
 
 interface IncomingCommandStartListening extends IncomingCommandBase {
-    command: ServerCommand.startListening;
+  command: ServerCommand.startListening;
 }
 
 interface IncomingCommandSetApiSchema extends IncomingCommandBase {
-    command: ServerCommand.setApiSchema;
-    schemaVersion: number;
+  command: ServerCommand.setApiSchema;
+  schemaVersion: number;
 }
 
 export type IncomingMessage =

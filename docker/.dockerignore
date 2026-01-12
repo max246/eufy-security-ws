@@ -3,3 +3,4 @@
 LICENSE
 img
 tsconfig.tsbuildinfo
+*eslint.config.mts
