@@ -19,5 +19,8 @@
         "paths": {
             "got": ["./node_modules/got/dist/source"]
         }
-    }
+    },
+    "exclude": [
+        "/tmp/eslint.config.mts"
+    ]
 }
