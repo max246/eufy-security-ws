@@ -173,13 +173,17 @@ fi
 
 if [ -n "${EUFY_CLIENT_GIT_URL}" ] && [ -n "${EUFY_CLIENT_GIT_BRANCH}" ];  then
     echo "Installing a git version of Eufy Client $EUFY_CLIENT_GIT_URL with branch $EUFY_CLIENT_GIT_BRANCH"
-    rm -r /usr/src/app/node_modules/eufy-security-client/build
-    cd /tmp
+    npm uninstall --force eufy-security-client
+
     git clone -b $EUFY_CLIENT_GIT_BRANCH $EUFY_CLIENT_GIT_URL
     cd eufy-security-client
-    npm i
-    npm run prepublishOnly -y
-    mv build /usr/src/app/node_modules/eufy-security-client/build
+    npm ci
+    npm run build -y
+    npm pack
+    mv eufy-security-client*.tgz ../eufy-security-client.tgz
+    cd ..
+
+    npm i eufy-security-client.tgz  --force
 fi
 
 echo "$JSON_STRING" > /dev/shm/eufy-security-ws-config.json
