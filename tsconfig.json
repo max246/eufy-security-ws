@@ -21,6 +21,6 @@
         }
     },
     "exclude": [
-        "/tmp/eslint.config.mts"
+        "eslint.config.mts"
     ]
 }
