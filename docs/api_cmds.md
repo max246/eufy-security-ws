@@ -584,6 +584,24 @@ interface {
 }
 ```
 
+### Database Query By Date
+
+[compatible with schema version: 18+]
+
+```ts
+interface {
+    messageId: string;
+    command: "station.database_query_by_date";
+    serialNumber: string;
+    serialNumbers?: Array<string>;
+    startDate: Date;
+    endDate: Date;
+    eventType?: FilterEventType;
+    detectionType?: FilterDetectType;
+    storageType?: FilterStorageType;
+}
+```
+
 ### Database Count By Date
 
 [compatible with schema version: 18+]
