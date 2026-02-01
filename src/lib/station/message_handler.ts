@@ -14,6 +14,7 @@ import {
   IncomingCommandChime,
   IncomingCommandDownloadImage,
   IncomingCommandDatabaseQueryLocal,
+  IncomingCommandDatabaseQueryByDate,
   IncomingCommandDatabaseCountByDate,
   IncomingCommandDatabaseDelete,
 } from "./incoming_message.js";
@@ -250,6 +251,36 @@ export class StationMessageHandler {
           const storageType = (message as IncomingCommandDatabaseQueryLocal)
             .storageType;
           station.databaseQueryLocal(
+            serialNumbers,
+            startDate,
+            endDate,
+            eventType,
+            detectionType,
+            storageType,
+          );
+          return { async: true };
+        } else {
+          throw new UnknownCommandError(command);
+        }
+      case StationCommand.databaseQueryByDate:
+        if (client.schemaVersion >= 18) {
+          const serialNumbers = (message as IncomingCommandDatabaseQueryByDate)
+            .serialNumbers;
+          const startDate = parse(
+            (message as IncomingCommandDatabaseQueryByDate).startDate,
+            "YYYYMMDD",
+          );
+          const endDate = parse(
+            (message as IncomingCommandDatabaseQueryByDate).endDate,
+            "YYYYMMDD",
+          );
+          const eventType = (message as IncomingCommandDatabaseQueryByDate)
+            .eventType;
+          const detectionType = (message as IncomingCommandDatabaseQueryByDate)
+            .detectionType;
+          const storageType = (message as IncomingCommandDatabaseQueryByDate)
+            .storageType;
+          station.databaseQueryByDate(
             serialNumbers,
             startDate,
             endDate,

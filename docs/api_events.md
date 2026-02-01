@@ -571,6 +571,25 @@ interface {
 }
 ```
 
+### `database query by date`
+
+[compatible with schema version: 18+]
+
+This event is sent as a result of the command `station.database_query_by_date`.
+
+```ts
+interface {
+  type: "event";
+  event: {
+    source: "station";
+    event: "database query by date";
+    serialNumber: string;
+    returnCode: DatabaseReturnCode;
+    data: Array<DatabaseQueryByDate>
+  }
+}
+```
+
 ### `database count by date`
 
 [compatible with schema version: 18+]
