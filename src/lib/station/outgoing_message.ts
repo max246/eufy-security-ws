@@ -29,6 +29,7 @@ export interface StationResultTypes {
   [StationCommand.downloadImage]: { async?: boolean };
   [StationCommand.databaseQueryLatestInfo]: { async?: boolean };
   [StationCommand.databaseQueryLocal]: { async?: boolean };
+  [StationCommand.databaseQueryByDate]: { async?: boolean };
   [StationCommand.databaseCountByDate]: { async?: boolean };
   [StationCommand.databaseDelete]: { async?: boolean };
 

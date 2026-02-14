@@ -103,6 +103,17 @@ export interface IncomingCommandDatabaseQueryLocal
   storageType?: FilterStorageType;
 }
 
+export interface IncomingCommandDatabaseQueryByDate
+  extends IncomingCommandStationBase {
+  command: StationCommand.databaseQueryByDate;
+  serialNumbers: Array<string>;
+  startDate: string;
+  endDate: string;
+  eventType?: FilterEventType;
+  detectionType?: FilterDetectType;
+  storageType?: FilterStorageType;
+}
+
 export interface IncomingCommandDatabaseCountByDate
   extends IncomingCommandStationBase {
   command: StationCommand.databaseCountByDate;
@@ -134,5 +145,6 @@ export type IncomingMessageStation =
   | IncomingCommandDownloadImage
   | IncomingCommandDatabaseQueryLatest
   | IncomingCommandDatabaseQueryLocal
+  | IncomingCommandDatabaseQueryByDate
   | IncomingCommandDatabaseCountByDate
   | IncomingCommandDatabaseDelete;

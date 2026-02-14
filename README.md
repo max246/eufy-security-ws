@@ -37,3 +37,12 @@ To try it out or for more information, such as API documentation, Docker image, 
 ## Deployment
 
 Instructions aimed at maintainers for deploying a new version: [Deployment](docs/deployment.md)
+
+
+## Changelog
+
+### 1.9.9 (2026-02-14)
+
+* Upgrade to eufy-security-client 3.7.0
+* Feature: Add search by date for events @temp-droid in https://github.com/bropat/eufy-security-ws/pull/502
+* Fix: Fixed websocket handle by @temp-droid in https://github.com/bropat/eufy-security-ws/pull/499

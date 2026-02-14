@@ -1,4 +1,4 @@
-import { WebSocket, WebSocketServer } from "ws";
+import { WebSocket, WebSocketServer, RawData } from "ws";
 import { ILogObj, Logger } from "tslog";
 import { EventEmitter, once } from "events";
 import {
@@ -113,20 +113,35 @@ export class Client {
     socket.on("pong", () => {
       this._outstandingPing = false;
     });
-    socket.on("message", (data: string) => this.receiveMessage(data));
+    socket.on("message", (data: RawData) => this.receiveMessage(data));
+  }
+
+  private rawDataToString(data: RawData): string {
+    if (Buffer.isBuffer(data)) {
+      return data.toString("utf-8");
+    } else if (data instanceof ArrayBuffer) {
+      return new TextDecoder().decode(data);
+    } else if (Array.isArray(data)) {
+      return Buffer.concat(data).toString("utf-8");
+    }
+    return String(data);
   }
 
   get isConnected(): boolean {
     return this.socket.readyState === this.socket.OPEN;
   }
 
-  async receiveMessage(data: string): Promise<void> {
+  async receiveMessage(data: RawData): Promise<void> {
     let msg: IncomingMessage;
+    let dataString: string;
     try {
-      msg = JSON.parse(data);
+      dataString = this.rawDataToString(data);
+      msg = JSON.parse(dataString);
     } catch (err) {
       // We don't have the message ID. Just close it.
-      this.logger.debug(`Unable to parse data: ${data}`);
+      this.logger.debug(
+        `Unable to parse data: ${Buffer.isBuffer(data) ? data.toString("utf-8").substring(0, 100) : String(data).substring(0, 100)}`,
+      );
       this.socket.close();
       return;
     }

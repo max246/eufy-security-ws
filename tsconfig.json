@@ -20,7 +20,9 @@
             "got": ["./node_modules/got/dist/source"]
         }
     },
+    "include": ["src/**/*"],
     "exclude": [
-        "/tmp/eslint.config.mts"
+        "node_modules",
+        "eslint.config.mts"
     ]
 }

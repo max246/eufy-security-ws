@@ -15,6 +15,7 @@ export enum StationCommand {
   downloadImage = "station.download_image",
   databaseQueryLatestInfo = "station.database_query_latest_info",
   databaseQueryLocal = "station.database_query_local",
+  databaseQueryByDate = "station.database_query_by_date",
   databaseCountByDate = "station.database_count_by_date",
   databaseDelete = "station.database_delete",
 

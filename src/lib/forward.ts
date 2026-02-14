@@ -18,6 +18,7 @@ import {
   DatabaseReturnCode,
   DatabaseQueryLatestInfo,
   DatabaseQueryLocal,
+  DatabaseQueryByDate,
   DatabaseCountByDate,
 } from "eufy-security-client";
 import { Readable } from "stream";
@@ -1100,6 +1101,26 @@ export class EventForwarder {
           {
             source: "station",
             event: StationEvent.databaseQueryLocal,
+            serialNumber: station.getSerial(),
+            returnCode: returnCode,
+            data: data,
+          },
+          18,
+        );
+      },
+    );
+
+    station.on(
+      "database query by date",
+      (
+        station: Station,
+        returnCode: DatabaseReturnCode,
+        data: Array<DatabaseQueryByDate>,
+      ) => {
+        this.forwardEvent(
+          {
+            source: "station",
+            event: StationEvent.databaseQueryByDate,
             serialNumber: station.getSerial(),
             returnCode: returnCode,
             data: data,

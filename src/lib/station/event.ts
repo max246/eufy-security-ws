@@ -2,6 +2,7 @@ import {
   AlarmEvent,
   CustomData,
   DatabaseCountByDate,
+  DatabaseQueryByDate,
   DatabaseQueryLatestInfo,
   DatabaseQueryLocal,
   DatabaseReturnCode,
@@ -27,6 +28,7 @@ export enum StationEvent {
   imageDownloaded = "image downloaded",
   databaseQueryLatest = "database query latest",
   databaseQueryLocal = "database query local",
+  databaseQueryByDate = "database query by date",
   databaseCountByDate = "database count by date",
   databaseDelete = "database delete",
 }
@@ -167,6 +169,15 @@ export interface OutgoingEventStationDatabaseQueryLocal
   data: Array<DatabaseQueryLocal>;
 }
 
+export interface OutgoingEventStationDatabaseQueryByDate
+  extends OutgoingEventStationBase {
+  source: "station";
+  event: StationEvent.databaseQueryByDate;
+  serialNumber: string;
+  returnCode: DatabaseReturnCode;
+  data: Array<DatabaseQueryByDate>;
+}
+
 export interface OutgoingEventStationDatabaseCountByDate
   extends OutgoingEventStationBase {
   source: "station";
@@ -202,5 +213,6 @@ export type OutgoingEventStation =
   | OutgoingEventStationImageDownloaded
   | OutgoingEventStationDatabaseQueryLatest
   | OutgoingEventStationDatabaseQueryLocal
+  | OutgoingEventStationDatabaseQueryByDate
   | OutgoingEventStationDatabaseCountByDate
   | OutgoingEventStationDatabaseDelete;
