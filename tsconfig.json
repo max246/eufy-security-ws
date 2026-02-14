@@ -9,7 +9,7 @@
         "declarationMap": true,
         "outDir": "dist",
         "rootDir": "src",
-        "types": ["node"],
+        "types": ["node", "jest"],
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
@@ -18,9 +18,12 @@
         "noEmit": false,
         "paths": {
             "got": ["./node_modules/got/dist/source"]
-        }
+        },
+        "jsx": "react-jsx" // Or "react" depending on your version
     },
-    "include": ["src/**/*"],
+    "include": [
+        "src/**/*",
+    ],
     "exclude": [
         "node_modules",
         "eslint.config.mts"

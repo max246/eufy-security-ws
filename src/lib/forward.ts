@@ -33,7 +33,7 @@ import { DriverEvent } from "./driver/event.js";
 import { Client, ClientsController } from "./server.js";
 import { StationCommand } from "./station/command.js";
 import { DeviceCommand } from "./device/command.js";
-import { maxSchemaVersion as internalSchemaVersion } from "./const.js";
+import {maxSchemaVersion as internalSchemaVersion, schemaForwardTopic} from "./const.js";
 import { DeviceMessageHandler } from "./device/message_handler.js";
 import { DriverMessageHandler } from "./driver/message_handler.js";
 import { convertCamelCaseToSnakeCase } from "./utils.js";
@@ -402,6 +402,9 @@ export class EventForwarder {
           }
         });
     });
+
+
+
 
     this.clients.driver.on("user added", (device: Device, username: string, schedule?: Schedule) => {
       this.forwardEvent(
@@ -879,144 +882,180 @@ export class EventForwarder {
       }
     });
 
-    station.on("alarm delay event", (station: Station, alarmDelayEvent: AlarmEvent, alarmDelay: number) => {
-      this.forwardEvent(
-        {
-          source: "station",
-          event: StationEvent.alarmDelayEvent,
-          serialNumber: station.getSerial(),
-          alarmDelayEvent: alarmDelayEvent,
-          alarmDelay: alarmDelay,
-        },
-        11
-      );
-    });
 
-    station.on("alarm armed event", (station: Station) => {
-      this.forwardEvent(
-        {
-          source: "station",
-          event: StationEvent.alarmArmedEvent,
-          serialNumber: station.getSerial(),
-        },
-        11
-      );
-    });
+      for (const { name, src, event, schema, map } of schemaForwardTopic) {
 
-    station.on("alarm arm delay event", (station: Station, armDelay: number) => {
-      this.forwardEvent(
-        {
-          source: "station",
-          event: StationEvent.alarmArmDelayEvent,
-          serialNumber: station.getSerial(),
-          armDelay: armDelay,
-        },
-        12
-      );
-    });
+          // Attach the listen and allow any args to be added
+          station.on(name, (...args: any[]) => {
+              const [item, ...rest] = args;
 
-    station.on("device pin verified", (deviceSN: string, successfull: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.pinVerified,
-          serialNumber: deviceSN,
-          successfull: successfull,
-        },
-        13
-      );
-    });
-
-    station.on(
-      "database query latest",
-      (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLatestInfo>) => {
-        this.forwardEvent(
-          {
-            source: "station",
-            event: StationEvent.databaseQueryLatest,
-            serialNumber: station.getSerial(),
-            returnCode: returnCode,
-            data: data,
-          },
-          18
-        );
+              this.forwardEvent({
+                  source: src,
+                  event: event,
+                  serialNumber: item.getSerial(), //it can be a device or station
+                  // If map exists, use it. If not, default to the first extra arg as 'state'
+                  ...(map ? map(...args) : { state: rest[0] })
+              }, schema);
+          })
       }
-    );
 
-    station.on(
-      "database query local",
-      (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLocal>) => {
-        this.forwardEvent(
-          {
-            source: "station",
-            event: StationEvent.databaseQueryLocal,
-            serialNumber: station.getSerial(),
-            returnCode: returnCode,
-            data: data,
-          },
-          18
-        );
-      }
-    );
 
-    station.on(
-      "database query by date",
-      (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryByDate>) => {
-        this.forwardEvent(
-          {
-            source: "station",
-            event: StationEvent.databaseQueryByDate,
-            serialNumber: station.getSerial(),
-            returnCode: returnCode,
-            data: data,
-          },
-          18
-        );
-      }
-    );
 
-    station.on(
-      "database count by date",
-      (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseCountByDate>) => {
-        this.forwardEvent(
-          {
-            source: "station",
-            event: StationEvent.databaseCountByDate,
-            serialNumber: station.getSerial(),
-            returnCode: returnCode,
-            data: data,
-          },
-          18
-        );
-      }
-    );
+    // station.on("alarm delay event", (station: Station, alarmDelayEvent: AlarmEvent, alarmDelay: number) => {
+    //   this.forwardEvent(
+    //     {
+    //       source: "station",
+    //       event: StationEvent.alarmDelayEvent,
+    //       serialNumber: station.getSerial(),
+    //       alarmDelayEvent: alarmDelayEvent,
+    //       alarmDelay: alarmDelay,
+    //     },
+    //     11
+    //   );
+    // });
 
-    station.on("database delete", (station: Station, returnCode: DatabaseReturnCode, failedIds: Array<unknown>) => {
-      this.forwardEvent(
-        {
-          source: "station",
-          event: StationEvent.databaseDelete,
-          serialNumber: station.getSerial(),
-          returnCode: returnCode,
-          failedIds: failedIds,
-        },
-        18
-      );
-    });
+    // station.on("alarm armed event", (station: Station) => {
+    //   this.forwardEvent(
+    //     {
+    //       source: "station",
+    //       event: StationEvent.alarmArmedEvent,
+    //       serialNumber: station.getSerial(),
+    //     },
+    //     11
+    //   );
+    // });
+
+    // station.on("alarm arm delay event", (station: Station, armDelay: number) => {
+    //   this.forwardEvent(
+    //     {
+    //       source: "station",
+    //       event: StationEvent.alarmArmDelayEvent,
+    //       serialNumber: station.getSerial(),
+    //       armDelay: armDelay,
+    //     },
+    //     12
+    //   );
+    // });
+
+    // station.on("device pin verified", (deviceSN: string, successfull: boolean) => {
+    //   this.forwardEvent(
+    //     {
+    //       source: "device",
+    //       event: DeviceEvent.pinVerified,
+    //       serialNumber: deviceSN,
+    //       successfull: successfull,
+    //     },
+    //     13
+    //   );
+    // });
+
+    // station.on(
+    //   "database query latest",
+    //   (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLatestInfo>) => {
+    //     this.forwardEvent(
+    //       {
+    //         source: "station",
+    //         event: StationEvent.databaseQueryLatest,
+    //         serialNumber: station.getSerial(),
+    //         returnCode: returnCode,
+    //         data: data,
+    //       },
+    //       18
+    //     );
+    //   }
+    // );
+
+    // station.on(
+    //   "database query local",
+    //   (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLocal>) => {
+    //     this.forwardEvent(
+    //       {
+    //         source: "station",
+    //         event: StationEvent.databaseQueryLocal,
+    //         serialNumber: station.getSerial(),
+    //         returnCode: returnCode,
+    //         data: data,
+    //       },
+    //       18
+    //     );
+    //   }
+    // );
+
+    // station.on(
+    //   "database query by date",
+    //   (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryByDate>) => {
+    //     this.forwardEvent(
+    //       {
+    //         source: "station",
+    //         event: StationEvent.databaseQueryByDate,
+    //         serialNumber: station.getSerial(),
+    //         returnCode: returnCode,
+    //         data: data,
+    //       },
+    //       18
+    //     );
+    //   }
+    // );
+    //
+    // station.on(
+    //   "database count by date",
+    //   (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseCountByDate>) => {
+    //     this.forwardEvent(
+    //       {
+    //         source: "station",
+    //         event: StationEvent.databaseCountByDate,
+    //         serialNumber: station.getSerial(),
+    //         returnCode: returnCode,
+    //         data: data,
+    //       },
+    //       18
+    //     );
+    //   }
+    // );
+
+  //   station.on("database delete", (station: Station, returnCode: DatabaseReturnCode, failedIds: Array<unknown>) => {
+  //     this.forwardEvent(
+  //       {
+  //         source: "station",
+  //         event: StationEvent.databaseDelete,
+  //         serialNumber: station.getSerial(),
+  //         returnCode: returnCode,
+  //         failedIds: failedIds,
+  //       },
+  //       18
+  //     );
+  //   });
   }
 
   private setupDevice(device: Device): void {
-    device.on("motion detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.motionDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        0
-      );
-    });
+
+      for (const { name, src, event, schema, map } of schemaForwardTopic) {
+
+          // Attach the listen and allow any args to be added
+          device.on(name, (...args: any[]) => {
+              const [item, ...rest] = args;
+
+              this.forwardEvent({
+                  source: src,
+                  event: event,
+                  serialNumber: item.getSerial(), //it can be a device or station
+                  // If map exists, use it. If not, default to the first extra arg as 'state'
+                  ...(map ? map(...args) : { state: rest[0] })
+              }, schema);
+          })
+      }
+
+    //   device.on("motion detected", (device: Device, state: boolean) => {
+    //   this.forwardEvent(
+    //     {
+    //       source: "device",
+    //       event: DeviceEvent.motionDetected,
+    //       serialNumber: device.getSerial(),
+    //       state: state,
+    //     },
+    //     0
+    //   );
+    // });
 
     device.on("person detected", (device: Device, state: boolean, person: string) => {
       this.forwardEvent(

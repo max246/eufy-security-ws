@@ -1,30 +1,37 @@
 import { EventEmitter } from "events";
 import { inspect } from "util";
 
-export const convertCamelCaseToSnakeCase = function (value: string): string {
+/**
+ *  Convert Camel case to snake case
+ *
+ * @param value
+ */
+export const convertCamelCaseToSnakeCase = function (value: string | undefined): string {
   if (value === undefined) return "";
   return value.replace(/[A-Z]/g, (letter, index) => {
     return index == 0 ? letter.toLowerCase() : "_" + letter.toLowerCase();
   });
 };
 
+
 export const waitForEvent = function <T>(emitter: EventEmitter, event: string, timeout?: number): Promise<T> {
   return new Promise((resolve, reject) => {
     let internalTimeout: NodeJS.Timeout | undefined = undefined;
+    let fail: { (...args: any[]): void; (err: Error): void; (...args: any[]): void; (...args: any[]): void; };
 
     const success = (val: T): void => {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       emitter.off("error", fail);
       resolve(val);
     };
-    const fail = (err: Error): void => {
+
+    fail = (err: Error): void => {
       emitter.off(event, success);
       reject(err);
     };
+
     emitter.once(event, success);
     emitter.once("error", fail);
 
-    if (internalTimeout) clearTimeout(internalTimeout);
     if (timeout) {
       internalTimeout = setTimeout(() => {
         emitter.off(event, success);

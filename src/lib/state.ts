@@ -3,6 +3,7 @@ import { EufySecurity } from "eufy-security-client";
 import { DeviceState, dumpDevice } from "./device/state.js";
 import { DriverState, dumpDriver } from "./driver/state.js";
 import { dumpStation, StationState } from "./station/state.js";
+import {oldSchemaVersion} from "./const.js";
 
 export type Modify<T, R> = Omit<T, keyof R> & R;
 
@@ -23,21 +24,33 @@ type EufySecurityStateSchema1 = Modify<
 export type EufySecurityState = EufySecurityStateSchema0 | EufySecurityStateSchema1;
 
 export const dumpState = async (driver: EufySecurity, schemaVersion: number): Promise<EufySecurityState> => {
-  const base: Partial<EufySecurityStateSchema0> = {
+
+  const base_old: Partial<EufySecurityStateSchema0> = {
     driver: dumpDriver(driver, schemaVersion),
-    stations: driver.isConnected()
-      ? Array.from(await driver.getStations(), (station) => dumpStation(station, schemaVersion))
-      : [],
-    devices: driver.isConnected()
-      ? Array.from(await driver.getDevices(), (device) => dumpDevice(device, schemaVersion))
-      : [],
+    stations: [],
+    devices:  [],
   };
 
-  if (schemaVersion < 13) return base as EufySecurityStateSchema0;
+  const base_new: Partial<EufySecurityStateSchema1> = {
+    driver: dumpDriver(driver, schemaVersion),
+    stations: [],
+    devices:  [],
+  };
 
-  const base1 = base as unknown as EufySecurityStateSchema1;
-  base1.stations = driver.isConnected() ? Array.from(await driver.getStations(), (station) => station.getSerial()) : [];
-  base1.devices = driver.isConnected() ? Array.from(await driver.getDevices(), (device) => device.getSerial()) : [];
+  // Old version schema
+  if (schemaVersion < oldSchemaVersion) {
+    if (driver.isConnected()) {
+      base_old.stations = Array.from(await driver.getStations(), (station) => dumpStation(station, schemaVersion))
+      base_old.devices = Array.from(await driver.getDevices(), (device) => dumpDevice(device, schemaVersion))
+    }
+    return base_old as EufySecurityStateSchema0;
+  // New version schema
+  } else {
+    if (driver.isConnected()) {
+      base_new.stations = driver.isConnected() ? Array.from(await driver.getStations(), (station) => station.getSerial()) : [];
+      base_new.devices = driver.isConnected() ? Array.from(await driver.getDevices(), (device) => device.getSerial()) : [];
+    }
+    return base_new as EufySecurityStateSchema1;
+  }
 
-  return base1;
 };
