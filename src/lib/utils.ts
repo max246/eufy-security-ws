@@ -2,18 +2,13 @@ import { EventEmitter } from "events";
 import { inspect } from "util";
 
 export const convertCamelCaseToSnakeCase = function (value: string): string {
-  return value !== undefined
-    ? value.replace(/[A-Z]/g, (letter, index) => {
-        return index == 0 ? letter.toLowerCase() : "_" + letter.toLowerCase();
-      })
-    : "";
+  if (value === undefined) return "";
+  return value.replace(/[A-Z]/g, (letter, index) => {
+    return index == 0 ? letter.toLowerCase() : "_" + letter.toLowerCase();
+  });
 };
 
-export const waitForEvent = function <T>(
-  emitter: EventEmitter,
-  event: string,
-  timeout?: number,
-): Promise<T> {
+export const waitForEvent = function <T>(emitter: EventEmitter, event: string, timeout?: number): Promise<T> {
   return new Promise((resolve, reject) => {
     let internalTimeout: NodeJS.Timeout | undefined = undefined;
 

@@ -51,8 +51,7 @@ export interface OutgoingEventStationRemoved extends OutgoingBaseEvent {
   station: JSONValue;
 }
 
-export interface OutgoingEventStationGuardModeChanged
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationGuardModeChanged extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.guardModeChanged;
   serialNumber: string;
@@ -60,16 +59,14 @@ export interface OutgoingEventStationGuardModeChanged
   currentMode?: number; // for backward compatibility schemaVersion <= 2
 }
 
-export interface OutgoingEventStationCurrentModeChanged
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationCurrentModeChanged extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.currentModeChanged;
   serialNumber: string;
   currentMode: number;
 }
 
-export interface OutgoingEventStationCommandResult
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationCommandResult extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.commandResult;
   serialNumber: string;
@@ -79,22 +76,19 @@ export interface OutgoingEventStationCommandResult
   customData?: CustomData;
 }
 
-export interface OutgoingEventStationConnected
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationConnected extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.connected;
   serialNumber: string;
 }
 
-export interface OutgoingEventStationDisconnected
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationDisconnected extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.disconnected;
   serialNumber: string;
 }
 
-export interface OutgoingEventStationPropertyChanged
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationPropertyChanged extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.propertyChanged;
   serialNumber: string;
@@ -103,16 +97,14 @@ export interface OutgoingEventStationPropertyChanged
   timestamp?: number; // for backward compatibility
 }
 
-export interface OutgoingEventStationAlarmEvent
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationAlarmEvent extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.alarmEvent;
   serialNumber: string;
   alarmEvent: AlarmEvent;
 }
 
-export interface OutgoingEventStationAlarmDelayEvent
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationAlarmDelayEvent extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.alarmDelayEvent;
   serialNumber: string;
@@ -120,30 +112,26 @@ export interface OutgoingEventStationAlarmDelayEvent
   alarmDelay: number;
 }
 
-export interface OutgoingEventStationAlarmArmedEvent
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationAlarmArmedEvent extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.alarmArmedEvent;
   serialNumber: string;
 }
 
-export interface OutgoingEventStationAlarmArmDelayEvent
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationAlarmArmDelayEvent extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.alarmArmDelayEvent;
   serialNumber: string;
   armDelay: number;
 }
 
-export interface OutgoingEventStationConnectionError
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationConnectionError extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.connectionError;
   serialNumber: string;
 }
 
-export interface OutgoingEventStationImageDownloaded
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationImageDownloaded extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.imageDownloaded;
   serialNumber: string;
@@ -151,8 +139,7 @@ export interface OutgoingEventStationImageDownloaded
   image: Picture;
 }
 
-export interface OutgoingEventStationDatabaseQueryLatest
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationDatabaseQueryLatest extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.databaseQueryLatest;
   serialNumber: string;
@@ -160,8 +147,7 @@ export interface OutgoingEventStationDatabaseQueryLatest
   data: Array<DatabaseQueryLatestInfo>;
 }
 
-export interface OutgoingEventStationDatabaseQueryLocal
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationDatabaseQueryLocal extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.databaseQueryLocal;
   serialNumber: string;
@@ -169,8 +155,7 @@ export interface OutgoingEventStationDatabaseQueryLocal
   data: Array<DatabaseQueryLocal>;
 }
 
-export interface OutgoingEventStationDatabaseQueryByDate
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationDatabaseQueryByDate extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.databaseQueryByDate;
   serialNumber: string;
@@ -178,8 +163,7 @@ export interface OutgoingEventStationDatabaseQueryByDate
   data: Array<DatabaseQueryByDate>;
 }
 
-export interface OutgoingEventStationDatabaseCountByDate
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationDatabaseCountByDate extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.databaseCountByDate;
   serialNumber: string;
@@ -187,8 +171,7 @@ export interface OutgoingEventStationDatabaseCountByDate
   data: Array<DatabaseCountByDate>;
 }
 
-export interface OutgoingEventStationDatabaseDelete
-  extends OutgoingEventStationBase {
+export interface OutgoingEventStationDatabaseDelete extends OutgoingEventStationBase {
   source: "station";
   event: StationEvent.databaseDelete;
   serialNumber: string;

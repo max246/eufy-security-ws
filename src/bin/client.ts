@@ -9,19 +9,11 @@ import { EventEmitter } from "events";
 import { parse } from "date-and-time";
 
 import { maxSchemaVersion } from "../lib/const.js";
-import {
-  OutgoingEventMessage,
-  OutgoingMessage,
-  OutgoingResultMessageSuccess,
-} from "../lib/outgoing_message.js";
+import { OutgoingEventMessage, OutgoingMessage, OutgoingResultMessageSuccess } from "../lib/outgoing_message.js";
 import { DriverCommand } from "../lib/driver/command.js";
 import { DeviceCommand } from "../lib/device/command.js";
 import { StationCommand } from "../lib/station/command.js";
-import {
-  convertCamelCaseToSnakeCase,
-  initializeInspectStyles,
-  waitForEvent,
-} from "../lib/utils.js";
+import { convertCamelCaseToSnakeCase, initializeInspectStyles, waitForEvent } from "../lib/utils.js";
 import { OutgoingEventDeviceCommandResult } from "../lib/device/event.js";
 import { OutgoingEventStationCommandResult } from "../lib/station/event.js";
 import {
@@ -54,44 +46,23 @@ let closing = false;
 const program = new Command();
 program
   .addOption(
-    new Option(
-      "-s, --schemaVersion <host>",
-      "Schema version the server should support",
-    ).default(maxSchemaVersion, "max client supported version"),
+    new Option("-s, --schemaVersion <host>", "Schema version the server should support").default(
+      maxSchemaVersion,
+      "max client supported version"
+    )
   )
-  .addOption(
-    new Option("-H, --host <host>", "Host to connect to").default("localhost"),
-  )
-  .addOption(
-    new Option("-p, --port <port>", "Port to connect to").default(3000),
-  )
-  .addOption(
-    new Option(
-      "-c, --command <command_name>",
-      "Silent command to execute",
-    ).choices(commands),
-  )
-  .addOption(
-    new Option(
-      "-a, --arguments <args...>",
-      "Arguments for silent command if expected",
-    ),
-  )
-  .addOption(
-    new Option(
-      "-t, --timeout <seconds>",
-      "Silent command timeout seconds",
-    ).default(30),
-  )
+  .addOption(new Option("-H, --host <host>", "Host to connect to").default("localhost"))
+  .addOption(new Option("-p, --port <port>", "Port to connect to").default(3000))
+  .addOption(new Option("-c, --command <command_name>", "Silent command to execute").choices(commands))
+  .addOption(new Option("-a, --arguments <args...>", "Arguments for silent command if expected"))
+  .addOption(new Option("-t, --timeout <seconds>", "Silent command timeout seconds").default(30))
   .addOption(new Option("-v, --verbose"));
 
 program.parse(process.argv);
 
 const options = program.opts();
 
-const schemaVersion = options.schemaVersion
-  ? Number(options.schemaVersion)
-  : maxSchemaVersion;
+const schemaVersion = options.schemaVersion ? Number(options.schemaVersion) : maxSchemaVersion;
 const url = `ws://${options.host}:${options.port}`;
 
 const socket = new WebSocket(url, { handshakeTimeout: options.timeout * 1000 });
@@ -140,13 +111,10 @@ const parsePropertyValue = (
   property: string,
   value: string,
   serialNumber: string,
-  propertiesMetadata: { [index: string]: IndexedProperty },
+  propertiesMetadata: { [index: string]: IndexedProperty }
 ): number | boolean | string => {
   try {
-    if (
-      propertiesMetadata[serialNumber] !== undefined &&
-      propertiesMetadata[serialNumber][property] !== undefined
-    ) {
+    if (propertiesMetadata[serialNumber] !== undefined && propertiesMetadata[serialNumber][property] !== undefined) {
       switch (propertiesMetadata[serialNumber][property].type) {
         case "boolean":
           return value.toLowerCase() === "true" ? true : false;
@@ -251,9 +219,7 @@ const cmdHelp = (cmd: string): void => {
       console.log(`${cmd} <device_sn> <name>`);
       break;
     case DeviceCommand.snooze:
-      console.log(
-        `${cmd} <device_sn> <snooze_time> [snooze_chime] [snooze_motion] [snooze_homebase]`,
-      );
+      console.log(`${cmd} <device_sn> <snooze_time> [snooze_chime] [snooze_motion] [snooze_homebase]`);
       break;
     case DeviceCommand.addUser:
       console.log(`${cmd} <device_sn> <username> <passcode> [schedule]`);
@@ -314,21 +280,17 @@ const cmdHelp = (cmd: string): void => {
       break;
     case StationCommand.databaseQueryLocal:
       console.log(
-        `${cmd} <station_sn> <device_sn1,device_sn2,...> <startDate (YYYYMMDD)> <endDate (YYYYMMDD)> [eventType] [detectionType] [storageType]`,
+        `${cmd} <station_sn> <device_sn1,device_sn2,...> <startDate (YYYYMMDD)> <endDate (YYYYMMDD)> [eventType] [detectionType] [storageType]`
       );
       break;
     case StationCommand.databaseCountByDate:
-      console.log(
-        `${cmd} <station_sn> <startDate (YYYYMMDD)> <endDate (YYYYMMDD)>`,
-      );
+      console.log(`${cmd} <station_sn> <startDate (YYYYMMDD)> <endDate (YYYYMMDD)>`);
       break;
     case StationCommand.databaseDelete:
       console.log(`${cmd} <station_sn> <id1> [<id2> ...]`);
       break;
     default:
-      console.log(
-        `Type HELP "command name" to display more information about a specific command.`,
-      );
+      console.log(`Type HELP "command name" to display more information about a specific command.`);
       Object.values(DriverCommand).forEach((cmd) => {
         console.log(cmd);
       });
@@ -344,11 +306,7 @@ const cmdHelp = (cmd: string): void => {
   }
 };
 
-const cmd = async (
-  args: Array<string>,
-  silent = false,
-  internal = false,
-): Promise<string[]> => {
+const cmd = async (args: Array<string>, silent = false, internal = false): Promise<string[]> => {
   switch (args[0]) {
     case "help":
       if (args.length <= 1 || args.length > 2) {
@@ -367,7 +325,7 @@ const cmd = async (
             messageId: DriverCommand.setVerifyCode.split(".")[1],
             command: DriverCommand.setVerifyCode,
             verifyCode: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -382,7 +340,7 @@ const cmd = async (
             command: DriverCommand.setCaptcha,
             captchaId: args.length === 3 ? args[2] : undefined,
             captcha: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -395,7 +353,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.pollRefresh.split(".")[1],
             command: DriverCommand.pollRefresh,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -408,7 +366,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.isConnected.split(".")[1],
             command: DriverCommand.isConnected,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -421,7 +379,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.isPushConnected.split(".")[1],
             command: DriverCommand.isPushConnected,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -434,7 +392,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.connect.split(".")[1],
             command: DriverCommand.connect,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -447,7 +405,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.disconnect.split(".")[1],
             command: DriverCommand.disconnect,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -460,7 +418,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.getVideoEvents.split(".")[1],
             command: DriverCommand.getVideoEvents,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -473,7 +431,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.getAlarmEvents.split(".")[1],
             command: DriverCommand.getAlarmEvents,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -486,7 +444,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.getHistoryEvents.split(".")[1],
             command: DriverCommand.getHistoryEvents,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -499,7 +457,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.getLogLevel.split(".")[1],
             command: DriverCommand.getLogLevel,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -512,7 +470,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.startListeningLogs.split(".")[1],
             command: DriverCommand.startListeningLogs,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -525,7 +483,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.stopListeningLogs.split(".")[1],
             command: DriverCommand.stopListeningLogs,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -538,7 +496,7 @@ const cmd = async (
           JSON.stringify({
             messageId: DriverCommand.isListeningLogs.split(".")[1],
             command: DriverCommand.isListeningLogs,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -552,7 +510,7 @@ const cmd = async (
             messageId: DriverCommand.setLogLevel.split(".")[1],
             command: DriverCommand.setLogLevel,
             level: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -567,7 +525,7 @@ const cmd = async (
             command: DeviceCommand.setStatusLed,
             serialNumber: args[1],
             value: args[2].toLowerCase() === "true" ? true : false,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -582,7 +540,7 @@ const cmd = async (
             command: DeviceCommand.setAutoNightVision,
             serialNumber: args[1],
             value: args[2].toLowerCase() === "true" ? true : false,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -597,7 +555,7 @@ const cmd = async (
             command: DeviceCommand.setMotionDetection,
             serialNumber: args[1],
             value: args[2].toLowerCase() === "true" ? true : false,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -612,7 +570,7 @@ const cmd = async (
             command: DeviceCommand.setSoundDetection,
             serialNumber: args[1],
             value: args[2].toLowerCase() === "true" ? true : false,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -627,7 +585,7 @@ const cmd = async (
             command: DeviceCommand.setPetDetection,
             serialNumber: args[1],
             value: args[2].toLowerCase() === "true" ? true : false,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -642,7 +600,7 @@ const cmd = async (
             command: DeviceCommand.setRTSPStream,
             serialNumber: args[1],
             value: args[2].toLowerCase() === "true" ? true : false,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -657,7 +615,7 @@ const cmd = async (
             command: DeviceCommand.setAntiTheftDetection,
             serialNumber: args[1],
             value: args[2].toLowerCase() === "true" ? true : false,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -672,7 +630,7 @@ const cmd = async (
             command: DeviceCommand.enableDevice,
             serialNumber: args[1],
             value: args[2].toLowerCase() === "true" ? true : false,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -687,7 +645,7 @@ const cmd = async (
             command: DeviceCommand.lockDevice,
             serialNumber: args[1],
             value: args[2].toLowerCase() === "true" ? true : false,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -702,7 +660,7 @@ const cmd = async (
             command: DeviceCommand.setWatermark,
             serialNumber: args[1],
             value: Number.parseInt(args[2]),
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -718,7 +676,7 @@ const cmd = async (
               : DeviceCommand.getPropertiesMetadata.split(".")[1],
             command: DeviceCommand.getPropertiesMetadata,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -732,7 +690,7 @@ const cmd = async (
             messageId: DeviceCommand.getProperties.split(".")[1],
             command: DeviceCommand.getProperties,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -743,11 +701,7 @@ const cmd = async (
       if (args.length === 4) {
         if (devicePropertiesMetadata[args[1]] === undefined) {
           await cmd(["device.get_properties_metadata", args[1]], false, true);
-          await waitForEvent(
-            emitter,
-            `device.get_properties_metadata.${args[1]}`,
-            10000,
-          ).catch(); //TODO: Handle better the timeout exception
+          await waitForEvent(emitter, `device.get_properties_metadata.${args[1]}`, 10000).catch(); //TODO: Handle better the timeout exception
         }
         socket.send(
           JSON.stringify({
@@ -755,13 +709,8 @@ const cmd = async (
             command: DeviceCommand.setProperty,
             serialNumber: args[1],
             name: args[2],
-            value: parsePropertyValue(
-              args[2],
-              args[3],
-              args[1],
-              devicePropertiesMetadata,
-            ),
-          }),
+            value: parsePropertyValue(args[2], args[3], args[1], devicePropertiesMetadata),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -775,7 +724,7 @@ const cmd = async (
             messageId: DeviceCommand.startLivestream.split(".")[1],
             command: DeviceCommand.startLivestream,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -789,7 +738,7 @@ const cmd = async (
             messageId: DeviceCommand.stopLivestream.split(".")[1],
             command: DeviceCommand.stopLivestream,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -803,7 +752,7 @@ const cmd = async (
             messageId: DeviceCommand.isLiveStreaming.split(".")[1],
             command: DeviceCommand.isLiveStreaming,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -818,7 +767,7 @@ const cmd = async (
             command: DeviceCommand.triggerAlarm,
             serialNumber: args[1],
             seconds: Number.parseInt(args[2]),
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -833,7 +782,7 @@ const cmd = async (
             command: DeviceCommand.panAndTilt,
             serialNumber: args[1],
             direction: Number.parseInt(args[2]),
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -848,7 +797,7 @@ const cmd = async (
             command: DeviceCommand.quickResponse,
             serialNumber: args[1],
             voiceId: Number.parseInt(args[2]),
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -862,7 +811,7 @@ const cmd = async (
             messageId: DeviceCommand.resetAlarm.split(".")[1],
             command: DeviceCommand.resetAlarm,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -876,7 +825,7 @@ const cmd = async (
             messageId: DeviceCommand.getVoices.split(".")[1],
             command: DeviceCommand.getVoices,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -892,7 +841,7 @@ const cmd = async (
             serialNumber: args[1],
             path: args[2],
             cipherId: args.length === 4 ? Number.parseInt(args[3]) : undefined,
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -906,7 +855,7 @@ const cmd = async (
             messageId: DeviceCommand.cancelDownload.split(".")[1],
             command: DeviceCommand.cancelDownload,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -921,7 +870,7 @@ const cmd = async (
             command: DeviceCommand.hasProperty,
             serialNumber: args[1],
             propertyName: args[2],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -935,7 +884,7 @@ const cmd = async (
             messageId: DeviceCommand.getCommands.split(".")[1],
             command: DeviceCommand.getCommands,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -950,7 +899,7 @@ const cmd = async (
             command: DeviceCommand.hasCommand,
             serialNumber: args[1],
             commandName: args[2],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -964,7 +913,7 @@ const cmd = async (
             messageId: DeviceCommand.startRTSPLivestream.split(".")[1],
             command: DeviceCommand.startRTSPLivestream,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -978,7 +927,7 @@ const cmd = async (
             messageId: DeviceCommand.stopRTSPLivestream.split(".")[1],
             command: DeviceCommand.stopRTSPLivestream,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -992,7 +941,7 @@ const cmd = async (
             messageId: DeviceCommand.isRTSPLiveStreaming.split(".")[1],
             command: DeviceCommand.isRTSPLiveStreaming,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1006,7 +955,7 @@ const cmd = async (
             messageId: DeviceCommand.calibrateLock.split(".")[1],
             command: DeviceCommand.calibrateLock,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1020,7 +969,7 @@ const cmd = async (
             messageId: DeviceCommand.calibrate.split(".")[1],
             command: DeviceCommand.calibrate,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1034,7 +983,7 @@ const cmd = async (
             messageId: DeviceCommand.setDefaultAngle.split(".")[1],
             command: DeviceCommand.setDefaultAngle,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1048,7 +997,7 @@ const cmd = async (
             messageId: DeviceCommand.setPrivacyAngle.split(".")[1],
             command: DeviceCommand.setPrivacyAngle,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1062,7 +1011,7 @@ const cmd = async (
             messageId: DeviceCommand.unlock.split(".")[1],
             command: DeviceCommand.unlock,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1076,7 +1025,7 @@ const cmd = async (
             messageId: DeviceCommand.startTalkback.split(".")[1],
             command: DeviceCommand.startTalkback,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1090,7 +1039,7 @@ const cmd = async (
             messageId: DeviceCommand.stopTalkback.split(".")[1],
             command: DeviceCommand.stopTalkback,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1104,7 +1053,7 @@ const cmd = async (
             messageId: DeviceCommand.isTalkbackOngoing.split(".")[1],
             command: DeviceCommand.isTalkbackOngoing,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1118,7 +1067,7 @@ const cmd = async (
             messageId: DeviceCommand.isDownloading.split(".")[1],
             command: DeviceCommand.isDownloading,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1129,15 +1078,8 @@ const cmd = async (
       if (
         (args.length === 3 && isNumber(args[2])) ||
         (args.length === 4 && isNumber(args[2]) && isTrueFalse(args[3])) ||
-        (args.length === 5 &&
-          isNumber(args[2]) &&
-          isTrueFalse(args[3]) &&
-          isTrueFalse(args[4])) ||
-        (args.length === 6 &&
-          isNumber(args[2]) &&
-          isTrueFalse(args[3]) &&
-          isTrueFalse(args[4]) &&
-          isTrueFalse(args[5]))
+        (args.length === 5 && isNumber(args[2]) && isTrueFalse(args[3]) && isTrueFalse(args[4])) ||
+        (args.length === 6 && isNumber(args[2]) && isTrueFalse(args[3]) && isTrueFalse(args[4]) && isTrueFalse(args[5]))
       ) {
         socket.send(
           JSON.stringify({
@@ -1145,19 +1087,10 @@ const cmd = async (
             command: DeviceCommand.snooze,
             serialNumber: args[1],
             snoozeTime: Number.parseInt(args[2]),
-            snoozeChime:
-              args.length >= 4 && args[3].toLowerCase() === "true"
-                ? true
-                : false,
-            snoozeMotion:
-              args.length >= 5 && args[4].toLowerCase() === "true"
-                ? true
-                : false,
-            snoozeHomebase:
-              args.length === 6 && args[5].toLowerCase() === "true"
-                ? true
-                : false,
-          }),
+            snoozeChime: args.length >= 4 && args[3].toLowerCase() === "true" ? true : false,
+            snoozeMotion: args.length >= 5 && args[4].toLowerCase() === "true" ? true : false,
+            snoozeHomebase: args.length === 6 && args[5].toLowerCase() === "true" ? true : false,
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1191,7 +1124,7 @@ const cmd = async (
             command: DeviceCommand.deleteUser,
             serialNumber: args[1],
             username: args[2],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1205,7 +1138,7 @@ const cmd = async (
             messageId: DeviceCommand.getUsers.split(".")[1],
             command: DeviceCommand.getUsers,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1265,7 +1198,7 @@ const cmd = async (
             command: DeviceCommand.verifyPIN,
             serialNumber: args[1],
             pin: args[2],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1280,7 +1213,7 @@ const cmd = async (
             command: DeviceCommand.presetPosition,
             serialNumber: args[1],
             position: Number.parseInt(args[2]),
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1295,7 +1228,7 @@ const cmd = async (
             command: DeviceCommand.savePresetPosition,
             serialNumber: args[1],
             position: Number.parseInt(args[2]),
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1310,7 +1243,7 @@ const cmd = async (
             command: DeviceCommand.deletePresetPosition,
             serialNumber: args[1],
             position: Number.parseInt(args[2]),
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1324,7 +1257,7 @@ const cmd = async (
             messageId: DeviceCommand.open.split(".")[1],
             command: DeviceCommand.open,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1339,7 +1272,7 @@ const cmd = async (
             command: StationCommand.setGuardMode,
             serialNumber: args[1],
             mode: Number.parseInt(args[2]),
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1353,7 +1286,7 @@ const cmd = async (
             messageId: StationCommand.reboot.split(".")[1],
             command: StationCommand.reboot,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1367,7 +1300,7 @@ const cmd = async (
             messageId: StationCommand.isConnected.split(".")[1],
             command: StationCommand.isConnected,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1381,7 +1314,7 @@ const cmd = async (
             messageId: StationCommand.connect.split(".")[1],
             command: StationCommand.connect,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1395,7 +1328,7 @@ const cmd = async (
             messageId: StationCommand.disconnect.split(".")[1],
             command: StationCommand.disconnect,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1411,7 +1344,7 @@ const cmd = async (
               : StationCommand.getPropertiesMetadata.split(".")[1],
             command: StationCommand.getPropertiesMetadata,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1425,7 +1358,7 @@ const cmd = async (
             messageId: StationCommand.getProperties.split(".")[1],
             command: StationCommand.getProperties,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1436,11 +1369,7 @@ const cmd = async (
       if (args.length === 4) {
         if (stationPropertiesMetadata[args[1]] === undefined) {
           await cmd(["station.get_properties_metadata", args[1]], false, true);
-          await waitForEvent(
-            emitter,
-            `station.get_properties_metadata.${args[1]}`,
-            10000,
-          ).catch(); //TODO: Handle better the timeout exception
+          await waitForEvent(emitter, `station.get_properties_metadata.${args[1]}`, 10000).catch(); //TODO: Handle better the timeout exception
         }
         socket.send(
           JSON.stringify({
@@ -1448,13 +1377,8 @@ const cmd = async (
             command: StationCommand.setProperty,
             serialNumber: args[1],
             name: args[2],
-            value: parsePropertyValue(
-              args[2],
-              args[3],
-              args[1],
-              stationPropertiesMetadata,
-            ),
-          }),
+            value: parsePropertyValue(args[2], args[3], args[1], stationPropertiesMetadata),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1469,7 +1393,7 @@ const cmd = async (
             command: StationCommand.triggerAlarm,
             serialNumber: args[1],
             seconds: Number.parseInt(args[2]),
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1483,7 +1407,7 @@ const cmd = async (
             messageId: StationCommand.resetAlarm.split(".")[1],
             command: StationCommand.resetAlarm,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1497,7 +1421,7 @@ const cmd = async (
             messageId: StationCommand.getCommands.split(".")[1],
             command: StationCommand.getCommands,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1512,7 +1436,7 @@ const cmd = async (
             command: StationCommand.hasProperty,
             serialNumber: args[1],
             propertyName: args[2],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1527,7 +1451,7 @@ const cmd = async (
             command: StationCommand.hasCommand,
             serialNumber: args[1],
             commandName: args[2],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1571,7 +1495,7 @@ const cmd = async (
             messageId: StationCommand.databaseQueryLatestInfo.split(".")[1],
             command: StationCommand.databaseQueryLatestInfo,
             serialNumber: args[1],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1581,15 +1505,8 @@ const cmd = async (
     case StationCommand.databaseQueryLocal:
       if (
         (args.length === 5 && isDate(args[3]) && isDate(args[4])) ||
-        (args.length === 6 &&
-          isDate(args[3]) &&
-          isDate(args[4]) &&
-          isNumber(args[5])) ||
-        (args.length === 7 &&
-          isDate(args[3]) &&
-          isDate(args[4]) &&
-          isNumber(args[5]) &&
-          isNumber(args[6])) ||
+        (args.length === 6 && isDate(args[3]) && isDate(args[4]) && isNumber(args[5])) ||
+        (args.length === 7 && isDate(args[3]) && isDate(args[4]) && isNumber(args[5]) && isNumber(args[6])) ||
         (args.length === 8 &&
           isDate(args[3]) &&
           isDate(args[4]) &&
@@ -1629,7 +1546,7 @@ const cmd = async (
             serialNumber: args[1],
             startDate: args[2],
             endDate: args[3],
-          }),
+          })
         );
       } else {
         cmdHelp(args[0]);
@@ -1655,7 +1572,7 @@ const cmd = async (
               command: StationCommand.databaseDelete,
               serialNumber: args[1],
               ids: ids,
-            }),
+            })
           );
         } else {
           cmdHelp(args[0]);
@@ -1674,11 +1591,7 @@ const cmd = async (
   return args;
 };
 
-if (
-  isNaN(schemaVersion) ||
-  schemaVersion > maxSchemaVersion ||
-  schemaVersion < 0
-) {
+if (isNaN(schemaVersion) || schemaVersion > maxSchemaVersion || schemaVersion < 0) {
   console.log("Schema version must be between 0 and ", maxSchemaVersion);
   process.exit();
 }
@@ -1699,13 +1612,13 @@ socket.on("open", function open() {
       messageId: "api-schema-id",
       command: "set_api_schema",
       schemaVersion: schemaVersion,
-    }),
+    })
   );
   socket.send(
     JSON.stringify({
       messageId: "start-listening-result",
       command: "start_listening",
-    }),
+    })
   );
 });
 
@@ -1718,10 +1631,7 @@ socket.on("message", (data) => {
     const event = msg as OutgoingEventMessage;
     if (event.event.source === "server" && event.event.event === "shutdown") {
       handleShutdown(options.command === undefined ? 0 : 2);
-    } else if (
-      options.command !== undefined &&
-      event.event.event === "command result"
-    ) {
+    } else if (options.command !== undefined && event.event.event === "command result") {
       const source = options.command.split(".")[0];
       const command = options.command.split(".")[1];
       if (source === "device") {
@@ -1735,10 +1645,7 @@ socket.on("message", (data) => {
         }
       } else if (source === "station") {
         const stationEvent = event.event as OutgoingEventStationCommandResult;
-        if (
-          stationEvent.source === source &&
-          stationEvent.command === command
-        ) {
+        if (stationEvent.source === source && stationEvent.command === command) {
           if (silendCommandTimeout) {
             clearTimeout(silendCommandTimeout);
             silendCommandTimeout = undefined;
@@ -1758,9 +1665,7 @@ socket.on("message", (data) => {
             terminal: true,
             prompt: cyan.bold("eufy-security> "),
             completer: (line: string) => {
-              const hits = commands.filter(
-                (c) => c.startsWith(line) && line.substring(c.length) === "",
-              );
+              const hits = commands.filter((c) => c.startsWith(line) && line.substring(c.length) === "");
               return [hits, line];
             },
           });
@@ -1785,11 +1690,9 @@ socket.on("message", (data) => {
         } else {
           cmd(
             [options.command as string].concat(
-              options.arguments !== undefined
-                ? (options.arguments as Array<string>)
-                : [],
+              options.arguments !== undefined ? (options.arguments as Array<string>) : []
             ),
-            options.command !== undefined,
+            options.command !== undefined
           );
         }
         break;
@@ -1800,8 +1703,7 @@ socket.on("message", (data) => {
           properties: Record<string, unknown>;
         };
         if (result.serialNumber !== undefined) {
-          devicePropertiesMetadata[result.serialNumber] =
-            result.properties as IndexedProperty;
+          devicePropertiesMetadata[result.serialNumber] = result.properties as IndexedProperty;
           emitter.emit(`device.get_properties_metadata.${result.serialNumber}`);
         }
         break;
@@ -1812,21 +1714,15 @@ socket.on("message", (data) => {
           properties: Record<string, unknown>;
         };
         if (result.serialNumber !== undefined) {
-          stationPropertiesMetadata[result.serialNumber] =
-            result.properties as IndexedProperty;
-          emitter.emit(
-            `station.get_properties_metadata.${result.serialNumber}`,
-          );
+          stationPropertiesMetadata[result.serialNumber] = result.properties as IndexedProperty;
+          emitter.emit(`station.get_properties_metadata.${result.serialNumber}`);
         }
         break;
       case convertCamelCaseToSnakeCase(options.command?.split(".")[1]):
         if (resultMsg.success) {
           const msgSuccess = msg as OutgoingResultMessageSuccess;
 
-          if (
-            msgSuccess.result &&
-            (msgSuccess.result as any).async === undefined
-          ) {
+          if (msgSuccess.result && (msgSuccess.result as any).async === undefined) {
             logger.info(msgSuccess.result);
             handleShutdown(msg.success ? 0 : 2);
           } else {
@@ -1841,10 +1737,7 @@ socket.on("message", (data) => {
     }
   }
 
-  if (
-    (msg.type === "result" && !msg.messageId.startsWith("internal_")) ||
-    msg.type !== "result"
-  ) {
+  if ((msg.type === "result" && !msg.messageId.startsWith("internal_")) || msg.type !== "result") {
     if (options.command === undefined) {
       if (options.verbose) {
         if (rl) console.log();

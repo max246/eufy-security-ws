@@ -1,9 +1,4 @@
-import {
-  CustomData,
-  Schedule,
-  SmartSafeAlarm911Event,
-  SmartSafeShakeAlarmEvent,
-} from "eufy-security-client";
+import { CustomData, Schedule, SmartSafeAlarm911Event, SmartSafeShakeAlarmEvent } from "eufy-security-client";
 
 import { JSONValue, OutgoingBaseEvent } from "../outgoing_message.js";
 
@@ -83,16 +78,14 @@ export interface OutgoingEventDeviceRemoved extends OutgoingBaseEvent {
   device: JSONValue;
 }
 
-export interface OutgoingEventDeviceMotionDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceMotionDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.motionDetected;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDevicePersonDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDevicePersonDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.personDetected;
   serialNumber: string;
@@ -100,32 +93,28 @@ export interface OutgoingEventDevicePersonDetected
   person: string;
 }
 
-export interface OutgoingEventDeviceCryingDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceCryingDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.cryingDetected;
   state: boolean;
   serialNumber: string;
 }
 
-export interface OutgoingEventDeviceSoundDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceSoundDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.soundDetected;
   state: boolean;
   serialNumber: string;
 }
 
-export interface OutgoingEventDevicePetDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDevicePetDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.petDetected;
   state: boolean;
   serialNumber: string;
 }
 
-export interface OutgoingEventDeviceVehicleDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceVehicleDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.vehicleDetected;
   state: boolean;
@@ -153,8 +142,7 @@ export interface OutgoingEventDeviceGotRtspUrl extends OutgoingEventDeviceBase {
   rtspUrl: string;
 }
 
-export interface OutgoingEventDeviceCommandResult
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceCommandResult extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.commandResult;
   serialNumber: string;
@@ -165,8 +153,7 @@ export interface OutgoingEventDeviceCommandResult
   customData?: CustomData;
 }
 
-export interface OutgoingEventDevicePropertyChanged
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDevicePropertyChanged extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.propertyChanged;
   serialNumber: string;
@@ -175,22 +162,19 @@ export interface OutgoingEventDevicePropertyChanged
   timestamp: number;
 }
 
-export interface OutgoingEventDeviceLivestreamStarted
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceLivestreamStarted extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.livestreamStarted;
   serialNumber: string;
 }
 
-export interface OutgoingEventDeviceLivestreamStopped
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceLivestreamStopped extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.livestreamStopped;
   serialNumber: string;
 }
 
-export interface OutgoingEventDeviceLivestreamVideoData
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceLivestreamVideoData extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.livestreamVideoData;
   serialNumber: string;
@@ -203,8 +187,7 @@ export interface OutgoingEventDeviceLivestreamVideoData
   };
 }
 
-export interface OutgoingEventDeviceLivestreamAudioData
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceLivestreamAudioData extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.livestreamAudioData;
   serialNumber: string;
@@ -214,22 +197,19 @@ export interface OutgoingEventDeviceLivestreamAudioData
   };
 }
 
-export interface OutgoingEventDeviceDownloadStarted
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceDownloadStarted extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.downloadStarted;
   serialNumber: string;
 }
 
-export interface OutgoingEventDeviceDownloadFinished
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceDownloadFinished extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.downloadFinished;
   serialNumber: string;
 }
 
-export interface OutgoingEventDeviceDownloadVideoData
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceDownloadVideoData extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.downloadVideoData;
   serialNumber: string;
@@ -242,8 +222,7 @@ export interface OutgoingEventDeviceDownloadVideoData
   };
 }
 
-export interface OutgoingEventDeviceDownloadAudioData
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceDownloadAudioData extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.downloadAudioData;
   serialNumber: string;
@@ -253,15 +232,13 @@ export interface OutgoingEventDeviceDownloadAudioData
   };
 }
 
-export interface OutgoingEventDeviceRTSPLivestreamStarted
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceRTSPLivestreamStarted extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.rtspLivestreamStarted;
   serialNumber: string;
 }
 
-export interface OutgoingEventDeviceRTSPLivestreamStopped
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceRTSPLivestreamStopped extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.rtspLivestreamStopped;
   serialNumber: string;
@@ -274,40 +251,35 @@ export interface OutgoingEventDeviceLocked extends OutgoingEventDeviceBase {
   state: boolean;
 }
 
-export interface OutgoingEventDevicePackageDelivered
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDevicePackageDelivered extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.packageDelivered;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDevicePackageStranded
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDevicePackageStranded extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.packageStranded;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDevicePackageTaken
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDevicePackageTaken extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.packageTaken;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDeviceSomeoneLoitering
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceSomeoneLoitering extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.someoneLoitering;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDeviceRadarMotionDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceRadarMotionDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.radarMotionDetected;
   serialNumber: string;
@@ -330,16 +302,14 @@ export interface OutgoingEventDeviceShakeAlarm extends OutgoingEventDeviceBase {
   detail: SmartSafeShakeAlarmEvent;
 }
 
-export interface OutgoingEventDeviceWrongTryProtectAlarm
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceWrongTryProtectAlarm extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.wrongTryProtectAlarm;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDeviceLongTimeNotClose
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceLongTimeNotClose extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.LongTimeNotClose;
   serialNumber: string;
@@ -360,22 +330,19 @@ export interface OutgoingEventDeviceJammed extends OutgoingEventDeviceBase {
   state: boolean;
 }
 
-export interface OutgoingEventDeviceTalkbackStarted
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceTalkbackStarted extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.talkbackStarted;
   serialNumber: string;
 }
 
-export interface OutgoingEventDeviceTalkbackStopped
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceTalkbackStopped extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.talkbackStopped;
   serialNumber: string;
 }
 
-export interface OutgoingEventDevicePinVerified
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDevicePinVerified extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.pinVerified;
   serialNumber: string;
@@ -390,8 +357,7 @@ export interface OutgoingEventDeviceUserAdded extends OutgoingEventDeviceBase {
   schedule?: Schedule;
 }
 
-export interface OutgoingEventDeviceUserDeleted
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceUserDeleted extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.userDeleted;
   serialNumber: string;
@@ -406,16 +372,14 @@ export interface OutgoingEventDeviceUserError extends OutgoingEventDeviceBase {
   error: Error;
 }
 
-export interface OutgoingEventDeviceUserUsernameUpdated
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceUserUsernameUpdated extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.userUsernameUpdated;
   serialNumber: string;
   username: string;
 }
 
-export interface OutgoingEventDeviceUserScheduleUpdated
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceUserScheduleUpdated extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.userScheduleUpdated;
   serialNumber: string;
@@ -423,40 +387,35 @@ export interface OutgoingEventDeviceUserScheduleUpdated
   schedule: Schedule;
 }
 
-export interface OutgoingEventDeviceUserPasscodeUpdated
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceUserPasscodeUpdated extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.userPasscodeUpdated;
   serialNumber: string;
   username: string;
 }
 
-export interface OutgoingEventDeviceStrangerPersonDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceStrangerPersonDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.strangerPersonDetected;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDeviceDogDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceDogDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.dogDetected;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDeviceDogLickDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceDogLickDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.dogLickDetected;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDeviceDogPoopDetected
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceDogPoopDetected extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.dogPoopDetected;
   serialNumber: string;
@@ -477,16 +436,14 @@ export interface OutgoingEventDeviceTampering extends OutgoingEventDeviceBase {
   state: boolean;
 }
 
-export interface OutgoingEventDeviceLowTemperature
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceLowTemperature extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.lowTemperature;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDeviceHighTemperature
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceHighTemperature extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.highTemperature;
   serialNumber: string;
@@ -500,16 +457,14 @@ export interface OutgoingEventDeviceLidStuck extends OutgoingEventDeviceBase {
   state: boolean;
 }
 
-export interface OutgoingEventDevicePinIncorrect
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDevicePinIncorrect extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.pinIncorrect;
   serialNumber: string;
   state: boolean;
 }
 
-export interface OutgoingEventDeviceBatteryFullyCharged
-  extends OutgoingEventDeviceBase {
+export interface OutgoingEventDeviceBatteryFullyCharged extends OutgoingEventDeviceBase {
   source: "device";
   event: DeviceEvent.batteryFullyCharged;
   serialNumber: string;

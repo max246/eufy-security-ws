@@ -8,17 +8,11 @@ export interface DriverStateSchema0 {
   pushConnected: boolean;
 }
 
-type DriverStateSchema1 = Modify<
-  DriverStateSchema0,
-  { mqttConnected: boolean }
->;
+type DriverStateSchema1 = Modify<DriverStateSchema0, { mqttConnected: boolean }>;
 
 export type DriverState = DriverStateSchema0 | DriverStateSchema1;
 
-export const dumpDriver = (
-  driver: EufySecurity,
-  schemaVersion: number,
-): DriverState => {
+export const dumpDriver = (driver: EufySecurity, schemaVersion: number): DriverState => {
   const base: Partial<DriverStateSchema0> = {
     version: driver.getVersion(),
     connected: driver.isConnected(),

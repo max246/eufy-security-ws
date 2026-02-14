@@ -8,13 +8,7 @@ import { DriverEvent, OutgoingEventDriver } from "./driver/event.js";
 import { ServerEvent, OutgoingEventServer } from "./event.js";
 
 // https://github.com/microsoft/TypeScript/issues/1897#issuecomment-822032151
-export type JSONValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JSONValue[]
-  | { [key: string]: JSONValue };
+export type JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue };
 
 export interface OutgoingBaseEvent {
   source: "driver" | "station" | "device" | "server";
@@ -53,10 +47,7 @@ export interface ServerResultTypes {
   [ServerCommand.setApiSchema]: Record<string, never>;
 }
 
-export type ResultTypes = ServerResultTypes &
-  StationResultTypes &
-  DeviceResultTypes &
-  DriverResultTypes;
+export type ResultTypes = ServerResultTypes & StationResultTypes & DeviceResultTypes & DriverResultTypes;
 
 export interface OutgoingResultMessageSuccess {
   type: "result";

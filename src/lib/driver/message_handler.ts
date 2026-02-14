@@ -15,12 +15,7 @@ import {
   IncomingCommandGetHistoryEvents,
 } from "./incoming_message.js";
 import { DriverResultTypes } from "./outgoing_message.js";
-import {
-  LogLevel,
-  LogLevelName,
-  convertLogLevelToDriver,
-  convertLogLevelToServer,
-} from "../logging.js";
+import { LogLevel, LogLevelName, convertLogLevelToDriver, convertLogLevelToServer } from "../logging.js";
 
 export class DriverMessageHandler {
   public static captchaId: string | null = null;
@@ -32,7 +27,7 @@ export class DriverMessageHandler {
     driver: EufySecurity,
     client: Client,
     clientsController: ClientsController,
-    logger: Logger<ILogObj>,
+    logger: Logger<ILogObj>
   ): Promise<DriverResultTypes[DriverCommand]> {
     const { command } = message;
     switch (command) {
@@ -109,9 +104,7 @@ export class DriverMessageHandler {
         if (client.schemaVersion >= 3) {
           const fifthyYearsInMilliseconds = 15 * 365 * 24 * 60 * 60 * 1000;
           const videoMessage = message as IncomingCommandGetVideoEvents;
-          let startTime = new Date(
-            new Date().getTime() - fifthyYearsInMilliseconds,
-          );
+          let startTime = new Date(new Date().getTime() - fifthyYearsInMilliseconds);
           let endTime = new Date();
           if (videoMessage.startTimestampMs !== undefined) {
             startTime = new Date(videoMessage.startTimestampMs);
@@ -121,12 +114,7 @@ export class DriverMessageHandler {
           }
           const events = await driver
             .getApi()
-            .getVideoEvents(
-              startTime,
-              endTime,
-              videoMessage.filter,
-              videoMessage.maxResults,
-            );
+            .getVideoEvents(startTime, endTime, videoMessage.filter, videoMessage.maxResults);
           return { events: events };
         } else {
           throw new UnknownCommandError(command);
@@ -136,9 +124,7 @@ export class DriverMessageHandler {
         if (client.schemaVersion >= 3) {
           const fifthyYearsInMilliseconds = 15 * 365 * 24 * 60 * 60 * 1000;
           const alarmMessage = message as IncomingCommandGetAlarmEvents;
-          let startTime = new Date(
-            new Date().getTime() - fifthyYearsInMilliseconds,
-          );
+          let startTime = new Date(new Date().getTime() - fifthyYearsInMilliseconds);
           let endTime = new Date();
           if (alarmMessage.startTimestampMs !== undefined) {
             startTime = new Date(alarmMessage.startTimestampMs);
@@ -148,12 +134,7 @@ export class DriverMessageHandler {
           }
           const events = await driver
             .getApi()
-            .getAlarmEvents(
-              startTime,
-              endTime,
-              alarmMessage.filter,
-              alarmMessage.maxResults,
-            );
+            .getAlarmEvents(startTime, endTime, alarmMessage.filter, alarmMessage.maxResults);
           return { events: events };
         } else {
           throw new UnknownCommandError(command);
@@ -163,9 +144,7 @@ export class DriverMessageHandler {
         if (client.schemaVersion >= 3) {
           const fifthyYearsInMilliseconds = 15 * 365 * 24 * 60 * 60 * 1000;
           const historyMessage = message as IncomingCommandGetHistoryEvents;
-          let startTime = new Date(
-            new Date().getTime() - fifthyYearsInMilliseconds,
-          );
+          let startTime = new Date(new Date().getTime() - fifthyYearsInMilliseconds);
           let endTime = new Date();
           if (historyMessage.startTimestampMs !== undefined) {
             startTime = new Date(historyMessage.startTimestampMs);
@@ -175,12 +154,7 @@ export class DriverMessageHandler {
           }
           const events = await driver
             .getApi()
-            .getHistoryEvents(
-              startTime,
-              endTime,
-              historyMessage.filter,
-              historyMessage.maxResults,
-            );
+            .getHistoryEvents(startTime, endTime, historyMessage.filter, historyMessage.maxResults);
           return { events: events };
         } else {
           throw new UnknownCommandError(command);
@@ -188,17 +162,10 @@ export class DriverMessageHandler {
       }
       case DriverCommand.getLogLevel:
         return {
-          level: LogLevel[
-            convertLogLevelToServer(driver.getLoggingLevel("all"))
-          ] as LogLevelName,
+          level: LogLevel[convertLogLevelToServer(driver.getLoggingLevel("all"))] as LogLevelName,
         };
       case DriverCommand.setLogLevel:
-        driver.setLoggingLevel(
-          "all",
-          convertLogLevelToDriver(
-            (message as IncomingCommandSetLogLevel).level,
-          ),
-        );
+        driver.setLoggingLevel("all", convertLogLevelToDriver((message as IncomingCommandSetLogLevel).level));
         clientsController.restartLoggingEventForwarderIfNeeded();
         clientsController.clients.forEach((client) => {
           client.sendEvent({

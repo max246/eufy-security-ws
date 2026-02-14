@@ -15,12 +15,15 @@
   "scripts": {
     "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --fix --ext .ts . && prettier -w .",
-    "test": "prettier --check src && tsc --noEmit && npm run lint",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
     "build": "tsc -p .",
     "prepublishOnly": "rm -rf dist tsconfig.tsbuildinfo && npm run build",
     "build:ts": "tsc -p .",
     "server": "node --security-revert=CVE-2023-46809 ./dist/bin/server.js -v -H 0.0.0.0",
-    "client": "tsx ./src/bin/client.ts -v"
+    "client": "tsx ./src/bin/client.ts -v",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\""
   },
   "author": {
     "name": "bropat",
@@ -65,12 +68,12 @@
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "jest": "^29.7.0",
-    "prettier": "^3.6.2",
     "ts-jest": "^29.4.6",
     "tsx": "^4.20.3",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.49.0",
-    "jiti": "^2.6.1"
+    "jiti": "^2.6.1",
+    "prettier": "^3.8.1"
   },
   "type": "module"
 }

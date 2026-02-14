@@ -19,16 +19,13 @@ import {
   IncomingCommandDatabaseDelete,
 } from "./incoming_message.js";
 import { StationResultTypes } from "./outgoing_message.js";
-import {
-  dumpStationProperties,
-  dumpStationPropertiesMetadata,
-} from "./properties.js";
+import { dumpStationProperties, dumpStationPropertiesMetadata } from "./properties.js";
 
 export class StationMessageHandler {
   static async handle(
     message: IncomingMessageStation,
     driver: EufySecurity,
-    client: Client,
+    client: Client
   ): Promise<StationResultTypes[StationCommand]> {
     const { serialNumber, command } = message;
 
@@ -97,10 +94,7 @@ export class StationMessageHandler {
         } else {
           return {
             serialNumber: station.getSerial(),
-            properties: dumpStationPropertiesMetadata(
-              station,
-              client.schemaVersion,
-            ),
+            properties: dumpStationPropertiesMetadata(station, client.schemaVersion),
           };
         }
       }
@@ -117,10 +111,7 @@ export class StationMessageHandler {
         } else {
           return {
             serialNumber: station.getSerial(),
-            properties: dumpStationProperties(
-              station,
-              client.schemaVersion,
-            ) as unknown as Record<string, unknown>,
+            properties: dumpStationProperties(station, client.schemaVersion) as unknown as Record<string, unknown>,
           };
         }
       }
@@ -129,7 +120,7 @@ export class StationMessageHandler {
           .setStationProperty(
             serialNumber,
             (message as IncomingCommandSetProperty).name,
-            (message as IncomingCommandSetProperty).value,
+            (message as IncomingCommandSetProperty).value
           )
           .catch((error) => {
             throw error;
@@ -137,9 +128,7 @@ export class StationMessageHandler {
         return client.schemaVersion >= 13 ? { async: true } : {};
       case StationCommand.triggerAlarm:
         if (client.schemaVersion >= 3) {
-          station.triggerStationAlarmSound(
-            (message as IncomingCommandTriggerAlarm).seconds,
-          );
+          station.triggerStationAlarmSound((message as IncomingCommandTriggerAlarm).seconds);
           return client.schemaVersion >= 13 ? { async: true } : {};
         } else {
           throw new UnknownCommandError(command);
@@ -153,9 +142,7 @@ export class StationMessageHandler {
         }
       case StationCommand.hasProperty: {
         if (client.schemaVersion >= 3) {
-          const result = station.hasProperty(
-            (message as IncomingCommandHasProperty).propertyName,
-          );
+          const result = station.hasProperty((message as IncomingCommandHasProperty).propertyName);
 
           if (client.schemaVersion === 3) {
             return { exists: result };
@@ -173,9 +160,7 @@ export class StationMessageHandler {
       }
       case StationCommand.hasCommand: {
         if (client.schemaVersion >= 3) {
-          const result = station.hasCommand(
-            (message as IncomingCommandHasCommand).commandName,
-          );
+          const result = station.hasCommand((message as IncomingCommandHasCommand).commandName);
 
           if (client.schemaVersion === 3) {
             return { exists: result };
@@ -234,74 +219,34 @@ export class StationMessageHandler {
         }
       case StationCommand.databaseQueryLocal:
         if (client.schemaVersion >= 18) {
-          const serialNumbers = (message as IncomingCommandDatabaseQueryLocal)
-            .serialNumbers;
-          const startDate = parse(
-            (message as IncomingCommandDatabaseQueryLocal).startDate,
-            "YYYYMMDD",
-          );
-          const endDate = parse(
-            (message as IncomingCommandDatabaseQueryLocal).endDate,
-            "YYYYMMDD",
-          );
-          const eventType = (message as IncomingCommandDatabaseQueryLocal)
-            .eventType;
-          const detectionType = (message as IncomingCommandDatabaseQueryLocal)
-            .detectionType;
-          const storageType = (message as IncomingCommandDatabaseQueryLocal)
-            .storageType;
-          station.databaseQueryLocal(
-            serialNumbers,
-            startDate,
-            endDate,
-            eventType,
-            detectionType,
-            storageType,
-          );
+          const serialNumbers = (message as IncomingCommandDatabaseQueryLocal).serialNumbers;
+          const startDate = parse((message as IncomingCommandDatabaseQueryLocal).startDate, "YYYYMMDD");
+          const endDate = parse((message as IncomingCommandDatabaseQueryLocal).endDate, "YYYYMMDD");
+          const eventType = (message as IncomingCommandDatabaseQueryLocal).eventType;
+          const detectionType = (message as IncomingCommandDatabaseQueryLocal).detectionType;
+          const storageType = (message as IncomingCommandDatabaseQueryLocal).storageType;
+          station.databaseQueryLocal(serialNumbers, startDate, endDate, eventType, detectionType, storageType);
           return { async: true };
         } else {
           throw new UnknownCommandError(command);
         }
       case StationCommand.databaseQueryByDate:
         if (client.schemaVersion >= 18) {
-          const serialNumbers = (message as IncomingCommandDatabaseQueryByDate)
-            .serialNumbers;
-          const startDate = parse(
-            (message as IncomingCommandDatabaseQueryByDate).startDate,
-            "YYYYMMDD",
-          );
-          const endDate = parse(
-            (message as IncomingCommandDatabaseQueryByDate).endDate,
-            "YYYYMMDD",
-          );
-          const eventType = (message as IncomingCommandDatabaseQueryByDate)
-            .eventType;
-          const detectionType = (message as IncomingCommandDatabaseQueryByDate)
-            .detectionType;
-          const storageType = (message as IncomingCommandDatabaseQueryByDate)
-            .storageType;
-          station.databaseQueryByDate(
-            serialNumbers,
-            startDate,
-            endDate,
-            eventType,
-            detectionType,
-            storageType,
-          );
+          const serialNumbers = (message as IncomingCommandDatabaseQueryByDate).serialNumbers;
+          const startDate = parse((message as IncomingCommandDatabaseQueryByDate).startDate, "YYYYMMDD");
+          const endDate = parse((message as IncomingCommandDatabaseQueryByDate).endDate, "YYYYMMDD");
+          const eventType = (message as IncomingCommandDatabaseQueryByDate).eventType;
+          const detectionType = (message as IncomingCommandDatabaseQueryByDate).detectionType;
+          const storageType = (message as IncomingCommandDatabaseQueryByDate).storageType;
+          station.databaseQueryByDate(serialNumbers, startDate, endDate, eventType, detectionType, storageType);
           return { async: true };
         } else {
           throw new UnknownCommandError(command);
         }
       case StationCommand.databaseCountByDate:
         if (client.schemaVersion >= 18) {
-          const startDate = parse(
-            (message as IncomingCommandDatabaseCountByDate).startDate,
-            "YYYYMMDD",
-          );
-          const endDate = parse(
-            (message as IncomingCommandDatabaseCountByDate).endDate,
-            "YYYYMMDD",
-          );
+          const startDate = parse((message as IncomingCommandDatabaseCountByDate).startDate, "YYYYMMDD");
+          const endDate = parse((message as IncomingCommandDatabaseCountByDate).endDate, "YYYYMMDD");
           station.databaseCountByDate(startDate, endDate);
           return { async: true };
         } else {

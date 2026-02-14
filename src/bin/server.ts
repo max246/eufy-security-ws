@@ -3,11 +3,7 @@
 import { resolve } from "path";
 import { Command, Option } from "commander";
 import { ILogObj, Logger } from "tslog";
-import {
-  EufySecurity,
-  EufySecurityConfig,
-  LogLevel,
-} from "eufy-security-client";
+import { EufySecurity, EufySecurityConfig, LogLevel } from "eufy-security-client";
 import { createRequire } from "module";
 
 import { EufySecurityServer } from "../lib/server.js";
@@ -19,15 +15,10 @@ const require = createRequire(import.meta.url);
 const program = new Command();
 program
   .addOption(
-    new Option("-c, --config <file>", "Configuration file").default(
-      "config.json",
-      "looks in current directory",
-    ),
+    new Option("-c, --config <file>", "Configuration file").default("config.json", "looks in current directory")
   )
   .addOption(new Option("-p, --port <port>", "Listening port").default(3000))
-  .addOption(
-    new Option("-H, --host <host>", "Listening Host").default("localhost"),
-  )
+  .addOption(new Option("-H, --host <host>", "Listening Host").default("localhost"))
   .addOption(new Option("-v, --verbose"))
   .addOption(new Option("-q, --quiet"));
 
@@ -78,14 +69,13 @@ const args = program.opts();
   const logger = new Logger<ILogObj>({
     name: "eufy-security-ws",
     minLevel: args.verbose ? 0 /* silly */ : 3 /* info */,
-    prettyLogTemplate:
-      "{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}}\t{{logLevelName}}\t{{name}}\t",
+    prettyLogTemplate: "{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}}\t{{logLevelName}}\t{{name}}\t",
     type: args.quiet ? "hidden" : "pretty",
     hideLogPositionForProduction: true,
   });
   const driver: EufySecurity = await EufySecurity.initialize(
     config,
-    logger.getSubLogger({ name: "eufy-security-client" }),
+    logger.getSubLogger({ name: "eufy-security-client" })
   );
 
   let server: EufySecurityServer;

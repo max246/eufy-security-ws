@@ -20,37 +20,24 @@ type EufySecurityStateSchema1 = Modify<
   }
 >;
 
-export type EufySecurityState =
-  | EufySecurityStateSchema0
-  | EufySecurityStateSchema1;
+export type EufySecurityState = EufySecurityStateSchema0 | EufySecurityStateSchema1;
 
-export const dumpState = async (
-  driver: EufySecurity,
-  schemaVersion: number,
-): Promise<EufySecurityState> => {
+export const dumpState = async (driver: EufySecurity, schemaVersion: number): Promise<EufySecurityState> => {
   const base: Partial<EufySecurityStateSchema0> = {
     driver: dumpDriver(driver, schemaVersion),
     stations: driver.isConnected()
-      ? Array.from(await driver.getStations(), (station) =>
-          dumpStation(station, schemaVersion),
-        )
+      ? Array.from(await driver.getStations(), (station) => dumpStation(station, schemaVersion))
       : [],
     devices: driver.isConnected()
-      ? Array.from(await driver.getDevices(), (device) =>
-          dumpDevice(device, schemaVersion),
-        )
+      ? Array.from(await driver.getDevices(), (device) => dumpDevice(device, schemaVersion))
       : [],
   };
 
   if (schemaVersion < 13) return base as EufySecurityStateSchema0;
 
   const base1 = base as unknown as EufySecurityStateSchema1;
-  base1.stations = driver.isConnected()
-    ? Array.from(await driver.getStations(), (station) => station.getSerial())
-    : [];
-  base1.devices = driver.isConnected()
-    ? Array.from(await driver.getDevices(), (device) => device.getSerial())
-    : [];
+  base1.stations = driver.isConnected() ? Array.from(await driver.getStations(), (station) => station.getSerial()) : [];
+  base1.devices = driver.isConnected() ? Array.from(await driver.getDevices(), (device) => device.getSerial()) : [];
 
   return base1;
 };

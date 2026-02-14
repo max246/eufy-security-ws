@@ -41,7 +41,7 @@ import { convertCamelCaseToSnakeCase } from "./utils.js";
 export class EventForwarder {
   constructor(
     private clients: ClientsController,
-    private logger: Logger<ILogObj>,
+    private logger: Logger<ILogObj>
   ) {}
 
   public start(): void {
@@ -52,7 +52,7 @@ export class EventForwarder {
           source: "driver",
           event: DriverEvent.verifyCode,
         },
-        0,
+        0
       );
     });
 
@@ -66,7 +66,7 @@ export class EventForwarder {
           captchaId: id,
           captcha: captcha,
         },
-        7,
+        7
       );
     });
 
@@ -75,7 +75,7 @@ export class EventForwarder {
         this.sendEvent(client, {
           source: "driver",
           event: DriverEvent.connected,
-        }),
+        })
       );
     });
 
@@ -84,7 +84,7 @@ export class EventForwarder {
         this.sendEvent(client, {
           source: "driver",
           event: DriverEvent.disconnected,
-        }),
+        })
       );
     });
 
@@ -93,7 +93,7 @@ export class EventForwarder {
         this.sendEvent(client, {
           source: "driver",
           event: DriverEvent.pushConnected,
-        }),
+        })
       );
     });
 
@@ -102,7 +102,7 @@ export class EventForwarder {
         this.sendEvent(client, {
           source: "driver",
           event: DriverEvent.pushDisconnected,
-        }),
+        })
       );
     });
 
@@ -111,7 +111,7 @@ export class EventForwarder {
         this.sendEvent(client, {
           source: "driver",
           event: DriverEvent.mqttConnected,
-        }),
+        })
       );
     });
 
@@ -120,7 +120,7 @@ export class EventForwarder {
         this.sendEvent(client, {
           source: "driver",
           event: DriverEvent.mqttDisconnected,
-        }),
+        })
       );
     });
 
@@ -131,7 +131,7 @@ export class EventForwarder {
           event: DriverEvent.connectionError,
           error: error,
         },
-        14,
+        14
       );
     });
 
@@ -186,10 +186,7 @@ export class EventForwarder {
               this.sendEvent(client, {
                 source: "station",
                 event: StationEvent.stationAdded,
-                station: dumpStation(
-                  station,
-                  client.schemaVersion,
-                ) as JSONValue,
+                station: dumpStation(station, client.schemaVersion) as JSONValue,
               });
             } else {
               this.sendEvent(client, {
@@ -234,19 +231,10 @@ export class EventForwarder {
 
     this.clients.driver.on(
       "station livestream start",
-      (
-        station: Station,
-        device: Device,
-        metadata: StreamMetadata,
-        videostream: Readable,
-        audiostream: Readable,
-      ) => {
+      (station: Station, device: Device, metadata: StreamMetadata, videostream: Readable, audiostream: Readable) => {
         const serialNumber = device.getSerial();
         this.clients.clients
-          .filter(
-            (cl) =>
-              cl.receiveLivestream[serialNumber] === true && cl.isConnected,
-          )
+          .filter((cl) => cl.receiveLivestream[serialNumber] === true && cl.isConnected)
           .forEach((client) => {
             if (client.schemaVersion >= 2) {
               client.sendEvent({
@@ -258,10 +246,7 @@ export class EventForwarder {
           });
         videostream.on("data", (chunk: Buffer) => {
           this.clients.clients
-            .filter(
-              (cl) =>
-                cl.receiveLivestream[serialNumber] === true && cl.isConnected,
-            )
+            .filter((cl) => cl.receiveLivestream[serialNumber] === true && cl.isConnected)
             .forEach((client) => {
               if (client.schemaVersion >= 2) {
                 client.sendEvent({
@@ -281,10 +266,7 @@ export class EventForwarder {
         });
         audiostream.on("data", (chunk: Buffer) => {
           this.clients.clients
-            .filter(
-              (cl) =>
-                cl.receiveLivestream[serialNumber] === true && cl.isConnected,
-            )
+            .filter((cl) => cl.receiveLivestream[serialNumber] === true && cl.isConnected)
             .forEach((client) => {
               if (client.schemaVersion >= 2) {
                 client.sendEvent({
@@ -299,50 +281,32 @@ export class EventForwarder {
               }
             });
         });
-      },
+      }
     );
 
-    this.clients.driver.on(
-      "station livestream stop",
-      (station: Station, device: Device) => {
-        const serialNumber = device.getSerial();
-        this.clients.clients
-          .filter(
-            (cl) =>
-              cl.receiveLivestream[serialNumber] === true && cl.isConnected,
-          )
-          .forEach((client) => {
-            if (client.schemaVersion >= 2) {
-              client.sendEvent({
-                source: "device",
-                event: DeviceEvent.livestreamStopped,
-                serialNumber: serialNumber,
-              });
-            }
-            client.receiveLivestream[serialNumber] = false;
-            DeviceMessageHandler.removeStreamingDevice(
-              station.getSerial(),
-              client,
-            );
-          });
-      },
-    );
+    this.clients.driver.on("station livestream stop", (station: Station, device: Device) => {
+      const serialNumber = device.getSerial();
+      this.clients.clients
+        .filter((cl) => cl.receiveLivestream[serialNumber] === true && cl.isConnected)
+        .forEach((client) => {
+          if (client.schemaVersion >= 2) {
+            client.sendEvent({
+              source: "device",
+              event: DeviceEvent.livestreamStopped,
+              serialNumber: serialNumber,
+            });
+          }
+          client.receiveLivestream[serialNumber] = false;
+          DeviceMessageHandler.removeStreamingDevice(station.getSerial(), client);
+        });
+    });
 
     this.clients.driver.on(
       "station download start",
-      (
-        station: Station,
-        device: Device,
-        metadata: StreamMetadata,
-        videostream: Readable,
-        audiostream: Readable,
-      ) => {
+      (station: Station, device: Device, metadata: StreamMetadata, videostream: Readable, audiostream: Readable) => {
         const serialNumber = device.getSerial();
         this.clients.clients
-          .filter(
-            (cl) =>
-              cl.receiveDownloadStream[serialNumber] === true && cl.isConnected,
-          )
+          .filter((cl) => cl.receiveDownloadStream[serialNumber] === true && cl.isConnected)
           .forEach((client) => {
             if (client.schemaVersion >= 3) {
               client.sendEvent({
@@ -354,11 +318,7 @@ export class EventForwarder {
           });
         videostream.on("data", (chunk: Buffer) => {
           this.clients.clients
-            .filter(
-              (cl) =>
-                cl.receiveDownloadStream[serialNumber] === true &&
-                cl.isConnected,
-            )
+            .filter((cl) => cl.receiveDownloadStream[serialNumber] === true && cl.isConnected)
             .forEach((client) => {
               if (client.schemaVersion >= 3) {
                 client.sendEvent({
@@ -378,11 +338,7 @@ export class EventForwarder {
         });
         audiostream.on("data", (chunk: Buffer) => {
           this.clients.clients
-            .filter(
-              (cl) =>
-                cl.receiveDownloadStream[serialNumber] === true &&
-                cl.isConnected,
-            )
+            .filter((cl) => cl.receiveDownloadStream[serialNumber] === true && cl.isConnected)
             .forEach((client) => {
               if (client.schemaVersion >= 3) {
                 client.sendEvent({
@@ -397,173 +353,137 @@ export class EventForwarder {
               }
             });
         });
-      },
+      }
     );
 
-    this.clients.driver.on(
-      "station download finish",
-      (station: Station, device: Device) => {
-        const serialNumber = device.getSerial();
-        this.clients.clients
-          .filter(
-            (cl) =>
-              cl.receiveDownloadStream[serialNumber] === true && cl.isConnected,
-          )
-          .forEach((client) => {
-            if (client.schemaVersion >= 3) {
-              client.sendEvent({
-                source: "device",
-                event: DeviceEvent.downloadFinished,
-                serialNumber: serialNumber,
-              });
-            }
-            client.receiveDownloadStream[serialNumber] = false;
-            DeviceMessageHandler.removeDownloadingDevice(
-              station.getSerial(),
-              client,
-            );
-          });
-      },
-    );
+    this.clients.driver.on("station download finish", (station: Station, device: Device) => {
+      const serialNumber = device.getSerial();
+      this.clients.clients
+        .filter((cl) => cl.receiveDownloadStream[serialNumber] === true && cl.isConnected)
+        .forEach((client) => {
+          if (client.schemaVersion >= 3) {
+            client.sendEvent({
+              source: "device",
+              event: DeviceEvent.downloadFinished,
+              serialNumber: serialNumber,
+            });
+          }
+          client.receiveDownloadStream[serialNumber] = false;
+          DeviceMessageHandler.removeDownloadingDevice(station.getSerial(), client);
+        });
+    });
 
-    this.clients.driver.on(
-      "station rtsp livestream start",
-      (station: Station, device: Device) => {
-        const serialNumber = device.getSerial();
-        this.clients.clients
-          .filter((cl) => cl.isConnected)
-          .forEach((client) => {
-            if (client.schemaVersion >= 6) {
-              client.sendEvent({
-                source: "device",
-                event: DeviceEvent.rtspLivestreamStarted,
-                serialNumber: serialNumber,
-              });
-            }
-          });
-      },
-    );
+    this.clients.driver.on("station rtsp livestream start", (station: Station, device: Device) => {
+      const serialNumber = device.getSerial();
+      this.clients.clients
+        .filter((cl) => cl.isConnected)
+        .forEach((client) => {
+          if (client.schemaVersion >= 6) {
+            client.sendEvent({
+              source: "device",
+              event: DeviceEvent.rtspLivestreamStarted,
+              serialNumber: serialNumber,
+            });
+          }
+        });
+    });
 
-    this.clients.driver.on(
-      "station rtsp livestream stop",
-      (station: Station, device: Device) => {
-        const serialNumber = device.getSerial();
-        this.clients.clients
-          .filter((cl) => cl.isConnected)
-          .forEach((client) => {
-            if (client.schemaVersion >= 6) {
-              client.sendEvent({
-                source: "device",
-                event: DeviceEvent.rtspLivestreamStopped,
-                serialNumber: serialNumber,
-              });
-            }
-          });
-      },
-    );
+    this.clients.driver.on("station rtsp livestream stop", (station: Station, device: Device) => {
+      const serialNumber = device.getSerial();
+      this.clients.clients
+        .filter((cl) => cl.isConnected)
+        .forEach((client) => {
+          if (client.schemaVersion >= 6) {
+            client.sendEvent({
+              source: "device",
+              event: DeviceEvent.rtspLivestreamStopped,
+              serialNumber: serialNumber,
+            });
+          }
+        });
+    });
 
-    this.clients.driver.on(
-      "user added",
-      (device: Device, username: string, schedule?: Schedule) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.userAdded,
-            serialNumber: device.getSerial(),
-            username: username,
-            schedule: schedule,
-          },
-          13,
-        );
-      },
-    );
+    this.clients.driver.on("user added", (device: Device, username: string, schedule?: Schedule) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.userAdded,
+          serialNumber: device.getSerial(),
+          username: username,
+          schedule: schedule,
+        },
+        13
+      );
+    });
 
-    this.clients.driver.on(
-      "user deleted",
-      (device: Device, username: string) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.userDeleted,
-            serialNumber: device.getSerial(),
-            username: username,
-          },
-          13,
-        );
-      },
-    );
+    this.clients.driver.on("user deleted", (device: Device, username: string) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.userDeleted,
+          serialNumber: device.getSerial(),
+          username: username,
+        },
+        13
+      );
+    });
 
-    this.clients.driver.on(
-      "user error",
-      (device: Device, username: string, error: Error) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.userError,
-            serialNumber: device.getSerial(),
-            username: username,
-            error: error,
-          },
-          13,
-        );
-      },
-    );
+    this.clients.driver.on("user error", (device: Device, username: string, error: Error) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.userError,
+          serialNumber: device.getSerial(),
+          username: username,
+          error: error,
+        },
+        13
+      );
+    });
 
-    this.clients.driver.on(
-      "user username updated",
-      (device: Device, username: string) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.userUsernameUpdated,
-            serialNumber: device.getSerial(),
-            username: username,
-          },
-          13,
-        );
-      },
-    );
+    this.clients.driver.on("user username updated", (device: Device, username: string) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.userUsernameUpdated,
+          serialNumber: device.getSerial(),
+          username: username,
+        },
+        13
+      );
+    });
 
-    this.clients.driver.on(
-      "user schedule updated",
-      (device: Device, username: string, schedule: Schedule) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.userScheduleUpdated,
-            serialNumber: device.getSerial(),
-            username: username,
-            schedule: schedule,
-          },
-          13,
-        );
-      },
-    );
+    this.clients.driver.on("user schedule updated", (device: Device, username: string, schedule: Schedule) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.userScheduleUpdated,
+          serialNumber: device.getSerial(),
+          username: username,
+          schedule: schedule,
+        },
+        13
+      );
+    });
 
-    this.clients.driver.on(
-      "user passcode updated",
-      (device: Device, username: string) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.userPasscodeUpdated,
-            serialNumber: device.getSerial(),
-            username: username,
-          },
-          13,
-        );
-      },
-    );
+    this.clients.driver.on("user passcode updated", (device: Device, username: string) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.userPasscodeUpdated,
+          serialNumber: device.getSerial(),
+          username: username,
+        },
+        13
+      );
+    });
 
     this.clients.driver.on(
       "station talkback start",
       (station: Station, device: Device, talkbackStream: TalkbackStream) => {
         const serialNumber = device.getSerial();
         this.clients.clients
-          .filter(
-            (cl) =>
-              cl.sendTalkbackStream[serialNumber] === true && cl.isConnected,
-          )
+          .filter((cl) => cl.sendTalkbackStream[serialNumber] === true && cl.isConnected)
           .forEach((client) => {
             if (client.schemaVersion >= 13) {
               client.sendEvent({
@@ -574,63 +494,48 @@ export class EventForwarder {
             }
           });
         DeviceMessageHandler.talkbackStream = talkbackStream;
-      },
+      }
     );
 
-    this.clients.driver.on(
-      "station talkback stop",
-      (station: Station, device: Device) => {
-        const serialNumber = device.getSerial();
-        this.clients.clients
-          .filter(
-            (cl) =>
-              cl.sendTalkbackStream[serialNumber] === true && cl.isConnected,
-          )
-          .forEach((client) => {
-            if (client.schemaVersion >= 13) {
-              client.sendEvent({
-                source: "device",
-                event: DeviceEvent.talkbackStopped,
-                serialNumber: serialNumber,
-              });
-            }
-            client.sendTalkbackStream[serialNumber] = false;
-            DeviceMessageHandler.removeTalkbackingDevice(
-              station.getSerial(),
-              client,
-            );
-          });
-      },
-    );
+    this.clients.driver.on("station talkback stop", (station: Station, device: Device) => {
+      const serialNumber = device.getSerial();
+      this.clients.clients
+        .filter((cl) => cl.sendTalkbackStream[serialNumber] === true && cl.isConnected)
+        .forEach((client) => {
+          if (client.schemaVersion >= 13) {
+            client.sendEvent({
+              source: "device",
+              event: DeviceEvent.talkbackStopped,
+              serialNumber: serialNumber,
+            });
+          }
+          client.sendTalkbackStream[serialNumber] = false;
+          DeviceMessageHandler.removeTalkbackingDevice(station.getSerial(), client);
+        });
+    });
 
-    this.clients.driver.on(
-      "station image download",
-      (station: Station, file: string, image: Picture) => {
-        this.forwardEvent(
-          {
-            source: "station",
-            event: StationEvent.imageDownloaded,
-            serialNumber: station.getSerial(),
-            file: file,
-            image: image,
-          },
-          17,
-        );
-      },
-    );
+    this.clients.driver.on("station image download", (station: Station, file: string, image: Picture) => {
+      this.forwardEvent(
+        {
+          source: "station",
+          event: StationEvent.imageDownloaded,
+          serialNumber: station.getSerial(),
+          file: file,
+          image: image,
+        },
+        17
+      );
+    });
   }
 
   private forwardEvent(
     data: OutgoingEvent,
     minSchemaVersion: number,
-    maxSchemaVersion: number = internalSchemaVersion,
+    maxSchemaVersion: number = internalSchemaVersion
   ): void {
     // Forward event to all connected clients
     this.clients.clients.forEach((client) => {
-      if (
-        client.schemaVersion >= minSchemaVersion &&
-        client.schemaVersion <= maxSchemaVersion
-      ) {
+      if (client.schemaVersion >= minSchemaVersion && client.schemaVersion <= maxSchemaVersion) {
         this.sendEvent(client, data);
       }
     });
@@ -651,7 +556,7 @@ export class EventForwarder {
           event: StationEvent.connected,
           serialNumber: station.getSerial(),
         },
-        0,
+        0
       );
     });
 
@@ -662,7 +567,7 @@ export class EventForwarder {
           event: StationEvent.disconnected,
           serialNumber: station.getSerial(),
         },
-        0,
+        0
       );
     });
 
@@ -673,7 +578,7 @@ export class EventForwarder {
           event: StationEvent.connectionError,
           serialNumber: station.getSerial(),
         },
-        13,
+        13
       );
     });
 
@@ -688,7 +593,7 @@ export class EventForwarder {
           currentMode: station.getCurrentMode() as number,
         },
         0,
-        2,
+        2
       );
       // Event for schemaVersion >= 3
       this.forwardEvent(
@@ -698,7 +603,7 @@ export class EventForwarder {
           serialNumber: station.getSerial(),
           guardMode: guardMode,
         },
-        3,
+        3
       );
     });
 
@@ -713,7 +618,7 @@ export class EventForwarder {
           currentMode: currentMode,
         },
         0,
-        2,
+        2
       );
       //Event for schemaVersion >= 3
       this.forwardEvent(
@@ -723,7 +628,7 @@ export class EventForwarder {
           serialNumber: station.getSerial(),
           currentMode: currentMode,
         },
-        3,
+        3
       );
     });
 
@@ -735,35 +640,29 @@ export class EventForwarder {
           serialNumber: station.getSerial(),
           alarmEvent: alarmEvent,
         },
-        3,
+        3
       );
     });
 
-    station.on(
-      "rtsp url",
-      (station: Station, channel: number, value: string) => {
-        this.clients.driver
-          .getStationDevice(station.getSerial(), channel)
-          .then((device: Device) => {
-            this.forwardEvent(
-              {
-                source: "device",
-                event: DeviceEvent.gotRtspUrl,
-                serialNumber: device.getSerial(),
-                rtspUrl: value,
-              },
-              0,
-            );
-          })
-          .catch();
-      },
-    );
+    station.on("rtsp url", (station: Station, channel: number, value: string) => {
+      this.clients.driver
+        .getStationDevice(station.getSerial(), channel)
+        .then((device: Device) => {
+          this.forwardEvent(
+            {
+              source: "device",
+              event: DeviceEvent.gotRtspUrl,
+              serialNumber: device.getSerial(),
+              rtspUrl: value,
+            },
+            0
+          );
+        })
+        .catch();
+    });
 
     station.on("command result", (station: Station, result: CommandResult) => {
-      if (
-        result.channel === Station.CHANNEL ||
-        result.channel === Station.CHANNEL_INDOOR
-      ) {
+      if (result.channel === Station.CHANNEL || result.channel === Station.CHANNEL_INDOOR) {
         //Station command result
         let command: string | undefined = undefined;
         switch (result.command_type) {
@@ -785,13 +684,10 @@ export class EventForwarder {
               serialNumber: station.getSerial(),
               command: command.split(".")[1],
               returnCode: result.return_code,
-              returnCodeName:
-                ErrorCode[result.return_code] !== undefined
-                  ? ErrorCode[result.return_code]
-                  : "UNKNOWN",
+              returnCodeName: ErrorCode[result.return_code] !== undefined ? ErrorCode[result.return_code] : "UNKNOWN",
             },
             0,
-            12,
+            12
           );
         }
         if (result.customData !== undefined) {
@@ -803,35 +699,24 @@ export class EventForwarder {
                 serialNumber: station.getSerial(),
                 command: "set_property",
                 returnCode: result.return_code,
-                returnCodeName:
-                  ErrorCode[result.return_code] !== undefined
-                    ? ErrorCode[result.return_code]
-                    : "UNKNOWN",
+                returnCodeName: ErrorCode[result.return_code] !== undefined ? ErrorCode[result.return_code] : "UNKNOWN",
                 customData: result.customData,
               },
-              13,
+              13
             );
-          } else if (
-            result.customData.command !== undefined &&
-            result.customData.command.name.startsWith("station")
-          ) {
+          } else if (result.customData.command !== undefined && result.customData.command.name.startsWith("station")) {
             const command = result.customData.command.name;
             this.forwardEvent(
               {
                 source: "station",
                 event: StationEvent.commandResult,
                 serialNumber: station.getSerial(),
-                command: convertCamelCaseToSnakeCase(
-                  command.replace("station", ""),
-                ),
+                command: convertCamelCaseToSnakeCase(command.replace("station", "")),
                 returnCode: result.return_code,
-                returnCodeName:
-                  ErrorCode[result.return_code] !== undefined
-                    ? ErrorCode[result.return_code]
-                    : "UNKNOWN",
+                returnCodeName: ErrorCode[result.return_code] !== undefined ? ErrorCode[result.return_code] : "UNKNOWN",
                 customData: result.customData,
               },
-              13,
+              13
             );
           }
         }
@@ -914,12 +799,10 @@ export class EventForwarder {
                   command: command!.split(".")[1],
                   returnCode: result.return_code,
                   returnCodeName:
-                    ErrorCode[result.return_code] !== undefined
-                      ? ErrorCode[result.return_code]
-                      : "UNKNOWN",
+                    ErrorCode[result.return_code] !== undefined ? ErrorCode[result.return_code] : "UNKNOWN",
                 },
                 0,
-                12,
+                12
               );
             })
             .catch();
@@ -937,19 +820,14 @@ export class EventForwarder {
                     command: "set_property",
                     returnCode: result.return_code,
                     returnCodeName:
-                      ErrorCode[result.return_code] !== undefined
-                        ? ErrorCode[result.return_code]
-                        : "UNKNOWN",
+                      ErrorCode[result.return_code] !== undefined ? ErrorCode[result.return_code] : "UNKNOWN",
                     customData: result.customData,
                   },
-                  13,
+                  13
                 );
               })
               .catch();
-          } else if (
-            result.customData.command !== undefined &&
-            result.customData.command.name.startsWith("device")
-          ) {
+          } else if (result.customData.command !== undefined && result.customData.command.name.startsWith("device")) {
             const command = result.customData.command.name;
             this.clients.driver
               .getStationDevice(station.getSerial(), result.channel)
@@ -959,17 +837,13 @@ export class EventForwarder {
                     source: "device",
                     event: DeviceEvent.commandResult,
                     serialNumber: device.getSerial(),
-                    command: convertCamelCaseToSnakeCase(
-                      command.replace("device", ""),
-                    ),
+                    command: convertCamelCaseToSnakeCase(command.replace("device", "")),
                     returnCode: result.return_code,
                     returnCodeName:
-                      ErrorCode[result.return_code] !== undefined
-                        ? ErrorCode[result.return_code]
-                        : "UNKNOWN",
+                      ErrorCode[result.return_code] !== undefined ? ErrorCode[result.return_code] : "UNKNOWN",
                     customData: result.customData,
                   },
-                  13,
+                  13
                 );
               })
               .catch();
@@ -978,56 +852,45 @@ export class EventForwarder {
       }
     });
 
-    station.on(
-      "property changed",
-      (
-        station: Station,
-        name: string,
-        value: PropertyValue,
-        ready: boolean,
-      ) => {
-        if (ready && !name.startsWith("hidden-")) {
-          this.forwardEvent(
-            {
-              source: "station",
-              event: StationEvent.propertyChanged,
-              serialNumber: station.getSerial(),
-              name: name,
-              value: value as JSONValue,
-              timestamp: +new Date(),
-            },
-            0,
-            9,
-          );
-          this.forwardEvent(
-            {
-              source: "station",
-              event: StationEvent.propertyChanged,
-              serialNumber: station.getSerial(),
-              name: name,
-              value: value as JSONValue,
-            },
-            10,
-          );
-        }
-      },
-    );
-
-    station.on(
-      "alarm delay event",
-      (station: Station, alarmDelayEvent: AlarmEvent, alarmDelay: number) => {
+    station.on("property changed", (station: Station, name: string, value: PropertyValue, ready: boolean) => {
+      if (ready && !name.startsWith("hidden-")) {
         this.forwardEvent(
           {
             source: "station",
-            event: StationEvent.alarmDelayEvent,
+            event: StationEvent.propertyChanged,
             serialNumber: station.getSerial(),
-            alarmDelayEvent: alarmDelayEvent,
-            alarmDelay: alarmDelay,
+            name: name,
+            value: value as JSONValue,
+            timestamp: +new Date(),
           },
-          11,
+          0,
+          9
         );
-      },
-    );
+        this.forwardEvent(
+          {
+            source: "station",
+            event: StationEvent.propertyChanged,
+            serialNumber: station.getSerial(),
+            name: name,
+            value: value as JSONValue,
+          },
+          10
+        );
+      }
+    });
+
+    station.on("alarm delay event", (station: Station, alarmDelayEvent: AlarmEvent, alarmDelay: number) => {
+      this.forwardEvent(
+        {
+          source: "station",
+          event: StationEvent.alarmDelayEvent,
+          serialNumber: station.getSerial(),
+          alarmDelayEvent: alarmDelayEvent,
+          alarmDelay: alarmDelay,
+        },
+        11
+      );
+    });
 
     station.on("alarm armed event", (station: Station) => {
       this.forwardEvent(
@@ -1036,47 +899,37 @@ export class EventForwarder {
           event: StationEvent.alarmArmedEvent,
           serialNumber: station.getSerial(),
         },
-        11,
+        11
+      );
+    });
+
+    station.on("alarm arm delay event", (station: Station, armDelay: number) => {
+      this.forwardEvent(
+        {
+          source: "station",
+          event: StationEvent.alarmArmDelayEvent,
+          serialNumber: station.getSerial(),
+          armDelay: armDelay,
+        },
+        12
+      );
+    });
+
+    station.on("device pin verified", (deviceSN: string, successfull: boolean) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.pinVerified,
+          serialNumber: deviceSN,
+          successfull: successfull,
+        },
+        13
       );
     });
 
     station.on(
-      "alarm arm delay event",
-      (station: Station, armDelay: number) => {
-        this.forwardEvent(
-          {
-            source: "station",
-            event: StationEvent.alarmArmDelayEvent,
-            serialNumber: station.getSerial(),
-            armDelay: armDelay,
-          },
-          12,
-        );
-      },
-    );
-
-    station.on(
-      "device pin verified",
-      (deviceSN: string, successfull: boolean) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.pinVerified,
-            serialNumber: deviceSN,
-            successfull: successfull,
-          },
-          13,
-        );
-      },
-    );
-
-    station.on(
       "database query latest",
-      (
-        station: Station,
-        returnCode: DatabaseReturnCode,
-        data: Array<DatabaseQueryLatestInfo>,
-      ) => {
+      (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLatestInfo>) => {
         this.forwardEvent(
           {
             source: "station",
@@ -1085,18 +938,14 @@ export class EventForwarder {
             returnCode: returnCode,
             data: data,
           },
-          18,
+          18
         );
-      },
+      }
     );
 
     station.on(
       "database query local",
-      (
-        station: Station,
-        returnCode: DatabaseReturnCode,
-        data: Array<DatabaseQueryLocal>,
-      ) => {
+      (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLocal>) => {
         this.forwardEvent(
           {
             source: "station",
@@ -1105,18 +954,14 @@ export class EventForwarder {
             returnCode: returnCode,
             data: data,
           },
-          18,
+          18
         );
-      },
+      }
     );
 
     station.on(
       "database query by date",
-      (
-        station: Station,
-        returnCode: DatabaseReturnCode,
-        data: Array<DatabaseQueryByDate>,
-      ) => {
+      (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryByDate>) => {
         this.forwardEvent(
           {
             source: "station",
@@ -1125,18 +970,14 @@ export class EventForwarder {
             returnCode: returnCode,
             data: data,
           },
-          18,
+          18
         );
-      },
+      }
     );
 
     station.on(
       "database count by date",
-      (
-        station: Station,
-        returnCode: DatabaseReturnCode,
-        data: Array<DatabaseCountByDate>,
-      ) => {
+      (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseCountByDate>) => {
         this.forwardEvent(
           {
             source: "station",
@@ -1145,30 +986,23 @@ export class EventForwarder {
             returnCode: returnCode,
             data: data,
           },
-          18,
+          18
         );
-      },
+      }
     );
 
-    station.on(
-      "database delete",
-      (
-        station: Station,
-        returnCode: DatabaseReturnCode,
-        failedIds: Array<unknown>,
-      ) => {
-        this.forwardEvent(
-          {
-            source: "station",
-            event: StationEvent.databaseDelete,
-            serialNumber: station.getSerial(),
-            returnCode: returnCode,
-            failedIds: failedIds,
-          },
-          18,
-        );
-      },
-    );
+    station.on("database delete", (station: Station, returnCode: DatabaseReturnCode, failedIds: Array<unknown>) => {
+      this.forwardEvent(
+        {
+          source: "station",
+          event: StationEvent.databaseDelete,
+          serialNumber: station.getSerial(),
+          returnCode: returnCode,
+          failedIds: failedIds,
+        },
+        18
+      );
+    });
   }
 
   private setupDevice(device: Device): void {
@@ -1180,25 +1014,22 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        0,
+        0
       );
     });
 
-    device.on(
-      "person detected",
-      (device: Device, state: boolean, person: string) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.personDetected,
-            serialNumber: device.getSerial(),
-            state: state,
-            person: person,
-          },
-          0,
-        );
-      },
-    );
+    device.on("person detected", (device: Device, state: boolean, person: string) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.personDetected,
+          serialNumber: device.getSerial(),
+          state: state,
+          person: person,
+        },
+        0
+      );
+    });
 
     device.on("crying detected", (device: Device, state: boolean) => {
       this.forwardEvent(
@@ -1208,7 +1039,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        0,
+        0
       );
     });
 
@@ -1220,7 +1051,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        0,
+        0
       );
     });
 
@@ -1232,7 +1063,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        14,
+        14
       );
     });
 
@@ -1244,7 +1075,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        0,
+        0
       );
     });
 
@@ -1256,7 +1087,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        0,
+        0
       );
     });
 
@@ -1268,7 +1099,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        13,
+        13
       );
     });
 
@@ -1280,7 +1111,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        13,
+        13
       );
     });
 
@@ -1292,7 +1123,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        13,
+        13
       );
     });
 
@@ -1304,7 +1135,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        13,
+        13
       );
     });
 
@@ -1316,7 +1147,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        13,
+        13
       );
     });
 
@@ -1328,41 +1159,35 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        0,
+        0
       );
     });
 
-    device.on(
-      "911 alarm",
-      (device: Device, state: boolean, detail: SmartSafeAlarm911Event) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.alarm911,
-            serialNumber: device.getSerial(),
-            state: state,
-            detail: detail,
-          },
-          13,
-        );
-      },
-    );
+    device.on("911 alarm", (device: Device, state: boolean, detail: SmartSafeAlarm911Event) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.alarm911,
+          serialNumber: device.getSerial(),
+          state: state,
+          detail: detail,
+        },
+        13
+      );
+    });
 
-    device.on(
-      "shake alarm",
-      (device: Device, state: boolean, detail: SmartSafeShakeAlarmEvent) => {
-        this.forwardEvent(
-          {
-            source: "device",
-            event: DeviceEvent.shakeAlarm,
-            serialNumber: device.getSerial(),
-            state: state,
-            detail: detail,
-          },
-          13,
-        );
-      },
-    );
+    device.on("shake alarm", (device: Device, state: boolean, detail: SmartSafeShakeAlarmEvent) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.shakeAlarm,
+          serialNumber: device.getSerial(),
+          state: state,
+          detail: detail,
+        },
+        13
+      );
+    });
 
     device.on("wrong try-protect alarm", (device: Device, state: boolean) => {
       this.forwardEvent(
@@ -1372,7 +1197,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        13,
+        13
       );
     });
 
@@ -1384,7 +1209,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        13,
+        13
       );
     });
 
@@ -1396,7 +1221,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        13,
+        13
       );
     });
 
@@ -1408,7 +1233,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        13,
+        13
       );
     });
 
@@ -1420,7 +1245,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        0,
+        0
       );
     });
 
@@ -1432,7 +1257,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        15,
+        15
       );
     });
 
@@ -1444,7 +1269,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        15,
+        15
       );
     });
 
@@ -1456,7 +1281,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        15,
+        15
       );
     });
 
@@ -1468,39 +1293,36 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        15,
+        15
       );
     });
 
-    device.on(
-      "property changed",
-      (device: Device, name: string, value: PropertyValue, ready: boolean) => {
-        if (ready && !name.startsWith("hidden-")) {
-          this.forwardEvent(
-            {
-              source: "device",
-              event: DeviceEvent.propertyChanged,
-              serialNumber: device.getSerial(),
-              name: name,
-              value: value as JSONValue,
-              timestamp: +new Date(),
-            },
-            0,
-            9,
-          );
-          this.forwardEvent(
-            {
-              source: "device",
-              event: DeviceEvent.propertyChanged,
-              serialNumber: device.getSerial(),
-              name: name,
-              value: value as JSONValue,
-            },
-            10,
-          );
-        }
-      },
-    );
+    device.on("property changed", (device: Device, name: string, value: PropertyValue, ready: boolean) => {
+      if (ready && !name.startsWith("hidden-")) {
+        this.forwardEvent(
+          {
+            source: "device",
+            event: DeviceEvent.propertyChanged,
+            serialNumber: device.getSerial(),
+            name: name,
+            value: value as JSONValue,
+            timestamp: +new Date(),
+          },
+          0,
+          9
+        );
+        this.forwardEvent(
+          {
+            source: "device",
+            event: DeviceEvent.propertyChanged,
+            serialNumber: device.getSerial(),
+            name: name,
+            value: value as JSONValue,
+          },
+          10
+        );
+      }
+    });
 
     device.on("open", (device: Device, state: boolean) => {
       this.forwardEvent(
@@ -1510,7 +1332,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        21,
+        21
       );
     });
 
@@ -1522,7 +1344,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        21,
+        21
       );
     });
 
@@ -1534,7 +1356,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        21,
+        21
       );
     });
 
@@ -1546,7 +1368,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        21,
+        21
       );
     });
 
@@ -1558,7 +1380,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        21,
+        21
       );
     });
 
@@ -1570,7 +1392,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        21,
+        21
       );
     });
 
@@ -1582,7 +1404,7 @@ export class EventForwarder {
           serialNumber: device.getSerial(),
           state: state,
         },
-        21,
+        21
       );
     });
   }

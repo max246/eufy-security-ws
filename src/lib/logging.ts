@@ -16,9 +16,7 @@ export enum LogLevel {
 
 export type LogLevelName = keyof typeof LogLevel;
 
-export const convertLogLevelToDriver = function (
-  level: LogLevelName,
-): EufyLogLevel {
+export const convertLogLevelToDriver = function (level: LogLevelName): EufyLogLevel {
   switch (LogLevel[level]) {
     case LogLevel.silly:
     case LogLevel.trace:
@@ -36,9 +34,7 @@ export const convertLogLevelToDriver = function (
   }
 };
 
-export const convertLogLevelToServer = function (
-  level: EufyLogLevel,
-): LogLevel {
+export const convertLogLevelToServer = function (level: EufyLogLevel): LogLevel {
   switch (level) {
     case EufyLogLevel.Trace:
       return LogLevel.silly;
@@ -99,14 +95,13 @@ export class LoggingEventForwarder {
 
   constructor(
     clients: ClientsController,
-    private logger: Logger<ILogObj>,
+    private logger: Logger<ILogObj>
   ) {
     this.clients = clients;
   }
 
   get started(): boolean {
-    if (this.driverLogger)
-      return this.driverLogger.settings.attachedTransports.length !== 0;
+    if (this.driverLogger) return this.driverLogger.settings.attachedTransports.length !== 0;
     return false;
   }
 
@@ -114,9 +109,7 @@ export class LoggingEventForwarder {
     this.logger.info("Starting logging event forwarder");
     this.driverLogger = this.logger.getSubLogger({
       name: "eufy-security-client",
-      minLevel: convertLogLevelToServer(
-        this.clients.driver.getLoggingLevel("all"),
-      ),
+      minLevel: convertLogLevelToServer(this.clients.driver.getLoggingLevel("all")),
     });
     this.driverLogger.attachTransport((logObj) => {
       this.logToTransport(this.clients.clients, logObj);
@@ -130,14 +123,8 @@ export class LoggingEventForwarder {
   }
 
   public restartIfNeeded(): void {
-    const level = convertLogLevelToServer(
-      this.clients.driver.getLoggingLevel("all"),
-    );
-    if (
-      this.started &&
-      this.driverLogger &&
-      this.driverLogger.settings.minLevel != level
-    ) {
+    const level = convertLogLevelToServer(this.clients.driver.getLoggingLevel("all"));
+    if (this.started && this.driverLogger && this.driverLogger.settings.minLevel != level) {
       this.stop();
       this.start();
     }
@@ -153,16 +140,14 @@ export class LoggingEventForwarder {
           source: "driver",
           event: DriverEvent.logging,
           message: this.getMessage(logObject, client.schemaVersion),
-        }),
+        })
       );
   }
 
   private getMessage(logObject: ILogObj, schemaVersion: number): LogMessage {
     const meta = logObject["_meta"] as { [name: string]: unknown };
     if (schemaVersion <= 20) {
-      const matches = (logObject["0"] as string)?.match(
-        /\[([0-9a-zA-Z]+)\] \[([0-9a-zA-Z.]+)\]/,
-      );
+      const matches = (logObject["0"] as string)?.match(/\[([0-9a-zA-Z]+)\] \[([0-9a-zA-Z.]+)\]/);
       let functionName = "";
       let typeName = "";
       if (matches !== null && matches !== undefined && matches.length >= 3) {

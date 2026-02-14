@@ -1,10 +1,4 @@
-import {
-  CommandName,
-  FilterDetectType,
-  FilterEventType,
-  FilterStorageType,
-  PropertyName,
-} from "eufy-security-client";
+import { CommandName, FilterDetectType, FilterEventType, FilterStorageType, PropertyName } from "eufy-security-client";
 
 import { IncomingCommandBase } from "../incoming_message_base.js";
 import { StationCommand } from "./command.js";
@@ -13,13 +7,11 @@ export interface IncomingCommandStationBase extends IncomingCommandBase {
   serialNumber: string;
 }
 
-export interface IncomingCommandStationReboot
-  extends IncomingCommandStationBase {
+export interface IncomingCommandStationReboot extends IncomingCommandStationBase {
   command: StationCommand.reboot;
 }
 
-export interface IncomingCommandSetGuardMode
-  extends IncomingCommandStationBase {
+export interface IncomingCommandSetGuardMode extends IncomingCommandStationBase {
   command: StationCommand.setGuardMode;
   mode: number;
 }
@@ -36,13 +28,11 @@ export interface IncomingCommandDisconnect extends IncomingCommandStationBase {
   command: StationCommand.disconnect;
 }
 
-export interface IncomingCommandGetPropertiesMetadata
-  extends IncomingCommandStationBase {
+export interface IncomingCommandGetPropertiesMetadata extends IncomingCommandStationBase {
   command: StationCommand.getPropertiesMetadata;
 }
 
-export interface IncomingCommandGetProperties
-  extends IncomingCommandStationBase {
+export interface IncomingCommandGetProperties extends IncomingCommandStationBase {
   command: StationCommand.getProperties;
 }
 
@@ -52,8 +42,7 @@ export interface IncomingCommandSetProperty extends IncomingCommandStationBase {
   value: unknown;
 }
 
-export interface IncomingCommandTriggerAlarm
-  extends IncomingCommandStationBase {
+export interface IncomingCommandTriggerAlarm extends IncomingCommandStationBase {
   command: StationCommand.triggerAlarm;
   seconds: number;
 }
@@ -81,19 +70,16 @@ export interface IncomingCommandChime extends IncomingCommandStationBase {
   ringtone?: number;
 }
 
-export interface IncomingCommandDownloadImage
-  extends IncomingCommandStationBase {
+export interface IncomingCommandDownloadImage extends IncomingCommandStationBase {
   command: StationCommand.downloadImage;
   file: string;
 }
 
-export interface IncomingCommandDatabaseQueryLatest
-  extends IncomingCommandStationBase {
+export interface IncomingCommandDatabaseQueryLatest extends IncomingCommandStationBase {
   command: StationCommand.databaseQueryLatestInfo;
 }
 
-export interface IncomingCommandDatabaseQueryLocal
-  extends IncomingCommandStationBase {
+export interface IncomingCommandDatabaseQueryLocal extends IncomingCommandStationBase {
   command: StationCommand.databaseQueryLocal;
   serialNumbers: Array<string>;
   startDate: string;
@@ -103,8 +89,7 @@ export interface IncomingCommandDatabaseQueryLocal
   storageType?: FilterStorageType;
 }
 
-export interface IncomingCommandDatabaseQueryByDate
-  extends IncomingCommandStationBase {
+export interface IncomingCommandDatabaseQueryByDate extends IncomingCommandStationBase {
   command: StationCommand.databaseQueryByDate;
   serialNumbers: Array<string>;
   startDate: string;
@@ -114,15 +99,13 @@ export interface IncomingCommandDatabaseQueryByDate
   storageType?: FilterStorageType;
 }
 
-export interface IncomingCommandDatabaseCountByDate
-  extends IncomingCommandStationBase {
+export interface IncomingCommandDatabaseCountByDate extends IncomingCommandStationBase {
   command: StationCommand.databaseCountByDate;
   startDate: string;
   endDate: string;
 }
 
-export interface IncomingCommandDatabaseDelete
-  extends IncomingCommandStationBase {
+export interface IncomingCommandDatabaseDelete extends IncomingCommandStationBase {
   command: StationCommand.databaseDelete;
   ids: Array<number>;
 }

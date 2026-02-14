@@ -1,11 +1,4 @@
-import {
-  Device,
-  DynamicLighting,
-  IndexedProperty,
-  Picture,
-  PropertyName,
-  RGBColor,
-} from "eufy-security-client";
+import { Device, DynamicLighting, IndexedProperty, Picture, PropertyName, RGBColor } from "eufy-security-client";
 import { Modify } from "../state.js";
 
 export interface DevicePropertiesSchema0 {
@@ -341,593 +334,298 @@ export type DeviceProperties =
   | DevicePropertiesSchema5
   | DevicePropertiesSchema6;
 
-export const dumpDeviceProperties = (
-  device: Device,
-  schemaVersion: number,
-): DeviceProperties => {
+export const dumpDeviceProperties = (device: Device, schemaVersion: number): DeviceProperties => {
   const base: DevicePropertiesSchema0 = {
     name: device.getPropertyValue(PropertyName.Name) as string,
     model: device.getPropertyValue(PropertyName.Model) as string,
     serialNumber: device.getPropertyValue(PropertyName.SerialNumber) as string,
-    hardwareVersion: device.getPropertyValue(
-      PropertyName.HardwareVersion,
-    ) as string,
-    softwareVersion: device.getPropertyValue(
-      PropertyName.SoftwareVersion,
-    ) as string,
+    hardwareVersion: device.getPropertyValue(PropertyName.HardwareVersion) as string,
+    softwareVersion: device.getPropertyValue(PropertyName.SoftwareVersion) as string,
     type: device.getPropertyValue(PropertyName.Type) as number,
-    stationSerialNumber: device.getPropertyValue(
-      PropertyName.DeviceStationSN,
-    ) as string,
+    stationSerialNumber: device.getPropertyValue(PropertyName.DeviceStationSN) as string,
     battery: device.getPropertyValue(PropertyName.DeviceBattery) as number,
-    batteryTemperature: device.getPropertyValue(
-      PropertyName.DeviceBatteryTemp,
-    ) as number,
-    batteryLow: device.getPropertyValue(
-      PropertyName.DeviceBatteryLow,
-    ) as boolean,
-    batteryIsCharging: device.getPropertyValue(
-      PropertyName.DeviceBatteryIsCharging,
-    ) as boolean,
-    lastChargingDays: device.getPropertyValue(
-      PropertyName.DeviceLastChargingDays,
-    ) as number,
-    lastChargingTotalEvents: device.getPropertyValue(
-      PropertyName.DeviceLastChargingTotalEvents,
-    ) as number,
-    lastChargingRecordedEvents: device.getPropertyValue(
-      PropertyName.DeviceLastChargingRecordedEvents,
-    ) as number,
-    lastChargingFalseEvents: device.getPropertyValue(
-      PropertyName.DeviceLastChargingFalseEvents,
-    ) as number,
-    batteryUsageLastWeek: device.getPropertyValue(
-      PropertyName.DeviceBatteryUsageLastWeek,
-    ) as number,
+    batteryTemperature: device.getPropertyValue(PropertyName.DeviceBatteryTemp) as number,
+    batteryLow: device.getPropertyValue(PropertyName.DeviceBatteryLow) as boolean,
+    batteryIsCharging: device.getPropertyValue(PropertyName.DeviceBatteryIsCharging) as boolean,
+    lastChargingDays: device.getPropertyValue(PropertyName.DeviceLastChargingDays) as number,
+    lastChargingTotalEvents: device.getPropertyValue(PropertyName.DeviceLastChargingTotalEvents) as number,
+    lastChargingRecordedEvents: device.getPropertyValue(PropertyName.DeviceLastChargingRecordedEvents) as number,
+    lastChargingFalseEvents: device.getPropertyValue(PropertyName.DeviceLastChargingFalseEvents) as number,
+    batteryUsageLastWeek: device.getPropertyValue(PropertyName.DeviceBatteryUsageLastWeek) as number,
     wifiRssi: device.getPropertyValue(PropertyName.DeviceWifiRSSI) as number,
-    wifiSignalLevel: device.getPropertyValue(
-      PropertyName.DeviceWifiSignalLevel,
-    ) as number,
+    wifiSignalLevel: device.getPropertyValue(PropertyName.DeviceWifiSignalLevel) as number,
     enabled: device.getPropertyValue(PropertyName.DeviceEnabled) as boolean,
-    antitheftDetection: device.getPropertyValue(
-      PropertyName.DeviceAntitheftDetection,
-    ) as boolean,
-    autoNightvision: device.getPropertyValue(
-      PropertyName.DeviceAutoNightvision,
-    ) as boolean,
-    nightvision: device.getPropertyValue(
-      PropertyName.DeviceNightvision,
-    ) as boolean,
+    antitheftDetection: device.getPropertyValue(PropertyName.DeviceAntitheftDetection) as boolean,
+    autoNightvision: device.getPropertyValue(PropertyName.DeviceAutoNightvision) as boolean,
+    nightvision: device.getPropertyValue(PropertyName.DeviceNightvision) as boolean,
     statusLed: device.getPropertyValue(PropertyName.DeviceStatusLed) as boolean,
-    motionDetection: device.getPropertyValue(
-      PropertyName.DeviceMotionDetection,
-    ) as boolean,
-    motionDetectionType: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionType,
-    ) as number,
-    motionDetectionSensitivity: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivity,
-    ) as number,
-    motionDetectionTypeHuman: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionTypeHuman,
-    ) as boolean,
+    motionDetection: device.getPropertyValue(PropertyName.DeviceMotionDetection) as boolean,
+    motionDetectionType: device.getPropertyValue(PropertyName.DeviceMotionDetectionType) as number,
+    motionDetectionSensitivity: device.getPropertyValue(PropertyName.DeviceMotionDetectionSensitivity) as number,
+    motionDetectionTypeHuman: device.getPropertyValue(PropertyName.DeviceMotionDetectionTypeHuman) as boolean,
     motionDetectionTypeHumanRecognition: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionTypeHumanRecognition,
+      PropertyName.DeviceMotionDetectionTypeHumanRecognition
     ) as boolean,
-    motionDetectionTypePet: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionTypePet,
-    ) as boolean,
-    motionDetectionTypeVehicle: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionTypeVehicle,
-    ) as boolean,
+    motionDetectionTypePet: device.getPropertyValue(PropertyName.DeviceMotionDetectionTypePet) as boolean,
+    motionDetectionTypeVehicle: device.getPropertyValue(PropertyName.DeviceMotionDetectionTypeVehicle) as boolean,
     motionDetectionTypeAllOtherMotions: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionTypeAllOtherMotions,
+      PropertyName.DeviceMotionDetectionTypeAllOtherMotions
     ) as boolean,
-    motionZone: device.getPropertyValue(
-      PropertyName.DeviceMotionZone,
-    ) as string,
-    motionDetectionRange: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionRange,
-    ) as boolean,
+    motionZone: device.getPropertyValue(PropertyName.DeviceMotionZone) as string,
+    motionDetectionRange: device.getPropertyValue(PropertyName.DeviceMotionDetectionRange) as boolean,
     motionDetectionRangeStandardSensitivity: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionRangeStandardSensitivity,
+      PropertyName.DeviceMotionDetectionRangeStandardSensitivity
     ) as number,
     motionDetectionRangeAdvancedLeftSensitivity: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionRangeAdvancedLeftSensitivity,
+      PropertyName.DeviceMotionDetectionRangeAdvancedLeftSensitivity
     ) as number,
     motionDetectionRangeAdvancedMiddleSensitivity: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionRangeAdvancedMiddleSensitivity,
+      PropertyName.DeviceMotionDetectionRangeAdvancedMiddleSensitivity
     ) as number,
     motionDetectionRangeAdvancedRightSensitivity: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionRangeAdvancedRightSensitivity,
+      PropertyName.DeviceMotionDetectionRangeAdvancedRightSensitivity
     ) as number,
-    motionDetectionTestMode: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionTestMode,
-    ) as boolean,
-    motionDetected: device.getPropertyValue(
-      PropertyName.DeviceMotionDetected,
-    ) as boolean,
-    motionTracking: device.getPropertyValue(
-      PropertyName.DeviceMotionTracking,
-    ) as boolean,
-    motionTrackingSensitivity: device.getPropertyValue(
-      PropertyName.DeviceMotionTrackingSensitivity,
-    ) as number,
-    motionAutoCruise: device.getPropertyValue(
-      PropertyName.DeviceMotionAutoCruise,
-    ) as boolean,
-    motionOutOfViewDetection: device.getPropertyValue(
-      PropertyName.DeviceMotionOutOfViewDetection,
-    ) as boolean,
-    personDetected: device.getPropertyValue(
-      PropertyName.DevicePersonDetected,
-    ) as boolean,
-    personName: device.getPropertyValue(
-      PropertyName.DevicePersonName,
-    ) as string,
-    rtspStream: device.getPropertyValue(
-      PropertyName.DeviceRTSPStream,
-    ) as boolean,
-    rtspStreamUrl: device.getPropertyValue(
-      PropertyName.DeviceRTSPStreamUrl,
-    ) as string,
+    motionDetectionTestMode: device.getPropertyValue(PropertyName.DeviceMotionDetectionTestMode) as boolean,
+    motionDetected: device.getPropertyValue(PropertyName.DeviceMotionDetected) as boolean,
+    motionTracking: device.getPropertyValue(PropertyName.DeviceMotionTracking) as boolean,
+    motionTrackingSensitivity: device.getPropertyValue(PropertyName.DeviceMotionTrackingSensitivity) as number,
+    motionAutoCruise: device.getPropertyValue(PropertyName.DeviceMotionAutoCruise) as boolean,
+    motionOutOfViewDetection: device.getPropertyValue(PropertyName.DeviceMotionOutOfViewDetection) as boolean,
+    personDetected: device.getPropertyValue(PropertyName.DevicePersonDetected) as boolean,
+    personName: device.getPropertyValue(PropertyName.DevicePersonName) as string,
+    rtspStream: device.getPropertyValue(PropertyName.DeviceRTSPStream) as boolean,
+    rtspStreamUrl: device.getPropertyValue(PropertyName.DeviceRTSPStreamUrl) as string,
     watermark: device.getPropertyValue(PropertyName.DeviceWatermark) as number,
     pictureUrl: device.hasProperty(PropertyName.DevicePictureUrl)
       ? (device.getPropertyValue(PropertyName.DevicePictureUrl) as string)
       : "",
     state: device.getPropertyValue(PropertyName.DeviceState) as number,
-    petDetection: device.getPropertyValue(
-      PropertyName.DevicePetDetection,
-    ) as boolean,
-    petDetected: device.getPropertyValue(
-      PropertyName.DevicePetDetected,
-    ) as boolean,
-    soundDetection: device.getPropertyValue(
-      PropertyName.DeviceSoundDetection,
-    ) as boolean,
-    soundDetectionType: device.getPropertyValue(
-      PropertyName.DeviceSoundDetectionType,
-    ) as number,
-    soundDetectionSensitivity: device.getPropertyValue(
-      PropertyName.DeviceSoundDetectionSensitivity,
-    ) as number,
-    soundDetected: device.getPropertyValue(
-      PropertyName.DeviceSoundDetected,
-    ) as boolean,
-    cryingDetected: device.getPropertyValue(
-      PropertyName.DeviceCryingDetected,
-    ) as boolean,
-    sensorOpen: device.getPropertyValue(
-      PropertyName.DeviceSensorOpen,
-    ) as boolean,
-    sensorChangeTime: device.getPropertyValue(
-      PropertyName.DeviceSensorChangeTime,
-    ) as number,
-    motionSensorPirEvent: device.getPropertyValue(
-      PropertyName.DeviceMotionSensorPIREvent,
-    ) as number,
+    petDetection: device.getPropertyValue(PropertyName.DevicePetDetection) as boolean,
+    petDetected: device.getPropertyValue(PropertyName.DevicePetDetected) as boolean,
+    soundDetection: device.getPropertyValue(PropertyName.DeviceSoundDetection) as boolean,
+    soundDetectionType: device.getPropertyValue(PropertyName.DeviceSoundDetectionType) as number,
+    soundDetectionSensitivity: device.getPropertyValue(PropertyName.DeviceSoundDetectionSensitivity) as number,
+    soundDetected: device.getPropertyValue(PropertyName.DeviceSoundDetected) as boolean,
+    cryingDetected: device.getPropertyValue(PropertyName.DeviceCryingDetected) as boolean,
+    sensorOpen: device.getPropertyValue(PropertyName.DeviceSensorOpen) as boolean,
+    sensorChangeTime: device.getPropertyValue(PropertyName.DeviceSensorChangeTime) as number,
+    motionSensorPirEvent: device.getPropertyValue(PropertyName.DeviceMotionSensorPIREvent) as number,
     locked: device.getPropertyValue(PropertyName.DeviceLocked) as boolean,
     ringing: device.getPropertyValue(PropertyName.DeviceRinging) as boolean,
-    lockStatus: device.getPropertyValue(
-      PropertyName.DeviceLockStatus,
-    ) as number,
+    lockStatus: device.getPropertyValue(PropertyName.DeviceLockStatus) as number,
     light: device.getPropertyValue(PropertyName.DeviceLight) as boolean,
-    microphone: device.getPropertyValue(
-      PropertyName.DeviceMicrophone,
-    ) as boolean,
+    microphone: device.getPropertyValue(PropertyName.DeviceMicrophone) as boolean,
     speaker: device.getPropertyValue(PropertyName.DeviceSpeaker) as boolean,
-    speakerVolume: device.getPropertyValue(
-      PropertyName.DeviceSpeakerVolume,
-    ) as number,
-    ringtoneVolume: device.getPropertyValue(
-      PropertyName.DeviceRingtoneVolume,
-    ) as number,
-    audioRecording: device.getPropertyValue(
-      PropertyName.DeviceAudioRecording,
-    ) as boolean,
-    powerSource: device.getPropertyValue(
-      PropertyName.DevicePowerSource,
-    ) as number,
-    powerWorkingMode: device.getPropertyValue(
-      PropertyName.DevicePowerWorkingMode,
-    ) as number,
-    chargingStatus: device.getPropertyValue(
-      PropertyName.DeviceChargingStatus,
-    ) as number,
-    recordingEndClipMotionStops: device.getPropertyValue(
-      PropertyName.DeviceRecordingEndClipMotionStops,
-    ) as boolean,
-    recordingClipLength: device.getPropertyValue(
-      PropertyName.DeviceRecordingClipLength,
-    ) as number,
-    recordingRetriggerInterval: device.getPropertyValue(
-      PropertyName.DeviceRecordingRetriggerInterval,
-    ) as number,
-    videoStreamingQuality: device.getPropertyValue(
-      PropertyName.DeviceVideoStreamingQuality,
-    ) as number,
-    videoRecordingQuality: device.getPropertyValue(
-      PropertyName.DeviceVideoRecordingQuality,
-    ) as number,
+    speakerVolume: device.getPropertyValue(PropertyName.DeviceSpeakerVolume) as number,
+    ringtoneVolume: device.getPropertyValue(PropertyName.DeviceRingtoneVolume) as number,
+    audioRecording: device.getPropertyValue(PropertyName.DeviceAudioRecording) as boolean,
+    powerSource: device.getPropertyValue(PropertyName.DevicePowerSource) as number,
+    powerWorkingMode: device.getPropertyValue(PropertyName.DevicePowerWorkingMode) as number,
+    chargingStatus: device.getPropertyValue(PropertyName.DeviceChargingStatus) as number,
+    recordingEndClipMotionStops: device.getPropertyValue(PropertyName.DeviceRecordingEndClipMotionStops) as boolean,
+    recordingClipLength: device.getPropertyValue(PropertyName.DeviceRecordingClipLength) as number,
+    recordingRetriggerInterval: device.getPropertyValue(PropertyName.DeviceRecordingRetriggerInterval) as number,
+    videoStreamingQuality: device.getPropertyValue(PropertyName.DeviceVideoStreamingQuality) as number,
+    videoRecordingQuality: device.getPropertyValue(PropertyName.DeviceVideoRecordingQuality) as number,
     videoWdr: device.getPropertyValue(PropertyName.DeviceVideoWDR) as boolean,
-    lightSettingsEnable: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsEnable,
-    ) as boolean,
-    lightSettingsBrightnessManual: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsBrightnessManual,
-    ) as number,
+    lightSettingsEnable: device.getPropertyValue(PropertyName.DeviceLightSettingsEnable) as boolean,
+    lightSettingsBrightnessManual: device.getPropertyValue(PropertyName.DeviceLightSettingsBrightnessManual) as number,
     lightSettingsColorTemperatureManual: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsColorTemperatureManual,
+      PropertyName.DeviceLightSettingsColorTemperatureManual
     ) as number,
-    lightSettingsBrightnessMotion: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsBrightnessMotion,
-    ) as number,
+    lightSettingsBrightnessMotion: device.getPropertyValue(PropertyName.DeviceLightSettingsBrightnessMotion) as number,
     lightSettingsColorTemperatureMotion: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsColorTemperatureMotion,
+      PropertyName.DeviceLightSettingsColorTemperatureMotion
     ) as number,
     lightSettingsBrightnessSchedule: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsBrightnessSchedule,
+      PropertyName.DeviceLightSettingsBrightnessSchedule
     ) as number,
     lightSettingsColorTemperatureSchedule: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsColorTemperatureSchedule,
+      PropertyName.DeviceLightSettingsColorTemperatureSchedule
     ) as number,
-    lightSettingsMotionTriggered: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsMotionTriggered,
-    ) as boolean,
+    lightSettingsMotionTriggered: device.getPropertyValue(PropertyName.DeviceLightSettingsMotionTriggered) as boolean,
     lightSettingsMotionActivationMode: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsMotionActivationMode,
+      PropertyName.DeviceLightSettingsMotionActivationMode
     ) as number,
     lightSettingsMotionTriggeredDistance: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsMotionTriggeredDistance,
+      PropertyName.DeviceLightSettingsMotionTriggeredDistance
     ) as number,
     lightSettingsMotionTriggeredTimer: device.getPropertyValue(
-      PropertyName.DeviceLightSettingsMotionTriggeredTimer,
+      PropertyName.DeviceLightSettingsMotionTriggeredTimer
     ) as number,
-    chimeIndoor: device.getPropertyValue(
-      PropertyName.DeviceChimeIndoor,
-    ) as boolean,
-    chimeHomebase: device.getPropertyValue(
-      PropertyName.DeviceChimeHomebase,
-    ) as boolean,
-    chimeHomebaseRingtoneVolume: device.getPropertyValue(
-      PropertyName.DeviceChimeHomebaseRingtoneVolume,
-    ) as number,
-    chimeHomebaseRingtoneType: device.getPropertyValue(
-      PropertyName.DeviceChimeHomebaseRingtoneType,
-    ) as number,
-    notificationType: device.getPropertyValue(
-      PropertyName.DeviceNotificationType,
-    ) as number,
-    rotationSpeed: device.getPropertyValue(
-      PropertyName.DeviceRotationSpeed,
-    ) as number,
-    imageMirrored: device.getPropertyValue(
-      PropertyName.DeviceImageMirrored,
-    ) as boolean,
-    notificationPerson: device.getPropertyValue(
-      PropertyName.DeviceNotificationPerson,
-    ) as boolean,
-    notificationPet: device.getPropertyValue(
-      PropertyName.DeviceNotificationPet,
-    ) as boolean,
-    notificationAllOtherMotion: device.getPropertyValue(
-      PropertyName.DeviceNotificationAllOtherMotion,
-    ) as boolean,
-    notificationCrying: device.getPropertyValue(
-      PropertyName.DeviceNotificationCrying,
-    ) as boolean,
-    notificationAllSound: device.getPropertyValue(
-      PropertyName.DeviceNotificationAllSound,
-    ) as boolean,
-    notificationIntervalTime: device.getPropertyValue(
-      PropertyName.DeviceNotificationIntervalTime,
-    ) as boolean,
-    notificationRing: device.getPropertyValue(
-      PropertyName.DeviceNotificationRing,
-    ) as boolean,
-    notificationMotion: device.getPropertyValue(
-      PropertyName.DeviceNotificationMotion,
-    ) as boolean,
-    notificationRadarDetector: device.getPropertyValue(
-      PropertyName.DeviceNotificationRadarDetector,
-    ) as boolean,
-    continuousRecording: device.getPropertyValue(
-      PropertyName.DeviceContinuousRecording,
-    ) as boolean,
-    continuousRecordingType: device.getPropertyValue(
-      PropertyName.DeviceContinuousRecordingType,
-    ) as number,
-    chirpVolume: device.getPropertyValue(
-      PropertyName.DeviceChirpVolume,
-    ) as number,
+    chimeIndoor: device.getPropertyValue(PropertyName.DeviceChimeIndoor) as boolean,
+    chimeHomebase: device.getPropertyValue(PropertyName.DeviceChimeHomebase) as boolean,
+    chimeHomebaseRingtoneVolume: device.getPropertyValue(PropertyName.DeviceChimeHomebaseRingtoneVolume) as number,
+    chimeHomebaseRingtoneType: device.getPropertyValue(PropertyName.DeviceChimeHomebaseRingtoneType) as number,
+    notificationType: device.getPropertyValue(PropertyName.DeviceNotificationType) as number,
+    rotationSpeed: device.getPropertyValue(PropertyName.DeviceRotationSpeed) as number,
+    imageMirrored: device.getPropertyValue(PropertyName.DeviceImageMirrored) as boolean,
+    notificationPerson: device.getPropertyValue(PropertyName.DeviceNotificationPerson) as boolean,
+    notificationPet: device.getPropertyValue(PropertyName.DeviceNotificationPet) as boolean,
+    notificationAllOtherMotion: device.getPropertyValue(PropertyName.DeviceNotificationAllOtherMotion) as boolean,
+    notificationCrying: device.getPropertyValue(PropertyName.DeviceNotificationCrying) as boolean,
+    notificationAllSound: device.getPropertyValue(PropertyName.DeviceNotificationAllSound) as boolean,
+    notificationIntervalTime: device.getPropertyValue(PropertyName.DeviceNotificationIntervalTime) as boolean,
+    notificationRing: device.getPropertyValue(PropertyName.DeviceNotificationRing) as boolean,
+    notificationMotion: device.getPropertyValue(PropertyName.DeviceNotificationMotion) as boolean,
+    notificationRadarDetector: device.getPropertyValue(PropertyName.DeviceNotificationRadarDetector) as boolean,
+    continuousRecording: device.getPropertyValue(PropertyName.DeviceContinuousRecording) as boolean,
+    continuousRecordingType: device.getPropertyValue(PropertyName.DeviceContinuousRecordingType) as number,
+    chirpVolume: device.getPropertyValue(PropertyName.DeviceChirpVolume) as number,
     chirpTone: device.getPropertyValue(PropertyName.DeviceChirpTone) as number,
     videoHdr: device.getPropertyValue(PropertyName.DeviceVideoHDR) as boolean,
-    videoDistortionCorrection: device.getPropertyValue(
-      PropertyName.DeviceVideoDistortionCorrection,
-    ) as boolean,
-    videoRingRecord: device.getPropertyValue(
-      PropertyName.DeviceVideoRingRecord,
-    ) as number,
+    videoDistortionCorrection: device.getPropertyValue(PropertyName.DeviceVideoDistortionCorrection) as boolean,
+    videoRingRecord: device.getPropertyValue(PropertyName.DeviceVideoRingRecord) as number,
     videoNightvisionImageAdjustment: device.getPropertyValue(
-      PropertyName.DeviceVideoNightvisionImageAdjustment,
+      PropertyName.DeviceVideoNightvisionImageAdjustment
     ) as boolean,
-    videoColorNightvision: device.getPropertyValue(
-      PropertyName.DeviceVideoColorNightvision,
-    ) as boolean,
-    autoCalibration: device.getPropertyValue(
-      PropertyName.DeviceAutoCalibration,
-    ) as boolean,
+    videoColorNightvision: device.getPropertyValue(PropertyName.DeviceVideoColorNightvision) as boolean,
+    autoCalibration: device.getPropertyValue(PropertyName.DeviceAutoCalibration) as boolean,
     autoLock: device.getPropertyValue(PropertyName.DeviceAutoLock) as boolean,
-    autoLockTimer: device.getPropertyValue(
-      PropertyName.DeviceAutoLockTimer,
-    ) as number,
-    autoLockSchedule: device.getPropertyValue(
-      PropertyName.DeviceAutoLockSchedule,
-    ) as boolean,
-    autoLockScheduleStartTime: device.getPropertyValue(
-      PropertyName.DeviceAutoLockScheduleStartTime,
-    ) as string,
-    autoLockScheduleEndTime: device.getPropertyValue(
-      PropertyName.DeviceAutoLockScheduleEndTime,
-    ) as string,
-    oneTouchLocking: device.getPropertyValue(
-      PropertyName.DeviceOneTouchLocking,
-    ) as boolean,
-    wrongTryProtection: device.getPropertyValue(
-      PropertyName.DeviceWrongTryProtection,
-    ) as boolean,
-    wrongTryAttempts: device.getPropertyValue(
-      PropertyName.DeviceWrongTryAttempts,
-    ) as number,
-    wrongTryLockdownTime: device.getPropertyValue(
-      PropertyName.DeviceWrongTryLockdownTime,
-    ) as number,
-    scramblePasscode: device.getPropertyValue(
-      PropertyName.DeviceScramblePasscode,
-    ) as boolean,
+    autoLockTimer: device.getPropertyValue(PropertyName.DeviceAutoLockTimer) as number,
+    autoLockSchedule: device.getPropertyValue(PropertyName.DeviceAutoLockSchedule) as boolean,
+    autoLockScheduleStartTime: device.getPropertyValue(PropertyName.DeviceAutoLockScheduleStartTime) as string,
+    autoLockScheduleEndTime: device.getPropertyValue(PropertyName.DeviceAutoLockScheduleEndTime) as string,
+    oneTouchLocking: device.getPropertyValue(PropertyName.DeviceOneTouchLocking) as boolean,
+    wrongTryProtection: device.getPropertyValue(PropertyName.DeviceWrongTryProtection) as boolean,
+    wrongTryAttempts: device.getPropertyValue(PropertyName.DeviceWrongTryAttempts) as number,
+    wrongTryLockdownTime: device.getPropertyValue(PropertyName.DeviceWrongTryLockdownTime) as number,
+    scramblePasscode: device.getPropertyValue(PropertyName.DeviceScramblePasscode) as boolean,
     sound: device.getPropertyValue(PropertyName.DeviceSound) as number,
-    notification: device.getPropertyValue(
-      PropertyName.DeviceNotification,
-    ) as boolean,
-    notificationUnlocked: device.getPropertyValue(
-      PropertyName.DeviceNotificationUnlocked,
-    ) as boolean,
-    notificationLocked: device.getPropertyValue(
-      PropertyName.DeviceNotificationLocked,
-    ) as boolean,
-    loiteringDetection: device.getPropertyValue(
-      PropertyName.DeviceLoiteringDetection,
-    ) as boolean,
-    loiteringDetectionRange: device.getPropertyValue(
-      PropertyName.DeviceLoiteringDetectionRange,
-    ) as number,
-    loiteringDetectionLength: device.getPropertyValue(
-      PropertyName.DeviceLoiteringDetectionLength,
-    ) as number,
+    notification: device.getPropertyValue(PropertyName.DeviceNotification) as boolean,
+    notificationUnlocked: device.getPropertyValue(PropertyName.DeviceNotificationUnlocked) as boolean,
+    notificationLocked: device.getPropertyValue(PropertyName.DeviceNotificationLocked) as boolean,
+    loiteringDetection: device.getPropertyValue(PropertyName.DeviceLoiteringDetection) as boolean,
+    loiteringDetectionRange: device.getPropertyValue(PropertyName.DeviceLoiteringDetectionRange) as number,
+    loiteringDetectionLength: device.getPropertyValue(PropertyName.DeviceLoiteringDetectionLength) as number,
     motionDetectionSensitivityMode: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityMode,
+      PropertyName.DeviceMotionDetectionSensitivityMode
     ) as number,
     motionDetectionSensitivityStandard: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityStandard,
+      PropertyName.DeviceMotionDetectionSensitivityStandard
     ) as number,
     motionDetectionSensitivityAdvancedA: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityAdvancedA,
+      PropertyName.DeviceMotionDetectionSensitivityAdvancedA
     ) as number,
     motionDetectionSensitivityAdvancedB: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityAdvancedB,
+      PropertyName.DeviceMotionDetectionSensitivityAdvancedB
     ) as number,
     motionDetectionSensitivityAdvancedC: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityAdvancedC,
+      PropertyName.DeviceMotionDetectionSensitivityAdvancedC
     ) as number,
     motionDetectionSensitivityAdvancedD: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityAdvancedD,
+      PropertyName.DeviceMotionDetectionSensitivityAdvancedD
     ) as number,
     motionDetectionSensitivityAdvancedE: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityAdvancedE,
+      PropertyName.DeviceMotionDetectionSensitivityAdvancedE
     ) as number,
     motionDetectionSensitivityAdvancedF: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityAdvancedF,
+      PropertyName.DeviceMotionDetectionSensitivityAdvancedF
     ) as number,
     motionDetectionSensitivityAdvancedG: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityAdvancedG,
+      PropertyName.DeviceMotionDetectionSensitivityAdvancedG
     ) as number,
     motionDetectionSensitivityAdvancedH: device.getPropertyValue(
-      PropertyName.DeviceMotionDetectionSensitivityAdvancedH,
+      PropertyName.DeviceMotionDetectionSensitivityAdvancedH
     ) as number,
     loiteringCustomResponsePhoneNotification: device.getPropertyValue(
-      PropertyName.DeviceLoiteringCustomResponsePhoneNotification,
+      PropertyName.DeviceLoiteringCustomResponsePhoneNotification
     ) as boolean,
     loiteringCustomResponseAutoVoiceResponse: device.getPropertyValue(
-      PropertyName.DeviceLoiteringCustomResponseAutoVoiceResponse,
+      PropertyName.DeviceLoiteringCustomResponseAutoVoiceResponse
     ) as boolean,
     loiteringCustomResponseAutoVoiceResponseVoice: device.getPropertyValue(
-      PropertyName.DeviceLoiteringCustomResponseAutoVoiceResponseVoice,
+      PropertyName.DeviceLoiteringCustomResponseAutoVoiceResponseVoice
     ) as number,
     loiteringCustomResponseHomeBaseNotification: device.getPropertyValue(
-      PropertyName.DeviceLoiteringCustomResponseHomeBaseNotification,
+      PropertyName.DeviceLoiteringCustomResponseHomeBaseNotification
     ) as boolean,
     loiteringCustomResponseTimeFrom: device.getPropertyValue(
-      PropertyName.DeviceLoiteringCustomResponseTimeFrom,
+      PropertyName.DeviceLoiteringCustomResponseTimeFrom
     ) as string,
-    loiteringCustomResponseTimeTo: device.getPropertyValue(
-      PropertyName.DeviceLoiteringCustomResponseTimeTo,
-    ) as string,
-    deliveryGuard: device.getPropertyValue(
-      PropertyName.DeviceDeliveryGuard,
-    ) as boolean,
-    deliveryGuardPackageGuarding: device.getPropertyValue(
-      PropertyName.DeviceDeliveryGuardPackageGuarding,
-    ) as boolean,
+    loiteringCustomResponseTimeTo: device.getPropertyValue(PropertyName.DeviceLoiteringCustomResponseTimeTo) as string,
+    deliveryGuard: device.getPropertyValue(PropertyName.DeviceDeliveryGuard) as boolean,
+    deliveryGuardPackageGuarding: device.getPropertyValue(PropertyName.DeviceDeliveryGuardPackageGuarding) as boolean,
     deliveryGuardPackageGuardingVoiceResponseVoice: device.getPropertyValue(
-      PropertyName.DeviceDeliveryGuardPackageGuardingVoiceResponseVoice,
+      PropertyName.DeviceDeliveryGuardPackageGuardingVoiceResponseVoice
     ) as number,
     deliveryGuardPackageGuardingActivatedTimeFrom: device.getPropertyValue(
-      PropertyName.DeviceDeliveryGuardPackageGuardingActivatedTimeFrom,
+      PropertyName.DeviceDeliveryGuardPackageGuardingActivatedTimeFrom
     ) as string,
     deliveryGuardPackageGuardingActivatedTimeTo: device.getPropertyValue(
-      PropertyName.DeviceDeliveryGuardPackageGuardingActivatedTimeTo,
+      PropertyName.DeviceDeliveryGuardPackageGuardingActivatedTimeTo
     ) as string,
     deliveryGuardUncollectedPackageAlert: device.getPropertyValue(
-      PropertyName.DeviceDeliveryGuardUncollectedPackageAlert,
+      PropertyName.DeviceDeliveryGuardUncollectedPackageAlert
     ) as boolean,
     deliveryGuardUncollectedPackageAlertTimeToCheck: device.getPropertyValue(
-      PropertyName.DeviceDeliveryGuardUncollectedPackageAlertTimeToCheck,
+      PropertyName.DeviceDeliveryGuardUncollectedPackageAlertTimeToCheck
     ) as string,
     deliveryGuardPackageLiveCheckAssistance: device.getPropertyValue(
-      PropertyName.DeviceDeliveryGuardPackageLiveCheckAssistance,
+      PropertyName.DeviceDeliveryGuardPackageLiveCheckAssistance
     ) as boolean,
-    dualCamWatchViewMode: device.getPropertyValue(
-      PropertyName.DeviceDualCamWatchViewMode,
-    ) as number,
-    ringAutoResponse: device.getPropertyValue(
-      PropertyName.DeviceRingAutoResponse,
-    ) as boolean,
-    ringAutoResponseVoiceResponse: device.getPropertyValue(
-      PropertyName.DeviceRingAutoResponseVoiceResponse,
-    ) as boolean,
+    dualCamWatchViewMode: device.getPropertyValue(PropertyName.DeviceDualCamWatchViewMode) as number,
+    ringAutoResponse: device.getPropertyValue(PropertyName.DeviceRingAutoResponse) as boolean,
+    ringAutoResponseVoiceResponse: device.getPropertyValue(PropertyName.DeviceRingAutoResponseVoiceResponse) as boolean,
     ringAutoResponseVoiceResponseVoice: device.getPropertyValue(
-      PropertyName.DeviceRingAutoResponseVoiceResponseVoice,
+      PropertyName.DeviceRingAutoResponseVoiceResponseVoice
     ) as number,
-    ringAutoResponseTimeFrom: device.getPropertyValue(
-      PropertyName.DeviceRingAutoResponseTimeFrom,
-    ) as string,
-    ringAutoResponseTimeTo: device.getPropertyValue(
-      PropertyName.DeviceRingAutoResponseTimeTo,
-    ) as string,
-    defaultAngle: device.getPropertyValue(
-      PropertyName.DeviceDefaultAngle,
-    ) as boolean,
-    defaultAngleIdleTime: device.getPropertyValue(
-      PropertyName.DeviceDefaultAngleIdleTime,
-    ) as number,
-    soundDetectionRoundLook: device.getPropertyValue(
-      PropertyName.DeviceSoundDetectionRoundLook,
-    ) as boolean,
-    packageDelivered: device.getPropertyValue(
-      PropertyName.DevicePackageDelivered,
-    ) as boolean,
-    packageStranded: device.getPropertyValue(
-      PropertyName.DevicePackageStranded,
-    ) as boolean,
-    packageTaken: device.getPropertyValue(
-      PropertyName.DevicePackageTaken,
-    ) as boolean,
-    someoneLoitering: device.getPropertyValue(
-      PropertyName.DeviceSomeoneLoitering,
-    ) as boolean,
-    radarMotionDetected: device.getPropertyValue(
-      PropertyName.DeviceRadarMotionDetected,
-    ) as boolean,
-    leftOpenAlarm: device.getPropertyValue(
-      PropertyName.DeviceLeftOpenAlarm,
-    ) as boolean,
-    leftOpenAlarmDuration: device.getPropertyValue(
-      PropertyName.DeviceLeftOpenAlarmDuration,
-    ) as number,
-    dualUnlock: device.getPropertyValue(
-      PropertyName.DeviceDualUnlock,
-    ) as boolean,
+    ringAutoResponseTimeFrom: device.getPropertyValue(PropertyName.DeviceRingAutoResponseTimeFrom) as string,
+    ringAutoResponseTimeTo: device.getPropertyValue(PropertyName.DeviceRingAutoResponseTimeTo) as string,
+    defaultAngle: device.getPropertyValue(PropertyName.DeviceDefaultAngle) as boolean,
+    defaultAngleIdleTime: device.getPropertyValue(PropertyName.DeviceDefaultAngleIdleTime) as number,
+    soundDetectionRoundLook: device.getPropertyValue(PropertyName.DeviceSoundDetectionRoundLook) as boolean,
+    packageDelivered: device.getPropertyValue(PropertyName.DevicePackageDelivered) as boolean,
+    packageStranded: device.getPropertyValue(PropertyName.DevicePackageStranded) as boolean,
+    packageTaken: device.getPropertyValue(PropertyName.DevicePackageTaken) as boolean,
+    someoneLoitering: device.getPropertyValue(PropertyName.DeviceSomeoneLoitering) as boolean,
+    radarMotionDetected: device.getPropertyValue(PropertyName.DeviceRadarMotionDetected) as boolean,
+    leftOpenAlarm: device.getPropertyValue(PropertyName.DeviceLeftOpenAlarm) as boolean,
+    leftOpenAlarmDuration: device.getPropertyValue(PropertyName.DeviceLeftOpenAlarmDuration) as number,
+    dualUnlock: device.getPropertyValue(PropertyName.DeviceDualUnlock) as boolean,
     powerSave: device.getPropertyValue(PropertyName.DevicePowerSave) as boolean,
-    interiorBrightness: device.getPropertyValue(
-      PropertyName.DeviceInteriorBrightness,
-    ) as number,
-    interiorBrightnessDuration: device.getPropertyValue(
-      PropertyName.DeviceInteriorBrightnessDuration,
-    ) as number,
-    tamperAlarm: device.getPropertyValue(
-      PropertyName.DeviceTamperAlarm,
-    ) as number,
-    remoteUnlock: device.getPropertyValue(
-      PropertyName.DeviceRemoteUnlock,
-    ) as boolean,
-    remoteUnlockMasterPIN: device.getPropertyValue(
-      PropertyName.DeviceRemoteUnlockMasterPIN,
-    ) as boolean,
-    alarmVolume: device.getPropertyValue(
-      PropertyName.DeviceAlarmVolume,
-    ) as number,
-    promptVolume: device.getPropertyValue(
-      PropertyName.DevicePromptVolume,
-    ) as number,
-    notificationUnlockByKey: device.getPropertyValue(
-      PropertyName.DeviceNotificationUnlockByKey,
-    ) as boolean,
-    notificationUnlockByPIN: device.getPropertyValue(
-      PropertyName.DeviceNotificationUnlockByPIN,
-    ) as boolean,
+    interiorBrightness: device.getPropertyValue(PropertyName.DeviceInteriorBrightness) as number,
+    interiorBrightnessDuration: device.getPropertyValue(PropertyName.DeviceInteriorBrightnessDuration) as number,
+    tamperAlarm: device.getPropertyValue(PropertyName.DeviceTamperAlarm) as number,
+    remoteUnlock: device.getPropertyValue(PropertyName.DeviceRemoteUnlock) as boolean,
+    remoteUnlockMasterPIN: device.getPropertyValue(PropertyName.DeviceRemoteUnlockMasterPIN) as boolean,
+    alarmVolume: device.getPropertyValue(PropertyName.DeviceAlarmVolume) as number,
+    promptVolume: device.getPropertyValue(PropertyName.DevicePromptVolume) as number,
+    notificationUnlockByKey: device.getPropertyValue(PropertyName.DeviceNotificationUnlockByKey) as boolean,
+    notificationUnlockByPIN: device.getPropertyValue(PropertyName.DeviceNotificationUnlockByPIN) as boolean,
     notificationUnlockByFingerprint: device.getPropertyValue(
-      PropertyName.DeviceNotificationUnlockByFingerprint,
+      PropertyName.DeviceNotificationUnlockByFingerprint
     ) as boolean,
-    notificationUnlockByApp: device.getPropertyValue(
-      PropertyName.DeviceNotificationUnlockByApp,
-    ) as boolean,
-    notificationDualUnlock: device.getPropertyValue(
-      PropertyName.DeviceNotificationDualUnlock,
-    ) as boolean,
-    notificationDualLock: device.getPropertyValue(
-      PropertyName.DeviceNotificationDualLock,
-    ) as boolean,
-    notificationWrongTryProtect: device.getPropertyValue(
-      PropertyName.DeviceNotificationWrongTryProtect,
-    ) as boolean,
-    notificationJammed: device.getPropertyValue(
-      PropertyName.DeviceNotificationJammed,
-    ) as boolean,
-    jammedAlert: device.getPropertyValue(
-      PropertyName.DeviceJammedAlert,
-    ) as boolean,
+    notificationUnlockByApp: device.getPropertyValue(PropertyName.DeviceNotificationUnlockByApp) as boolean,
+    notificationDualUnlock: device.getPropertyValue(PropertyName.DeviceNotificationDualUnlock) as boolean,
+    notificationDualLock: device.getPropertyValue(PropertyName.DeviceNotificationDualLock) as boolean,
+    notificationWrongTryProtect: device.getPropertyValue(PropertyName.DeviceNotificationWrongTryProtect) as boolean,
+    notificationJammed: device.getPropertyValue(PropertyName.DeviceNotificationJammed) as boolean,
+    jammedAlert: device.getPropertyValue(PropertyName.DeviceJammedAlert) as boolean,
     "911Alert": device.getPropertyValue(PropertyName.Device911Alert) as boolean,
-    "911AlertEvent": device.getPropertyValue(
-      PropertyName.Device911AlertEvent,
-    ) as boolean,
-    shakeAlert: device.getPropertyValue(
-      PropertyName.DeviceShakeAlert,
-    ) as boolean,
-    shakeAlertEvent: device.getPropertyValue(
-      PropertyName.DeviceShakeAlertEvent,
-    ) as boolean,
-    lowBatteryAlert: device.getPropertyValue(
-      PropertyName.DeviceLowBatteryAlert,
-    ) as boolean,
-    longTimeNotCloseAlert: device.getPropertyValue(
-      PropertyName.DeviceLongTimeNotCloseAlert,
-    ) as boolean,
-    wrongTryProtectAlert: device.getPropertyValue(
-      PropertyName.DeviceWrongTryProtectAlert,
-    ) as boolean,
-    videoTypeStoreToNAS: device.getPropertyValue(
-      PropertyName.DeviceVideoTypeStoreToNAS,
-    ) as number,
+    "911AlertEvent": device.getPropertyValue(PropertyName.Device911AlertEvent) as boolean,
+    shakeAlert: device.getPropertyValue(PropertyName.DeviceShakeAlert) as boolean,
+    shakeAlertEvent: device.getPropertyValue(PropertyName.DeviceShakeAlertEvent) as boolean,
+    lowBatteryAlert: device.getPropertyValue(PropertyName.DeviceLowBatteryAlert) as boolean,
+    longTimeNotCloseAlert: device.getPropertyValue(PropertyName.DeviceLongTimeNotCloseAlert) as boolean,
+    wrongTryProtectAlert: device.getPropertyValue(PropertyName.DeviceWrongTryProtectAlert) as boolean,
+    videoTypeStoreToNAS: device.getPropertyValue(PropertyName.DeviceVideoTypeStoreToNAS) as number,
     snooze: device.getPropertyValue(PropertyName.DeviceSnooze) as boolean,
-    snoozeTime: device.getPropertyValue(
-      PropertyName.DeviceSnoozeTime,
-    ) as number,
-    identityPersonDetected: device.getPropertyValue(
-      PropertyName.DeviceIdentityPersonDetected,
-    ) as boolean,
-    strangerPersonDetected: device.getPropertyValue(
-      PropertyName.DeviceStrangerPersonDetected,
-    ) as boolean,
-    vehicleDetected: device.getPropertyValue(
-      PropertyName.DeviceVehicleDetected,
-    ) as boolean,
-    dogDetected: device.getPropertyValue(
-      PropertyName.DeviceDogDetected,
-    ) as boolean,
-    dogLickDetected: device.getPropertyValue(
-      PropertyName.DeviceDogLickDetected,
-    ) as boolean,
-    dogPoopDetected: device.getPropertyValue(
-      PropertyName.DeviceDogPoopDetected,
-    ) as boolean,
+    snoozeTime: device.getPropertyValue(PropertyName.DeviceSnoozeTime) as number,
+    identityPersonDetected: device.getPropertyValue(PropertyName.DeviceIdentityPersonDetected) as boolean,
+    strangerPersonDetected: device.getPropertyValue(PropertyName.DeviceStrangerPersonDetected) as boolean,
+    vehicleDetected: device.getPropertyValue(PropertyName.DeviceVehicleDetected) as boolean,
+    dogDetected: device.getPropertyValue(PropertyName.DeviceDogDetected) as boolean,
+    dogLickDetected: device.getPropertyValue(PropertyName.DeviceDogLickDetected) as boolean,
+    dogPoopDetected: device.getPropertyValue(PropertyName.DeviceDogPoopDetected) as boolean,
     detectionStatisticsWorkingDays: device.getPropertyValue(
-      PropertyName.DeviceDetectionStatisticsWorkingDays,
+      PropertyName.DeviceDetectionStatisticsWorkingDays
     ) as number,
     detectionStatisticsDetectedEvents: device.getPropertyValue(
-      PropertyName.DeviceDetectionStatisticsDetectedEvents,
+      PropertyName.DeviceDetectionStatisticsDetectedEvents
     ) as number,
     detectionStatisticsRecordedEvents: device.getPropertyValue(
-      PropertyName.DeviceDetectionStatisticsRecordedEvents,
+      PropertyName.DeviceDetectionStatisticsRecordedEvents
     ) as number,
   };
 
@@ -936,42 +634,22 @@ export const dumpDeviceProperties = (
   }
 
   const device1 = base as DevicePropertiesSchema1;
-  device1.snoozeStartTime = device.getPropertyValue(
-    PropertyName.DeviceSnoozeStartTime,
-  ) as number;
-  device1.snoozeHomebase = device.getPropertyValue(
-    PropertyName.DeviceSnoozeHomebase,
-  ) as boolean;
-  device1.snoozeMotion = device.getPropertyValue(
-    PropertyName.DeviceSnoozeMotion,
-  ) as boolean;
-  device1.snoozeChime = device.getPropertyValue(
-    PropertyName.DeviceSnoozeChime,
-  ) as boolean;
+  device1.snoozeStartTime = device.getPropertyValue(PropertyName.DeviceSnoozeStartTime) as number;
+  device1.snoozeHomebase = device.getPropertyValue(PropertyName.DeviceSnoozeHomebase) as boolean;
+  device1.snoozeMotion = device.getPropertyValue(PropertyName.DeviceSnoozeMotion) as boolean;
+  device1.snoozeChime = device.getPropertyValue(PropertyName.DeviceSnoozeChime) as boolean;
 
   if (schemaVersion <= 15) {
     return device1;
   }
 
   const device2 = device1 as DevicePropertiesSchema2;
-  device2.cellularRSSI = device.getPropertyValue(
-    PropertyName.DeviceCellularRSSI,
-  ) as number;
-  device2.cellularSignalLevel = device.getPropertyValue(
-    PropertyName.DeviceCellularSignalLevel,
-  ) as number;
-  device2.cellularSignal = device.getPropertyValue(
-    PropertyName.DeviceCellularSignal,
-  ) as string;
-  device2.cellularBand = device.getPropertyValue(
-    PropertyName.DeviceCellularBand,
-  ) as string;
-  device2.cellularIMEI = device.getPropertyValue(
-    PropertyName.DeviceCellularIMEI,
-  ) as string;
-  device2.cellularICCID = device.getPropertyValue(
-    PropertyName.DeviceCellularICCID,
-  ) as string;
+  device2.cellularRSSI = device.getPropertyValue(PropertyName.DeviceCellularRSSI) as number;
+  device2.cellularSignalLevel = device.getPropertyValue(PropertyName.DeviceCellularSignalLevel) as number;
+  device2.cellularSignal = device.getPropertyValue(PropertyName.DeviceCellularSignal) as string;
+  device2.cellularBand = device.getPropertyValue(PropertyName.DeviceCellularBand) as string;
+  device2.cellularIMEI = device.getPropertyValue(PropertyName.DeviceCellularIMEI) as string;
+  device2.cellularICCID = device.getPropertyValue(PropertyName.DeviceCellularICCID) as string;
 
   if (schemaVersion <= 16) {
     return device2;
@@ -979,9 +657,7 @@ export const dumpDeviceProperties = (
 
   delete device2["pictureUrl"];
   const device3 = device2 as DevicePropertiesSchema3;
-  device3.picture = device.getPropertyValue(
-    PropertyName.DevicePicture,
-  ) as Picture;
+  device3.picture = device.getPropertyValue(PropertyName.DevicePicture) as Picture;
 
   if (schemaVersion <= 18) {
     return device3;
@@ -989,98 +665,64 @@ export const dumpDeviceProperties = (
 
   const device4 = device3 as DevicePropertiesSchema4;
   device4.lightSettingsManualLightingActiveMode = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsManualLightingActiveMode,
+    PropertyName.DeviceLightSettingsManualLightingActiveMode
   ) as number;
   device4.lightSettingsManualDailyLighting = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsManualDailyLighting,
+    PropertyName.DeviceLightSettingsManualDailyLighting
   ) as number;
   device4.lightSettingsManualColoredLighting = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsManualColoredLighting,
+    PropertyName.DeviceLightSettingsManualColoredLighting
   ) as RGBColor;
   device4.lightSettingsManualDynamicLighting = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsManualDynamicLighting,
+    PropertyName.DeviceLightSettingsManualDynamicLighting
   ) as number;
   device4.lightSettingsMotionLightingActiveMode = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsMotionLightingActiveMode,
+    PropertyName.DeviceLightSettingsMotionLightingActiveMode
   ) as number;
   device4.lightSettingsMotionDailyLighting = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsMotionDailyLighting,
+    PropertyName.DeviceLightSettingsMotionDailyLighting
   ) as number;
   device4.lightSettingsMotionColoredLighting = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsMotionColoredLighting,
+    PropertyName.DeviceLightSettingsMotionColoredLighting
   ) as RGBColor;
   device4.lightSettingsMotionDynamicLighting = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsMotionDynamicLighting,
+    PropertyName.DeviceLightSettingsMotionDynamicLighting
   ) as number;
   device4.lightSettingsScheduleLightingActiveMode = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsScheduleLightingActiveMode,
+    PropertyName.DeviceLightSettingsScheduleLightingActiveMode
   ) as number;
   device4.lightSettingsScheduleDailyLighting = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsScheduleDailyLighting,
+    PropertyName.DeviceLightSettingsScheduleDailyLighting
   ) as number;
   device4.lightSettingsScheduleColoredLighting = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsScheduleColoredLighting,
+    PropertyName.DeviceLightSettingsScheduleColoredLighting
   ) as RGBColor;
   device4.lightSettingsScheduleDynamicLighting = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsScheduleDynamicLighting,
+    PropertyName.DeviceLightSettingsScheduleDynamicLighting
   ) as number;
   device4.lightSettingsColoredLightingColors = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsColoredLightingColors,
+    PropertyName.DeviceLightSettingsColoredLightingColors
   ) as RGBColor[];
   device4.lightSettingsDynamicLightingThemes = device.getPropertyValue(
-    PropertyName.DeviceLightSettingsDynamicLightingThemes,
+    PropertyName.DeviceLightSettingsDynamicLightingThemes
   ) as DynamicLighting[];
-  device4.doorControlWarning = device.getPropertyValue(
-    PropertyName.DeviceDoorControlWarning,
-  ) as boolean;
-  device4.door1Open = device.getPropertyValue(
-    PropertyName.DeviceDoor1Open,
-  ) as boolean;
-  device4.door2Open = device.getPropertyValue(
-    PropertyName.DeviceDoor2Open,
-  ) as boolean;
-  device4.doorSensor1Status = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor1Status,
-  ) as number;
-  device4.doorSensor2Status = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor2Status,
-  ) as number;
-  device4.doorSensor1MacAddress = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor1MacAddress,
-  ) as string;
-  device4.doorSensor2MacAddress = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor2MacAddress,
-  ) as string;
-  device4.doorSensor1Name = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor1Name,
-  ) as string;
-  device4.doorSensor2Name = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor2Name,
-  ) as string;
-  device4.doorSensor1SerialNumber = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor1SerialNumber,
-  ) as string;
-  device4.doorSensor2SerialNumber = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor2SerialNumber,
-  ) as string;
-  device4.doorSensor1Version = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor1Version,
-  ) as string;
-  device4.doorSensor2Version = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor2Version,
-  ) as string;
-  device4.doorSensor1LowBattery = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor1LowBattery,
-  ) as boolean;
-  device4.doorSensor2LowBattery = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor2LowBattery,
-  ) as boolean;
-  device4.doorSensor1BatteryLevel = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor1BatteryLevel,
-  ) as number;
-  device4.doorSensor2BatteryLevel = device.getPropertyValue(
-    PropertyName.DeviceDoorSensor2BatteryLevel,
-  ) as number;
+  device4.doorControlWarning = device.getPropertyValue(PropertyName.DeviceDoorControlWarning) as boolean;
+  device4.door1Open = device.getPropertyValue(PropertyName.DeviceDoor1Open) as boolean;
+  device4.door2Open = device.getPropertyValue(PropertyName.DeviceDoor2Open) as boolean;
+  device4.doorSensor1Status = device.getPropertyValue(PropertyName.DeviceDoorSensor1Status) as number;
+  device4.doorSensor2Status = device.getPropertyValue(PropertyName.DeviceDoorSensor2Status) as number;
+  device4.doorSensor1MacAddress = device.getPropertyValue(PropertyName.DeviceDoorSensor1MacAddress) as string;
+  device4.doorSensor2MacAddress = device.getPropertyValue(PropertyName.DeviceDoorSensor2MacAddress) as string;
+  device4.doorSensor1Name = device.getPropertyValue(PropertyName.DeviceDoorSensor1Name) as string;
+  device4.doorSensor2Name = device.getPropertyValue(PropertyName.DeviceDoorSensor2Name) as string;
+  device4.doorSensor1SerialNumber = device.getPropertyValue(PropertyName.DeviceDoorSensor1SerialNumber) as string;
+  device4.doorSensor2SerialNumber = device.getPropertyValue(PropertyName.DeviceDoorSensor2SerialNumber) as string;
+  device4.doorSensor1Version = device.getPropertyValue(PropertyName.DeviceDoorSensor1Version) as string;
+  device4.doorSensor2Version = device.getPropertyValue(PropertyName.DeviceDoorSensor2Version) as string;
+  device4.doorSensor1LowBattery = device.getPropertyValue(PropertyName.DeviceDoorSensor1LowBattery) as boolean;
+  device4.doorSensor2LowBattery = device.getPropertyValue(PropertyName.DeviceDoorSensor2LowBattery) as boolean;
+  device4.doorSensor1BatteryLevel = device.getPropertyValue(PropertyName.DeviceDoorSensor1BatteryLevel) as number;
+  device4.doorSensor2BatteryLevel = device.getPropertyValue(PropertyName.DeviceDoorSensor2BatteryLevel) as number;
 
   if (schemaVersion <= 19) {
     return device4;
@@ -1088,24 +730,12 @@ export const dumpDeviceProperties = (
 
   // All schemas <= 20
   const device5 = device4 as DevicePropertiesSchema5;
-  device5.locationCoordinates = device.getPropertyValue(
-    PropertyName.DeviceLocationCoordinates,
-  ) as string;
-  device5.locationAddress = device.getPropertyValue(
-    PropertyName.DeviceLocationAddress,
-  ) as string;
-  device5.locationLastUpdate = device.getPropertyValue(
-    PropertyName.DeviceLocationLastUpdate,
-  ) as number;
-  device5.trackerType = device.getPropertyValue(
-    PropertyName.DeviceTrackerType,
-  ) as number;
-  device5.leftBehindAlarm = device.getPropertyValue(
-    PropertyName.DeviceLeftBehindAlarm,
-  ) as boolean;
-  device5.findPhone = device.getPropertyValue(
-    PropertyName.DeviceFindPhone,
-  ) as boolean;
+  device5.locationCoordinates = device.getPropertyValue(PropertyName.DeviceLocationCoordinates) as string;
+  device5.locationAddress = device.getPropertyValue(PropertyName.DeviceLocationAddress) as string;
+  device5.locationLastUpdate = device.getPropertyValue(PropertyName.DeviceLocationLastUpdate) as number;
+  device5.trackerType = device.getPropertyValue(PropertyName.DeviceTrackerType) as number;
+  device5.leftBehindAlarm = device.getPropertyValue(PropertyName.DeviceLeftBehindAlarm) as boolean;
+  device5.findPhone = device.getPropertyValue(PropertyName.DeviceFindPhone) as boolean;
 
   if (schemaVersion <= 20) {
     return device5;
@@ -1113,87 +743,40 @@ export const dumpDeviceProperties = (
 
   // All schemas >= 21
   const device6 = device5 as DevicePropertiesSchema6;
-  device6.notificationVehicle = device.getPropertyValue(
-    PropertyName.DeviceNotificationVehicle,
-  ) as boolean;
-  device6.flickerAdjustment = device.getPropertyValue(
-    PropertyName.DeviceFlickerAdjustment,
-  ) as number;
-  device6.leavingDetection = device.getPropertyValue(
-    PropertyName.DeviceLeavingDetection,
-  ) as boolean;
+  device6.notificationVehicle = device.getPropertyValue(PropertyName.DeviceNotificationVehicle) as boolean;
+  device6.flickerAdjustment = device.getPropertyValue(PropertyName.DeviceFlickerAdjustment) as number;
+  device6.leavingDetection = device.getPropertyValue(PropertyName.DeviceLeavingDetection) as boolean;
   device6.leavingReactionNotification = device.getPropertyValue(
-    PropertyName.DeviceLeavingReactionNotification,
+    PropertyName.DeviceLeavingReactionNotification
   ) as boolean;
-  device6.leavingReactionStartTime = device.getPropertyValue(
-    PropertyName.DeviceLeavingReactionStartTime,
-  ) as string;
-  device6.leavingReactionEndTime = device.getPropertyValue(
-    PropertyName.DeviceLeavingReactionEndTime,
-  ) as string;
-  device6.someoneGoing = device.getPropertyValue(
-    PropertyName.DeviceSomeoneGoing,
-  ) as boolean;
-  device6.lockEventOrigin = device.getPropertyValue(
-    PropertyName.DeviceLockEventOrigin,
-  ) as number;
-  device6.beepVolume = device.getPropertyValue(
-    PropertyName.DeviceBeepVolume,
-  ) as number;
-  device6.nightvisionOptimization = device.getPropertyValue(
-    PropertyName.DeviceNightvisionOptimization,
-  ) as boolean;
+  device6.leavingReactionStartTime = device.getPropertyValue(PropertyName.DeviceLeavingReactionStartTime) as string;
+  device6.leavingReactionEndTime = device.getPropertyValue(PropertyName.DeviceLeavingReactionEndTime) as string;
+  device6.someoneGoing = device.getPropertyValue(PropertyName.DeviceSomeoneGoing) as boolean;
+  device6.lockEventOrigin = device.getPropertyValue(PropertyName.DeviceLockEventOrigin) as number;
+  device6.beepVolume = device.getPropertyValue(PropertyName.DeviceBeepVolume) as number;
+  device6.nightvisionOptimization = device.getPropertyValue(PropertyName.DeviceNightvisionOptimization) as boolean;
   device6.nightvisionOptimizationSide = device.getPropertyValue(
-    PropertyName.DeviceNightvisionOptimizationSide,
+    PropertyName.DeviceNightvisionOptimizationSide
   ) as number;
-  device6.deliveries = device.getPropertyValue(
-    PropertyName.DeviceDeliveries,
-  ) as number;
-  device6.openMethod = device.getPropertyValue(
-    PropertyName.DeviceOpenMethod,
-  ) as number;
-  device6.motionActivatedPrompt = device.getPropertyValue(
-    PropertyName.DeviceMotionActivatedPrompt,
-  ) as boolean;
+  device6.deliveries = device.getPropertyValue(PropertyName.DeviceDeliveries) as number;
+  device6.openMethod = device.getPropertyValue(PropertyName.DeviceOpenMethod) as number;
+  device6.motionActivatedPrompt = device.getPropertyValue(PropertyName.DeviceMotionActivatedPrompt) as boolean;
   device6.open = device.getPropertyValue(PropertyName.DeviceOpen) as boolean;
-  device6.openedByType = device.getPropertyValue(
-    PropertyName.DeviceOpenedByType,
-  ) as number;
-  device6.openedByName = device.getPropertyValue(
-    PropertyName.DeviceOpenedByName,
-  ) as string;
-  device6.tamperingAlert = device.getPropertyValue(
-    PropertyName.DeviceTamperingAlert,
-  ) as boolean;
-  device6.lowTemperatureAlert = device.getPropertyValue(
-    PropertyName.DeviceLowTemperatureAlert,
-  ) as boolean;
-  device6.highTemperatureAlert = device.getPropertyValue(
-    PropertyName.DeviceHighTemperatureAlert,
-  ) as boolean;
-  device6.lidStuckAlert = device.getPropertyValue(
-    PropertyName.DeviceLidStuckAlert,
-  ) as boolean;
-  device6.pinIncorrectAlert = device.getPropertyValue(
-    PropertyName.DevicePinIncorrectAlert,
-  ) as boolean;
-  device6.batteryFullyChargedAlert = device.getPropertyValue(
-    PropertyName.DeviceBatteryFullyChargedAlert,
-  ) as boolean;
-  device6.isDeliveryDenied = device.getPropertyValue(
-    PropertyName.DeviceIsDeliveryDenied,
-  ) as boolean;
-  device6.hasMasterPin = device.getPropertyValue(
-    PropertyName.DeviceHasMasterPin,
-  ) as boolean;
+  device6.openedByType = device.getPropertyValue(PropertyName.DeviceOpenedByType) as number;
+  device6.openedByName = device.getPropertyValue(PropertyName.DeviceOpenedByName) as string;
+  device6.tamperingAlert = device.getPropertyValue(PropertyName.DeviceTamperingAlert) as boolean;
+  device6.lowTemperatureAlert = device.getPropertyValue(PropertyName.DeviceLowTemperatureAlert) as boolean;
+  device6.highTemperatureAlert = device.getPropertyValue(PropertyName.DeviceHighTemperatureAlert) as boolean;
+  device6.lidStuckAlert = device.getPropertyValue(PropertyName.DeviceLidStuckAlert) as boolean;
+  device6.pinIncorrectAlert = device.getPropertyValue(PropertyName.DevicePinIncorrectAlert) as boolean;
+  device6.batteryFullyChargedAlert = device.getPropertyValue(PropertyName.DeviceBatteryFullyChargedAlert) as boolean;
+  device6.isDeliveryDenied = device.getPropertyValue(PropertyName.DeviceIsDeliveryDenied) as boolean;
+  device6.hasMasterPin = device.getPropertyValue(PropertyName.DeviceHasMasterPin) as boolean;
 
   return device6;
 };
 
-export const dumpDevicePropertiesMetadata = (
-  device: Device,
-  schemaVersion: number,
-): IndexedProperty => {
+export const dumpDevicePropertiesMetadata = (device: Device, schemaVersion: number): IndexedProperty => {
   const metadata = device.getPropertiesMetadata(true);
   const result: IndexedProperty = {
     name: metadata[PropertyName.Name],
@@ -1208,12 +791,9 @@ export const dumpDevicePropertiesMetadata = (
     batteryLow: metadata[PropertyName.DeviceBatteryLow],
     batteryIsCharging: metadata[PropertyName.DeviceBatteryIsCharging],
     lastChargingDays: metadata[PropertyName.DeviceLastChargingDays],
-    lastChargingTotalEvents:
-      metadata[PropertyName.DeviceLastChargingTotalEvents],
-    lastChargingRecordedEvents:
-      metadata[PropertyName.DeviceLastChargingRecordedEvents],
-    lastChargingFalseEvents:
-      metadata[PropertyName.DeviceLastChargingFalseEvents],
+    lastChargingTotalEvents: metadata[PropertyName.DeviceLastChargingTotalEvents],
+    lastChargingRecordedEvents: metadata[PropertyName.DeviceLastChargingRecordedEvents],
+    lastChargingFalseEvents: metadata[PropertyName.DeviceLastChargingFalseEvents],
     batteryUsageLastWeek: metadata[PropertyName.DeviceBatteryUsageLastWeek],
     wifiRssi: metadata[PropertyName.DeviceWifiRSSI],
     wifiSignalLevel: metadata[PropertyName.DeviceWifiSignalLevel],
@@ -1224,38 +804,27 @@ export const dumpDevicePropertiesMetadata = (
     statusLed: metadata[PropertyName.DeviceStatusLed],
     motionDetection: metadata[PropertyName.DeviceMotionDetection],
     motionDetectionType: metadata[PropertyName.DeviceMotionDetectionType],
-    motionDetectionSensitivity:
-      metadata[PropertyName.DeviceMotionDetectionSensitivity],
-    motionDetectionTypeHuman:
-      metadata[PropertyName.DeviceMotionDetectionTypeHuman],
-    motionDetectionTypeHumanRecognition:
-      metadata[PropertyName.DeviceMotionDetectionTypeHumanRecognition],
+    motionDetectionSensitivity: metadata[PropertyName.DeviceMotionDetectionSensitivity],
+    motionDetectionTypeHuman: metadata[PropertyName.DeviceMotionDetectionTypeHuman],
+    motionDetectionTypeHumanRecognition: metadata[PropertyName.DeviceMotionDetectionTypeHumanRecognition],
     motionDetectionTypePet: metadata[PropertyName.DeviceMotionDetectionTypePet],
-    motionDetectionTypeVehicle:
-      metadata[PropertyName.DeviceMotionDetectionTypeVehicle],
-    motionDetectionTypeAllOtherMotions:
-      metadata[PropertyName.DeviceMotionDetectionTypeAllOtherMotions],
+    motionDetectionTypeVehicle: metadata[PropertyName.DeviceMotionDetectionTypeVehicle],
+    motionDetectionTypeAllOtherMotions: metadata[PropertyName.DeviceMotionDetectionTypeAllOtherMotions],
     motionZone: metadata[PropertyName.DeviceMotionZone],
     motionDetectionRange: metadata[PropertyName.DeviceMotionDetectionRange],
-    motionDetectionRangeStandardSensitivity:
-      metadata[PropertyName.DeviceMotionDetectionRangeStandardSensitivity],
+    motionDetectionRangeStandardSensitivity: metadata[PropertyName.DeviceMotionDetectionRangeStandardSensitivity],
     motionDetectionRangeAdvancedLeftSensitivity:
       metadata[PropertyName.DeviceMotionDetectionRangeAdvancedLeftSensitivity],
     motionDetectionRangeAdvancedMiddleSensitivity:
-      metadata[
-        PropertyName.DeviceMotionDetectionRangeAdvancedMiddleSensitivity
-      ],
+      metadata[PropertyName.DeviceMotionDetectionRangeAdvancedMiddleSensitivity],
     motionDetectionRangeAdvancedRightSensitivity:
       metadata[PropertyName.DeviceMotionDetectionRangeAdvancedRightSensitivity],
-    motionDetectionTestMode:
-      metadata[PropertyName.DeviceMotionDetectionTestMode],
+    motionDetectionTestMode: metadata[PropertyName.DeviceMotionDetectionTestMode],
     motionDetected: metadata[PropertyName.DeviceMotionDetected],
     motionTracking: metadata[PropertyName.DeviceMotionTracking],
-    motionTrackingSensitivity:
-      metadata[PropertyName.DeviceMotionTrackingSensitivity],
+    motionTrackingSensitivity: metadata[PropertyName.DeviceMotionTrackingSensitivity],
     motionAutoCruise: metadata[PropertyName.DeviceMotionAutoCruise],
-    motionOutOfViewDetection:
-      metadata[PropertyName.DeviceMotionOutOfViewDetection],
+    motionOutOfViewDetection: metadata[PropertyName.DeviceMotionOutOfViewDetection],
     personDetected: metadata[PropertyName.DevicePersonDetected],
     personName: metadata[PropertyName.DevicePersonName],
     rtspStream: metadata[PropertyName.DeviceRTSPStream],
@@ -1267,8 +836,7 @@ export const dumpDevicePropertiesMetadata = (
     petDetected: metadata[PropertyName.DevicePetDetected],
     soundDetection: metadata[PropertyName.DeviceSoundDetection],
     soundDetectionType: metadata[PropertyName.DeviceSoundDetectionType],
-    soundDetectionSensitivity:
-      metadata[PropertyName.DeviceSoundDetectionSensitivity],
+    soundDetectionSensitivity: metadata[PropertyName.DeviceSoundDetectionSensitivity],
     soundDetected: metadata[PropertyName.DeviceSoundDetected],
     cryingDetected: metadata[PropertyName.DeviceCryingDetected],
     sensorOpen: metadata[PropertyName.DeviceSensorOpen],
@@ -1286,76 +854,54 @@ export const dumpDevicePropertiesMetadata = (
     powerSource: metadata[PropertyName.DevicePowerSource],
     powerWorkingMode: metadata[PropertyName.DevicePowerWorkingMode],
     chargingStatus: metadata[PropertyName.DeviceChargingStatus],
-    recordingEndClipMotionStops:
-      metadata[PropertyName.DeviceRecordingEndClipMotionStops],
+    recordingEndClipMotionStops: metadata[PropertyName.DeviceRecordingEndClipMotionStops],
     recordingClipLength: metadata[PropertyName.DeviceRecordingClipLength],
-    recordingRetriggerInterval:
-      metadata[PropertyName.DeviceRecordingRetriggerInterval],
+    recordingRetriggerInterval: metadata[PropertyName.DeviceRecordingRetriggerInterval],
     videoStreamingQuality: metadata[PropertyName.DeviceVideoStreamingQuality],
     videoRecordingQuality: metadata[PropertyName.DeviceVideoRecordingQuality],
     videoWdr: metadata[PropertyName.DeviceVideoWDR],
     lightSettingsEnable: metadata[PropertyName.DeviceLightSettingsEnable],
-    lightSettingsBrightnessManual:
-      metadata[PropertyName.DeviceLightSettingsBrightnessManual],
-    lightSettingsColorTemperatureManual:
-      metadata[PropertyName.DeviceLightSettingsColorTemperatureManual],
-    lightSettingsBrightnessMotion:
-      metadata[PropertyName.DeviceLightSettingsBrightnessMotion],
-    lightSettingsColorTemperatureMotion:
-      metadata[PropertyName.DeviceLightSettingsColorTemperatureMotion],
-    lightSettingsBrightnessSchedule:
-      metadata[PropertyName.DeviceLightSettingsBrightnessSchedule],
-    lightSettingsColorTemperatureSchedule:
-      metadata[PropertyName.DeviceLightSettingsColorTemperatureSchedule],
-    lightSettingsMotionTriggered:
-      metadata[PropertyName.DeviceLightSettingsMotionTriggered],
-    lightSettingsMotionActivationMode:
-      metadata[PropertyName.DeviceLightSettingsMotionActivationMode],
-    lightSettingsMotionTriggeredDistance:
-      metadata[PropertyName.DeviceLightSettingsMotionTriggeredDistance],
-    lightSettingsMotionTriggeredTimer:
-      metadata[PropertyName.DeviceLightSettingsMotionTriggeredTimer],
+    lightSettingsBrightnessManual: metadata[PropertyName.DeviceLightSettingsBrightnessManual],
+    lightSettingsColorTemperatureManual: metadata[PropertyName.DeviceLightSettingsColorTemperatureManual],
+    lightSettingsBrightnessMotion: metadata[PropertyName.DeviceLightSettingsBrightnessMotion],
+    lightSettingsColorTemperatureMotion: metadata[PropertyName.DeviceLightSettingsColorTemperatureMotion],
+    lightSettingsBrightnessSchedule: metadata[PropertyName.DeviceLightSettingsBrightnessSchedule],
+    lightSettingsColorTemperatureSchedule: metadata[PropertyName.DeviceLightSettingsColorTemperatureSchedule],
+    lightSettingsMotionTriggered: metadata[PropertyName.DeviceLightSettingsMotionTriggered],
+    lightSettingsMotionActivationMode: metadata[PropertyName.DeviceLightSettingsMotionActivationMode],
+    lightSettingsMotionTriggeredDistance: metadata[PropertyName.DeviceLightSettingsMotionTriggeredDistance],
+    lightSettingsMotionTriggeredTimer: metadata[PropertyName.DeviceLightSettingsMotionTriggeredTimer],
     chimeIndoor: metadata[PropertyName.DeviceChimeIndoor],
     chimeHomebase: metadata[PropertyName.DeviceChimeHomebase],
-    chimeHomebaseRingtoneVolume:
-      metadata[PropertyName.DeviceChimeHomebaseRingtoneVolume],
-    chimeHomebaseRingtoneType:
-      metadata[PropertyName.DeviceChimeHomebaseRingtoneType],
+    chimeHomebaseRingtoneVolume: metadata[PropertyName.DeviceChimeHomebaseRingtoneVolume],
+    chimeHomebaseRingtoneType: metadata[PropertyName.DeviceChimeHomebaseRingtoneType],
     notificationType: metadata[PropertyName.DeviceNotificationType],
     rotationSpeed: metadata[PropertyName.DeviceRotationSpeed],
     imageMirrored: metadata[PropertyName.DeviceImageMirrored],
     notificationPerson: metadata[PropertyName.DeviceNotificationPerson],
     notificationPet: metadata[PropertyName.DeviceNotificationPet],
-    notificationAllOtherMotion:
-      metadata[PropertyName.DeviceNotificationAllOtherMotion],
+    notificationAllOtherMotion: metadata[PropertyName.DeviceNotificationAllOtherMotion],
     notificationCrying: metadata[PropertyName.DeviceNotificationCrying],
     notificationAllSound: metadata[PropertyName.DeviceNotificationAllSound],
-    notificationIntervalTime:
-      metadata[PropertyName.DeviceNotificationIntervalTime],
+    notificationIntervalTime: metadata[PropertyName.DeviceNotificationIntervalTime],
     notificationRing: metadata[PropertyName.DeviceNotificationRing],
     notificationMotion: metadata[PropertyName.DeviceNotificationMotion],
-    notificationRadarDetector:
-      metadata[PropertyName.DeviceNotificationRadarDetector],
+    notificationRadarDetector: metadata[PropertyName.DeviceNotificationRadarDetector],
     continuousRecording: metadata[PropertyName.DeviceContinuousRecording],
-    continuousRecordingType:
-      metadata[PropertyName.DeviceContinuousRecordingType],
+    continuousRecordingType: metadata[PropertyName.DeviceContinuousRecordingType],
     chirpVolume: metadata[PropertyName.DeviceChirpVolume],
     chirpTone: metadata[PropertyName.DeviceChirpTone],
     videoHdr: metadata[PropertyName.DeviceVideoHDR],
-    videoDistortionCorrection:
-      metadata[PropertyName.DeviceVideoDistortionCorrection],
+    videoDistortionCorrection: metadata[PropertyName.DeviceVideoDistortionCorrection],
     videoRingRecord: metadata[PropertyName.DeviceVideoRingRecord],
-    videoNightvisionImageAdjustment:
-      metadata[PropertyName.DeviceVideoNightvisionImageAdjustment],
+    videoNightvisionImageAdjustment: metadata[PropertyName.DeviceVideoNightvisionImageAdjustment],
     videoColorNightvision: metadata[PropertyName.DeviceVideoColorNightvision],
     autoCalibration: metadata[PropertyName.DeviceAutoCalibration],
     autoLock: metadata[PropertyName.DeviceAutoLock],
     autoLockTimer: metadata[PropertyName.DeviceAutoLockTimer],
     autoLockSchedule: metadata[PropertyName.DeviceAutoLockSchedule],
-    autoLockScheduleStartTime:
-      metadata[PropertyName.DeviceAutoLockScheduleStartTime],
-    autoLockScheduleEndTime:
-      metadata[PropertyName.DeviceAutoLockScheduleEndTime],
+    autoLockScheduleStartTime: metadata[PropertyName.DeviceAutoLockScheduleStartTime],
+    autoLockScheduleEndTime: metadata[PropertyName.DeviceAutoLockScheduleEndTime],
     oneTouchLocking: metadata[PropertyName.DeviceOneTouchLocking],
     wrongTryProtection: metadata[PropertyName.DeviceWrongTryProtection],
     wrongTryAttempts: metadata[PropertyName.DeviceWrongTryAttempts],
@@ -1366,78 +912,47 @@ export const dumpDevicePropertiesMetadata = (
     notificationUnlocked: metadata[PropertyName.DeviceNotificationUnlocked],
     notificationLocked: metadata[PropertyName.DeviceNotificationLocked],
     loiteringDetection: metadata[PropertyName.DeviceLoiteringDetection],
-    loiteringDetectionRange:
-      metadata[PropertyName.DeviceLoiteringDetectionRange],
-    loiteringDetectionLength:
-      metadata[PropertyName.DeviceLoiteringDetectionLength],
-    motionDetectionSensitivityMode:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityMode],
-    motionDetectionSensitivityStandard:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityStandard],
-    motionDetectionSensitivityAdvancedA:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedA],
-    motionDetectionSensitivityAdvancedB:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedB],
-    motionDetectionSensitivityAdvancedC:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedC],
-    motionDetectionSensitivityAdvancedD:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedD],
-    motionDetectionSensitivityAdvancedE:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedE],
-    motionDetectionSensitivityAdvancedF:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedF],
-    motionDetectionSensitivityAdvancedG:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedG],
-    motionDetectionSensitivityAdvancedH:
-      metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedH],
-    loiteringCustomResponsePhoneNotification:
-      metadata[PropertyName.DeviceLoiteringCustomResponsePhoneNotification],
-    loiteringCustomResponseAutoVoiceResponse:
-      metadata[PropertyName.DeviceLoiteringCustomResponseAutoVoiceResponse],
+    loiteringDetectionRange: metadata[PropertyName.DeviceLoiteringDetectionRange],
+    loiteringDetectionLength: metadata[PropertyName.DeviceLoiteringDetectionLength],
+    motionDetectionSensitivityMode: metadata[PropertyName.DeviceMotionDetectionSensitivityMode],
+    motionDetectionSensitivityStandard: metadata[PropertyName.DeviceMotionDetectionSensitivityStandard],
+    motionDetectionSensitivityAdvancedA: metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedA],
+    motionDetectionSensitivityAdvancedB: metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedB],
+    motionDetectionSensitivityAdvancedC: metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedC],
+    motionDetectionSensitivityAdvancedD: metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedD],
+    motionDetectionSensitivityAdvancedE: metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedE],
+    motionDetectionSensitivityAdvancedF: metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedF],
+    motionDetectionSensitivityAdvancedG: metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedG],
+    motionDetectionSensitivityAdvancedH: metadata[PropertyName.DeviceMotionDetectionSensitivityAdvancedH],
+    loiteringCustomResponsePhoneNotification: metadata[PropertyName.DeviceLoiteringCustomResponsePhoneNotification],
+    loiteringCustomResponseAutoVoiceResponse: metadata[PropertyName.DeviceLoiteringCustomResponseAutoVoiceResponse],
     loiteringCustomResponseAutoVoiceResponseVoice:
-      metadata[
-        PropertyName.DeviceLoiteringCustomResponseAutoVoiceResponseVoice
-      ],
+      metadata[PropertyName.DeviceLoiteringCustomResponseAutoVoiceResponseVoice],
     loiteringCustomResponseHomeBaseNotification:
       metadata[PropertyName.DeviceLoiteringCustomResponseHomeBaseNotification],
-    loiteringCustomResponseTimeFrom:
-      metadata[PropertyName.DeviceLoiteringCustomResponseTimeFrom],
-    loiteringCustomResponseTimeTo:
-      metadata[PropertyName.DeviceLoiteringCustomResponseTimeTo],
+    loiteringCustomResponseTimeFrom: metadata[PropertyName.DeviceLoiteringCustomResponseTimeFrom],
+    loiteringCustomResponseTimeTo: metadata[PropertyName.DeviceLoiteringCustomResponseTimeTo],
     deliveryGuard: metadata[PropertyName.DeviceDeliveryGuard],
-    deliveryGuardPackageGuarding:
-      metadata[PropertyName.DeviceDeliveryGuardPackageGuarding],
+    deliveryGuardPackageGuarding: metadata[PropertyName.DeviceDeliveryGuardPackageGuarding],
     deliveryGuardPackageGuardingVoiceResponseVoice:
-      metadata[
-        PropertyName.DeviceDeliveryGuardPackageGuardingVoiceResponseVoice
-      ],
+      metadata[PropertyName.DeviceDeliveryGuardPackageGuardingVoiceResponseVoice],
     deliveryGuardPackageGuardingActivatedTimeFrom:
-      metadata[
-        PropertyName.DeviceDeliveryGuardPackageGuardingActivatedTimeFrom
-      ],
+      metadata[PropertyName.DeviceDeliveryGuardPackageGuardingActivatedTimeFrom],
     deliveryGuardPackageGuardingActivatedTimeTo:
       metadata[PropertyName.DeviceDeliveryGuardPackageGuardingActivatedTimeTo],
-    deliveryGuardUncollectedPackageAlert:
-      metadata[PropertyName.DeviceDeliveryGuardUncollectedPackageAlert],
+    deliveryGuardUncollectedPackageAlert: metadata[PropertyName.DeviceDeliveryGuardUncollectedPackageAlert],
     deliveryGuardUncollectedPackageAlertTimeToCheck:
-      metadata[
-        PropertyName.DeviceDeliveryGuardUncollectedPackageAlertTimeToCheck
-      ],
-    deliveryGuardPackageLiveCheckAssistance:
-      metadata[PropertyName.DeviceDeliveryGuardPackageLiveCheckAssistance],
+      metadata[PropertyName.DeviceDeliveryGuardUncollectedPackageAlertTimeToCheck],
+    deliveryGuardPackageLiveCheckAssistance: metadata[PropertyName.DeviceDeliveryGuardPackageLiveCheckAssistance],
     dualCamWatchViewMode: metadata[PropertyName.DeviceDualCamWatchViewMode],
     ringAutoResponse: metadata[PropertyName.DeviceRingAutoResponse],
-    ringAutoResponseVoiceResponse:
-      metadata[PropertyName.DeviceRingAutoResponseVoiceResponse],
-    ringAutoResponseVoiceResponseVoice:
-      metadata[PropertyName.DeviceRingAutoResponseVoiceResponseVoice],
-    ringAutoResponseTimeFrom:
-      metadata[PropertyName.DeviceRingAutoResponseTimeFrom],
+    ringAutoResponseVoiceResponse: metadata[PropertyName.DeviceRingAutoResponseVoiceResponse],
+    ringAutoResponseVoiceResponseVoice: metadata[PropertyName.DeviceRingAutoResponseVoiceResponseVoice],
+    ringAutoResponseTimeFrom: metadata[PropertyName.DeviceRingAutoResponseTimeFrom],
     ringAutoResponseTimeTo: metadata[PropertyName.DeviceRingAutoResponseTimeTo],
     defaultAngle: metadata[PropertyName.DeviceDefaultAngle],
     defaultAngleIdleTime: metadata[PropertyName.DeviceDefaultAngleIdleTime],
-    soundDetectionRoundLook:
-      metadata[PropertyName.DeviceSoundDetectionRoundLook],
+    soundDetectionRoundLook: metadata[PropertyName.DeviceSoundDetectionRoundLook],
     packageDelivered: metadata[PropertyName.DevicePackageDelivered],
     packageStranded: metadata[PropertyName.DevicePackageStranded],
     packageTaken: metadata[PropertyName.DevicePackageTaken],
@@ -1448,25 +963,19 @@ export const dumpDevicePropertiesMetadata = (
     dualUnlock: metadata[PropertyName.DeviceDualUnlock],
     powerSave: metadata[PropertyName.DevicePowerSave],
     interiorBrightness: metadata[PropertyName.DeviceInteriorBrightness],
-    interiorBrightnessDuration:
-      metadata[PropertyName.DeviceInteriorBrightnessDuration],
+    interiorBrightnessDuration: metadata[PropertyName.DeviceInteriorBrightnessDuration],
     tamperAlarm: metadata[PropertyName.DeviceTamperAlarm],
     remoteUnlock: metadata[PropertyName.DeviceRemoteUnlock],
     remoteUnlockMasterPIN: metadata[PropertyName.DeviceRemoteUnlockMasterPIN],
     alarmVolume: metadata[PropertyName.DeviceAlarmVolume],
     promptVolume: metadata[PropertyName.DevicePromptVolume],
-    notificationUnlockByKey:
-      metadata[PropertyName.DeviceNotificationUnlockByKey],
-    notificationUnlockByPIN:
-      metadata[PropertyName.DeviceNotificationUnlockByPIN],
-    notificationUnlockByFingerprint:
-      metadata[PropertyName.DeviceNotificationUnlockByFingerprint],
-    notificationUnlockByApp:
-      metadata[PropertyName.DeviceNotificationUnlockByApp],
+    notificationUnlockByKey: metadata[PropertyName.DeviceNotificationUnlockByKey],
+    notificationUnlockByPIN: metadata[PropertyName.DeviceNotificationUnlockByPIN],
+    notificationUnlockByFingerprint: metadata[PropertyName.DeviceNotificationUnlockByFingerprint],
+    notificationUnlockByApp: metadata[PropertyName.DeviceNotificationUnlockByApp],
     notificationDualUnlock: metadata[PropertyName.DeviceNotificationDualUnlock],
     notificationDualLock: metadata[PropertyName.DeviceNotificationDualLock],
-    notificationWrongTryProtect:
-      metadata[PropertyName.DeviceNotificationWrongTryProtect],
+    notificationWrongTryProtect: metadata[PropertyName.DeviceNotificationWrongTryProtect],
     notificationJammed: metadata[PropertyName.DeviceNotificationJammed],
     jammedAlert: metadata[PropertyName.DeviceJammedAlert],
     "911Alert": metadata[PropertyName.Device911Alert],
@@ -1485,12 +994,9 @@ export const dumpDevicePropertiesMetadata = (
     dogDetected: metadata[PropertyName.DeviceDogDetected],
     dogLickDetected: metadata[PropertyName.DeviceDogLickDetected],
     dogPoopDetected: metadata[PropertyName.DeviceDogPoopDetected],
-    detectionStatisticsWorkingDays:
-      metadata[PropertyName.DeviceDetectionStatisticsWorkingDays],
-    detectionStatisticsDetectedEvents:
-      metadata[PropertyName.DeviceDetectionStatisticsDetectedEvents],
-    detectionStatisticsRecordedEvents:
-      metadata[PropertyName.DeviceDetectionStatisticsRecordedEvents],
+    detectionStatisticsWorkingDays: metadata[PropertyName.DeviceDetectionStatisticsWorkingDays],
+    detectionStatisticsDetectedEvents: metadata[PropertyName.DeviceDetectionStatisticsDetectedEvents],
+    detectionStatisticsRecordedEvents: metadata[PropertyName.DeviceDetectionStatisticsRecordedEvents],
   };
 
   if (schemaVersion <= 14) {
@@ -1507,8 +1013,7 @@ export const dumpDevicePropertiesMetadata = (
   }
 
   result["cellularRSSI"] = metadata[PropertyName.DeviceCellularRSSI];
-  result["cellularSignalLevel"] =
-    metadata[PropertyName.DeviceCellularSignalLevel];
+  result["cellularSignalLevel"] = metadata[PropertyName.DeviceCellularSignalLevel];
   result["cellularSignal"] = metadata[PropertyName.DeviceCellularSignal];
   result["cellularBand"] = metadata[PropertyName.DeviceCellularBand];
   result["cellularIMEI"] = metadata[PropertyName.DeviceCellularIMEI];
@@ -1525,72 +1030,46 @@ export const dumpDevicePropertiesMetadata = (
     return result;
   }
 
-  result["lightSettingsManualLightingActiveMode"] =
-    metadata[PropertyName.DeviceLightSettingsManualLightingActiveMode];
-  result["lightSettingsManualDailyLighting"] =
-    metadata[PropertyName.DeviceLightSettingsManualDailyLighting];
-  result["lightSettingsManualColoredLighting"] =
-    metadata[PropertyName.DeviceLightSettingsManualColoredLighting];
-  result["lightSettingsManualDynamicLighting"] =
-    metadata[PropertyName.DeviceLightSettingsManualDynamicLighting];
-  result["lightSettingsMotionLightingActiveMode"] =
-    metadata[PropertyName.DeviceLightSettingsMotionLightingActiveMode];
-  result["lightSettingsMotionDailyLighting"] =
-    metadata[PropertyName.DeviceLightSettingsMotionDailyLighting];
-  result["lightSettingsMotionColoredLighting"] =
-    metadata[PropertyName.DeviceLightSettingsMotionColoredLighting];
-  result["lightSettingsMotionDynamicLighting"] =
-    metadata[PropertyName.DeviceLightSettingsMotionDynamicLighting];
+  result["lightSettingsManualLightingActiveMode"] = metadata[PropertyName.DeviceLightSettingsManualLightingActiveMode];
+  result["lightSettingsManualDailyLighting"] = metadata[PropertyName.DeviceLightSettingsManualDailyLighting];
+  result["lightSettingsManualColoredLighting"] = metadata[PropertyName.DeviceLightSettingsManualColoredLighting];
+  result["lightSettingsManualDynamicLighting"] = metadata[PropertyName.DeviceLightSettingsManualDynamicLighting];
+  result["lightSettingsMotionLightingActiveMode"] = metadata[PropertyName.DeviceLightSettingsMotionLightingActiveMode];
+  result["lightSettingsMotionDailyLighting"] = metadata[PropertyName.DeviceLightSettingsMotionDailyLighting];
+  result["lightSettingsMotionColoredLighting"] = metadata[PropertyName.DeviceLightSettingsMotionColoredLighting];
+  result["lightSettingsMotionDynamicLighting"] = metadata[PropertyName.DeviceLightSettingsMotionDynamicLighting];
   result["lightSettingsScheduleLightingActiveMode"] =
     metadata[PropertyName.DeviceLightSettingsScheduleLightingActiveMode];
-  result["lightSettingsScheduleDailyLighting"] =
-    metadata[PropertyName.DeviceLightSettingsScheduleDailyLighting];
-  result["lightSettingsScheduleColoredLighting"] =
-    metadata[PropertyName.DeviceLightSettingsScheduleColoredLighting];
-  result["lightSettingsScheduleDynamicLighting"] =
-    metadata[PropertyName.DeviceLightSettingsScheduleDynamicLighting];
-  result["lightSettingsColoredLightingColors"] =
-    metadata[PropertyName.DeviceLightSettingsColoredLightingColors];
-  result["lightSettingsDynamicLightingThemes"] =
-    metadata[PropertyName.DeviceLightSettingsDynamicLightingThemes];
-  result["doorControlWarning"] =
-    metadata[PropertyName.DeviceDoorControlWarning];
+  result["lightSettingsScheduleDailyLighting"] = metadata[PropertyName.DeviceLightSettingsScheduleDailyLighting];
+  result["lightSettingsScheduleColoredLighting"] = metadata[PropertyName.DeviceLightSettingsScheduleColoredLighting];
+  result["lightSettingsScheduleDynamicLighting"] = metadata[PropertyName.DeviceLightSettingsScheduleDynamicLighting];
+  result["lightSettingsColoredLightingColors"] = metadata[PropertyName.DeviceLightSettingsColoredLightingColors];
+  result["lightSettingsDynamicLightingThemes"] = metadata[PropertyName.DeviceLightSettingsDynamicLightingThemes];
+  result["doorControlWarning"] = metadata[PropertyName.DeviceDoorControlWarning];
   result["door1Open"] = metadata[PropertyName.DeviceDoor1Open];
   result["door2Open"] = metadata[PropertyName.DeviceDoor2Open];
   result["doorSensor1Status"] = metadata[PropertyName.DeviceDoorSensor1Status];
   result["doorSensor2Status"] = metadata[PropertyName.DeviceDoorSensor2Status];
-  result["doorSensor1MacAddress"] =
-    metadata[PropertyName.DeviceDoorSensor1MacAddress];
-  result["doorSensor2MacAddress"] =
-    metadata[PropertyName.DeviceDoorSensor2MacAddress];
+  result["doorSensor1MacAddress"] = metadata[PropertyName.DeviceDoorSensor1MacAddress];
+  result["doorSensor2MacAddress"] = metadata[PropertyName.DeviceDoorSensor2MacAddress];
   result["doorSensor1Name"] = metadata[PropertyName.DeviceDoorSensor1Name];
   result["doorSensor2Name"] = metadata[PropertyName.DeviceDoorSensor2Name];
-  result["doorSensor1SerialNumber"] =
-    metadata[PropertyName.DeviceDoorSensor1SerialNumber];
-  result["doorSensor2SerialNumber"] =
-    metadata[PropertyName.DeviceDoorSensor2SerialNumber];
-  result["doorSensor1Version"] =
-    metadata[PropertyName.DeviceDoorSensor1Version];
-  result["doorSensor2Version"] =
-    metadata[PropertyName.DeviceDoorSensor2Version];
-  result["doorSensor1LowBattery"] =
-    metadata[PropertyName.DeviceDoorSensor1LowBattery];
-  result["doorSensor2LowBattery"] =
-    metadata[PropertyName.DeviceDoorSensor2LowBattery];
-  result["doorSensor1BatteryLevel"] =
-    metadata[PropertyName.DeviceDoorSensor1BatteryLevel];
-  result["doorSensor2BatteryLevel"] =
-    metadata[PropertyName.DeviceDoorSensor2BatteryLevel];
+  result["doorSensor1SerialNumber"] = metadata[PropertyName.DeviceDoorSensor1SerialNumber];
+  result["doorSensor2SerialNumber"] = metadata[PropertyName.DeviceDoorSensor2SerialNumber];
+  result["doorSensor1Version"] = metadata[PropertyName.DeviceDoorSensor1Version];
+  result["doorSensor2Version"] = metadata[PropertyName.DeviceDoorSensor2Version];
+  result["doorSensor1LowBattery"] = metadata[PropertyName.DeviceDoorSensor1LowBattery];
+  result["doorSensor2LowBattery"] = metadata[PropertyName.DeviceDoorSensor2LowBattery];
+  result["doorSensor1BatteryLevel"] = metadata[PropertyName.DeviceDoorSensor1BatteryLevel];
+  result["doorSensor2BatteryLevel"] = metadata[PropertyName.DeviceDoorSensor2BatteryLevel];
 
   if (schemaVersion <= 19) {
     return result;
   }
 
-  result["locationCoordinates"] =
-    metadata[PropertyName.DeviceLocationCoordinates];
+  result["locationCoordinates"] = metadata[PropertyName.DeviceLocationCoordinates];
   result["locationAddress"] = metadata[PropertyName.DeviceLocationAddress];
-  result["locationLastUpdate"] =
-    metadata[PropertyName.DeviceLocationLastUpdate];
+  result["locationLastUpdate"] = metadata[PropertyName.DeviceLocationLastUpdate];
   result["trackerType"] = metadata[PropertyName.DeviceTrackerType];
   result["leftBehindAlarm"] = metadata[PropertyName.DeviceLeftBehindAlarm];
   result["findPhone"] = metadata[PropertyName.DeviceFindPhone];
@@ -1600,39 +1079,29 @@ export const dumpDevicePropertiesMetadata = (
   }
 
   // All schemas >= 21
-  result["notificationVehicle"] =
-    metadata[PropertyName.DeviceNotificationVehicle];
+  result["notificationVehicle"] = metadata[PropertyName.DeviceNotificationVehicle];
   result["flickerAdjustment"] = metadata[PropertyName.DeviceFlickerAdjustment];
   result["leavingDetection"] = metadata[PropertyName.DeviceLeavingDetection];
-  result["leavingReactionNotification"] =
-    metadata[PropertyName.DeviceLeavingReactionNotification];
-  result["leavingReactionStartTime"] =
-    metadata[PropertyName.DeviceLeavingReactionStartTime];
-  result["leavingReactionEndTime"] =
-    metadata[PropertyName.DeviceLeavingReactionEndTime];
+  result["leavingReactionNotification"] = metadata[PropertyName.DeviceLeavingReactionNotification];
+  result["leavingReactionStartTime"] = metadata[PropertyName.DeviceLeavingReactionStartTime];
+  result["leavingReactionEndTime"] = metadata[PropertyName.DeviceLeavingReactionEndTime];
   result["someoneGoing"] = metadata[PropertyName.DeviceSomeoneGoing];
   result["lockEventOrigin"] = metadata[PropertyName.DeviceLockEventOrigin];
   result["beepVolume"] = metadata[PropertyName.DeviceBeepVolume];
-  result["nightvisionOptimization"] =
-    metadata[PropertyName.DeviceNightvisionOptimization];
-  result["nightvisionOptimizationSide"] =
-    metadata[PropertyName.DeviceNightvisionOptimizationSide];
+  result["nightvisionOptimization"] = metadata[PropertyName.DeviceNightvisionOptimization];
+  result["nightvisionOptimizationSide"] = metadata[PropertyName.DeviceNightvisionOptimizationSide];
   result["deliveries"] = metadata[PropertyName.DeviceDeliveries];
   result["openMethod"] = metadata[PropertyName.DeviceOpenMethod];
-  result["motionActivatedPrompt"] =
-    metadata[PropertyName.DeviceMotionActivatedPrompt];
+  result["motionActivatedPrompt"] = metadata[PropertyName.DeviceMotionActivatedPrompt];
   result["open"] = metadata[PropertyName.DeviceOpen];
   result["openedByType"] = metadata[PropertyName.DeviceOpenedByType];
   result["openedByName"] = metadata[PropertyName.DeviceOpenedByName];
   result["tamperingAlert"] = metadata[PropertyName.DeviceTamperingAlert];
-  result["lowTemperatureAlert"] =
-    metadata[PropertyName.DeviceLowTemperatureAlert];
-  result["highTemperatureAlert"] =
-    metadata[PropertyName.DeviceHighTemperatureAlert];
+  result["lowTemperatureAlert"] = metadata[PropertyName.DeviceLowTemperatureAlert];
+  result["highTemperatureAlert"] = metadata[PropertyName.DeviceHighTemperatureAlert];
   result["lidStuckAlert"] = metadata[PropertyName.DeviceLidStuckAlert];
   result["pinIncorrectAlert"] = metadata[PropertyName.DevicePinIncorrectAlert];
-  result["batteryFullyChargedAlert"] =
-    metadata[PropertyName.DeviceBatteryFullyChargedAlert];
+  result["batteryFullyChargedAlert"] = metadata[PropertyName.DeviceBatteryFullyChargedAlert];
   result["isDeliveryDenied"] = metadata[PropertyName.DeviceIsDeliveryDenied];
   result["hasMasterPin"] = metadata[PropertyName.DeviceHasMasterPin];
 
