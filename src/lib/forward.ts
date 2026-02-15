@@ -9,17 +9,9 @@ import {
   Station,
   StreamMetadata,
   VideoCodec,
-  AlarmEvent,
-  SmartSafeAlarm911Event,
-  SmartSafeShakeAlarmEvent,
   TalkbackStream,
   Schedule,
   Picture,
-  DatabaseReturnCode,
-  DatabaseQueryLatestInfo,
-  DatabaseQueryLocal,
-  DatabaseQueryByDate,
-  DatabaseCountByDate,
 } from "eufy-security-client";
 import { Readable } from "stream";
 import { ILogObj, Logger } from "tslog";
@@ -238,7 +230,7 @@ export class EventForwarder {
       (station: Station, device: Device, metadata: StreamMetadata, videostream: Readable, audiostream: Readable) => {
         const serialNumber = device.getSerial();
         this.clients.clients
-          .filter((cl) => cl.receiveLivestream[serialNumber] === true && cl.isConnected)
+          .filter((cl) => cl.receiveLivestream[serialNumber] && cl.isConnected)
           .forEach((client) => {
             if (client.schemaVersion >= 2) {
               client.sendEvent({
@@ -250,7 +242,7 @@ export class EventForwarder {
           });
         videostream.on("data", (chunk: Buffer) => {
           this.clients.clients
-            .filter((cl) => cl.receiveLivestream[serialNumber] === true && cl.isConnected)
+            .filter((cl) => cl.receiveLivestream[serialNumber] && cl.isConnected)
             .forEach((client) => {
               if (client.schemaVersion >= 2) {
                 client.sendEvent({
@@ -270,7 +262,7 @@ export class EventForwarder {
         });
         audiostream.on("data", (chunk: Buffer) => {
           this.clients.clients
-            .filter((cl) => cl.receiveLivestream[serialNumber] === true && cl.isConnected)
+            .filter((cl) => cl.receiveLivestream[serialNumber] && cl.isConnected)
             .forEach((client) => {
               if (client.schemaVersion >= 2) {
                 client.sendEvent({
@@ -291,7 +283,7 @@ export class EventForwarder {
     this.clients.driver.on("station livestream stop", (station: Station, device: Device) => {
       const serialNumber = device.getSerial();
       this.clients.clients
-        .filter((cl) => cl.receiveLivestream[serialNumber] === true && cl.isConnected)
+        .filter((cl) => cl.receiveLivestream[serialNumber] && cl.isConnected)
         .forEach((client) => {
           if (client.schemaVersion >= 2) {
             client.sendEvent({
@@ -310,7 +302,7 @@ export class EventForwarder {
       (station: Station, device: Device, metadata: StreamMetadata, videostream: Readable, audiostream: Readable) => {
         const serialNumber = device.getSerial();
         this.clients.clients
-          .filter((cl) => cl.receiveDownloadStream[serialNumber] === true && cl.isConnected)
+          .filter((cl) => cl.receiveDownloadStream[serialNumber] && cl.isConnected)
           .forEach((client) => {
             if (client.schemaVersion >= 3) {
               client.sendEvent({
@@ -322,7 +314,7 @@ export class EventForwarder {
           });
         videostream.on("data", (chunk: Buffer) => {
           this.clients.clients
-            .filter((cl) => cl.receiveDownloadStream[serialNumber] === true && cl.isConnected)
+            .filter((cl) => cl.receiveDownloadStream[serialNumber] && cl.isConnected)
             .forEach((client) => {
               if (client.schemaVersion >= 3) {
                 client.sendEvent({
@@ -342,7 +334,7 @@ export class EventForwarder {
         });
         audiostream.on("data", (chunk: Buffer) => {
           this.clients.clients
-            .filter((cl) => cl.receiveDownloadStream[serialNumber] === true && cl.isConnected)
+            .filter((cl) => cl.receiveDownloadStream[serialNumber] && cl.isConnected)
             .forEach((client) => {
               if (client.schemaVersion >= 3) {
                 client.sendEvent({
@@ -363,7 +355,7 @@ export class EventForwarder {
     this.clients.driver.on("station download finish", (station: Station, device: Device) => {
       const serialNumber = device.getSerial();
       this.clients.clients
-        .filter((cl) => cl.receiveDownloadStream[serialNumber] === true && cl.isConnected)
+        .filter((cl) => cl.receiveDownloadStream[serialNumber] && cl.isConnected)
         .forEach((client) => {
           if (client.schemaVersion >= 3) {
             client.sendEvent({
@@ -504,7 +496,7 @@ export class EventForwarder {
     this.clients.driver.on("station talkback stop", (station: Station, device: Device) => {
       const serialNumber = device.getSerial();
       this.clients.clients
-        .filter((cl) => cl.sendTalkbackStream[serialNumber] === true && cl.isConnected)
+        .filter((cl) => cl.sendTalkbackStream[serialNumber] && cl.isConnected)
         .forEach((client) => {
           if (client.schemaVersion >= 13) {
             client.sendEvent({
@@ -553,38 +545,23 @@ export class EventForwarder {
   }
 
   private setupStation(station: Station): void {
-    station.on("connect", () => {
-      this.forwardEvent(
-        {
-          source: "station",
-          event: StationEvent.connected,
-          serialNumber: station.getSerial(),
-        },
-        0
-      );
-    });
+    for (const { name, src, event, minSchemaVersion, map } of schemaStationForwardTopic) {
+      // Attach the listen and allow any args to be added
+      station.on(name, (...args: any[]) => {
+        const [item, ...rest] = args;
 
-    station.on("close", () => {
-      this.forwardEvent(
-        {
-          source: "station",
-          event: StationEvent.disconnected,
-          serialNumber: station.getSerial(),
-        },
-        0
-      );
-    });
-
-    station.on("connection error", () => {
-      this.forwardEvent(
-        {
-          source: "station",
-          event: StationEvent.connectionError,
-          serialNumber: station.getSerial(),
-        },
-        13
-      );
-    });
+        this.forwardEvent(
+          {
+            source: src,
+            event: event,
+            serialNumber: station.getSerial(), //it can be a device or station
+            // Cast 'args' as a tuple of [any, ...any[]] to satisfy the spread requirement
+            ...(map ? map(...(args as [any, ...any[]])) : {}),
+          },
+          minSchemaVersion
+        );
+      });
+    }
 
     station.on("guard mode", (station: Station, guardMode: number) => {
       // Event for schemaVersion <= 2
@@ -636,22 +613,12 @@ export class EventForwarder {
       );
     });
 
-    station.on("alarm event", (station: Station, alarmEvent: AlarmEvent) => {
-      this.forwardEvent(
-        {
-          source: "station",
-          event: StationEvent.alarmEvent,
-          serialNumber: station.getSerial(),
-          alarmEvent: alarmEvent,
-        },
-        3
-      );
-    });
-
     station.on("rtsp url", (station: Station, channel: number, value: string) => {
+      console.log("yes");
       this.clients.driver
         .getStationDevice(station.getSerial(), channel)
         .then((device: Device) => {
+          console.log("FUCKKK", value, device.getSerial());
           this.forwardEvent(
             {
               source: "device",
@@ -883,60 +850,6 @@ export class EventForwarder {
       }
     });
 
-    for (const { name, src, event, minSchemaVersion, map } of schemaStationForwardTopic) {
-      // Attach the listen and allow any args to be added
-      station.on(name, (...args: any[]) => {
-        const [item, ...rest] = args;
-
-        this.forwardEvent(
-          {
-            source: src,
-            event: event,
-            serialNumber: item.getSerial(), //it can be a device or station
-            // Cast 'args' as a tuple of [any, ...any[]] to satisfy the spread requirement
-            ...(map ? map(...(args as [any, ...any[]])) : { state: rest[0] }),
-          },
-          minSchemaVersion
-        );
-      });
-    }
-
-    // station.on("alarm delay event", (station: Station, alarmDelayEvent: AlarmEvent, alarmDelay: number) => {
-    //   this.forwardEvent(
-    //     {
-    //       source: "station",
-    //       event: StationEvent.alarmDelayEvent,
-    //       serialNumber: station.getSerial(),
-    //       alarmDelayEvent: alarmDelayEvent,
-    //       alarmDelay: alarmDelay,
-    //     },
-    //     11
-    //   );
-    // });
-
-    // station.on("alarm armed event", (station: Station) => {
-    //   this.forwardEvent(
-    //     {
-    //       source: "station",
-    //       event: StationEvent.alarmArmedEvent,
-    //       serialNumber: station.getSerial(),
-    //     },
-    //     11
-    //   );
-    // });
-
-    // station.on("alarm arm delay event", (station: Station, armDelay: number) => {
-    //   this.forwardEvent(
-    //     {
-    //       source: "station",
-    //       event: StationEvent.alarmArmDelayEvent,
-    //       serialNumber: station.getSerial(),
-    //       armDelay: armDelay,
-    //     },
-    //     12
-    //   );
-    // });
-
     station.on("device pin verified", (deviceSN: string, successfull: boolean) => {
       this.forwardEvent(
         {
@@ -946,83 +859,6 @@ export class EventForwarder {
           successfull: successfull,
         },
         13
-      );
-    });
-
-    // station.on(
-    //   "database query latest",
-    //   (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLatestInfo>) => {
-    //     this.forwardEvent(
-    //       {
-    //         source: "station",
-    //         event: StationEvent.databaseQueryLatest,
-    //         serialNumber: station.getSerial(),
-    //         returnCode: returnCode,
-    //         data: data,
-    //       },
-    //       18
-    //     );
-    //   }
-    // );
-
-    // station.on(
-    //   "database query local",
-    //   (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLocal>) => {
-    //     this.forwardEvent(
-    //       {
-    //         source: "station",
-    //         event: StationEvent.databaseQueryLocal,
-    //         serialNumber: station.getSerial(),
-    //         returnCode: returnCode,
-    //         data: data,
-    //       },
-    //       18
-    //     );
-    //   }
-    // );
-
-    // station.on(
-    //   "database query by date",
-    //   (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryByDate>) => {
-    //     this.forwardEvent(
-    //       {
-    //         source: "station",
-    //         event: StationEvent.databaseQueryByDate,
-    //         serialNumber: station.getSerial(),
-    //         returnCode: returnCode,
-    //         data: data,
-    //       },
-    //       18
-    //     );
-    //   }
-    // );
-    //
-    // station.on(
-    //   "database count by date",
-    //   (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseCountByDate>) => {
-    //     this.forwardEvent(
-    //       {
-    //         source: "station",
-    //         event: StationEvent.databaseCountByDate,
-    //         serialNumber: station.getSerial(),
-    //         returnCode: returnCode,
-    //         data: data,
-    //       },
-    //       18
-    //     );
-    //   }
-    // );
-
-    station.on("database delete", (station: Station, returnCode: DatabaseReturnCode, failedIds: Array<unknown>) => {
-      this.forwardEvent(
-        {
-          source: "station",
-          event: StationEvent.databaseDelete,
-          serialNumber: station.getSerial(),
-          returnCode: returnCode,
-          failedIds: failedIds,
-        },
-        18
       );
     });
   }

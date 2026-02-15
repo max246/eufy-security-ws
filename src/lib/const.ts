@@ -32,9 +32,10 @@ export interface ForwardStationSchema<T = any, E = any> {
   src: ForwardSource;
   event: StationEvent | DeviceEvent;
   minSchemaVersion: number;
+  maxSchemaVersion?: number;
   /**
    * Optional mapper to format the payload.
-   * @param emitter The Device or Station instance
+   * @param emitter The Station instance
    * @param args The remaining arguments emitted by the event
    */
   map?: (emitter: T, ...args: any[]) => object;
@@ -47,13 +48,41 @@ export interface ForwardDeviceSchema<T = any, E = any> {
   minSchemaVersion: number;
   /**
    * Optional mapper to format the payload.
-   * @param emitter The Device or Station instance
+   * @param emitter The Device  instance
    * @param args The remaining arguments emitted by the event
    */
   map?: (emitter: T, ...args: any[]) => object;
 }
 
 export const schemaStationForwardTopic: ForwardStationSchema<Station, StationEvents>[] = [
+  {
+    name: "connect",
+    src: "station",
+    event: StationEvent.connected,
+    minSchemaVersion: 0,
+    map: (station: Station) => ({}),
+  },
+  {
+    name: "close",
+    src: "station",
+    event: StationEvent.disconnected,
+    minSchemaVersion: 0,
+    map: () => ({}),
+  },
+  {
+    name: "connection error",
+    src: "station",
+    event: StationEvent.connectionError,
+    minSchemaVersion: 13,
+    map: () => ({}),
+  },
+  {
+    name: "alarm event",
+    src: "station",
+    event: StationEvent.alarmEvent,
+    minSchemaVersion: 3,
+    map: (station: Station, alarmEvent: AlarmEvent) => ({ alarmEvent }),
+  },
   {
     name: "alarm delay event",
     src: "station",
@@ -66,6 +95,7 @@ export const schemaStationForwardTopic: ForwardStationSchema<Station, StationEve
     src: "station",
     event: StationEvent.alarmArmedEvent,
     minSchemaVersion: 11,
+    map: (st: Station) => ({}),
   },
   {
     name: "alarm arm delay event",
@@ -74,31 +104,22 @@ export const schemaStationForwardTopic: ForwardStationSchema<Station, StationEve
     minSchemaVersion: 12,
     map: (st: Station, armDelay: number) => ({ armDelay }),
   },
-  // {
-  //     name: "device pin verified",
-  //     src: "device",
-  //     event: DeviceEvent.pinVerified,
-  //     minSchemaVersion: 13,
-  //     map: (deviceSN: string, successful: boolean) => ({deviceSN, successful})
-  // },
   {
     name: "database query latest",
     src: "station",
     event: StationEvent.databaseQueryLatest,
     minSchemaVersion: 18,
     map: (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLatestInfo>) => ({
-      station,
       returnCode,
       data,
     }),
   },
   {
-    name: "database query latest",
+    name: "database query local",
     src: "station",
     event: StationEvent.databaseQueryLocal,
     minSchemaVersion: 18,
     map: (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryLocal>) => ({
-      station,
       returnCode,
       data,
     }),
@@ -109,7 +130,6 @@ export const schemaStationForwardTopic: ForwardStationSchema<Station, StationEve
     event: StationEvent.databaseQueryByDate,
     minSchemaVersion: 18,
     map: (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseQueryByDate>) => ({
-      station,
       returnCode,
       data,
     }),
@@ -120,7 +140,6 @@ export const schemaStationForwardTopic: ForwardStationSchema<Station, StationEve
     event: StationEvent.databaseCountByDate,
     minSchemaVersion: 18,
     map: (station: Station, returnCode: DatabaseReturnCode, data: Array<DatabaseCountByDate>) => ({
-      station,
       returnCode,
       data,
     }),
@@ -131,7 +150,6 @@ export const schemaStationForwardTopic: ForwardStationSchema<Station, StationEve
     event: StationEvent.databaseDelete,
     minSchemaVersion: 18,
     map: (station: Station, returnCode: DatabaseReturnCode, failedIds: Array<unknown>) => ({
-      station,
       returnCode,
       failedIds,
     }),

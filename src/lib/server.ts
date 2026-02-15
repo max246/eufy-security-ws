@@ -333,9 +333,9 @@ export class ClientsController {
     1005: "Closure without status (client implementation issue)",
     1006: "Abnormal Closure",
     1007: "Invalid frame payload data",
-    1008: "Policy Viollation",
+    1008: "Policy Violation",
     1009: "Message Too Big",
-    1010: "Mantatory Extension",
+    1010: "Mandatory Extension",
     1011: "Internal Error",
     1012: "Service Restart",
     1013: "Try Again Later",
@@ -434,7 +434,7 @@ export class ClientsController {
                 const streamingDevices = DeviceMessageHandler.getStreamingDevices(station.getSerial());
 
                 if (
-                  client.receiveLivestream[serialNumber] === true &&
+                  client.receiveLivestream[serialNumber] &&
                   streamingDevices.length === 1 &&
                   streamingDevices.includes(client)
                 ) {
@@ -462,7 +462,7 @@ export class ClientsController {
                 const downloadingDevices = DeviceMessageHandler.getDownloadingDevices(station.getSerial());
 
                 if (
-                  client.receiveDownloadStream[serialNumber] === true &&
+                  client.receiveDownloadStream[serialNumber] &&
                   downloadingDevices.length === 1 &&
                   downloadingDevices.includes(client)
                 ) {
@@ -490,7 +490,7 @@ export class ClientsController {
                 const talkbackingDevices = DeviceMessageHandler.getTalkbackingDevices(station.getSerial());
 
                 if (
-                  client.sendTalkbackStream[serialNumber] === true &&
+                  client.sendTalkbackStream[serialNumber] &&
                   talkbackingDevices.length === 1 &&
                   talkbackingDevices.includes(client)
                 ) {
