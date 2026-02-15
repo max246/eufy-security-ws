@@ -38,6 +38,14 @@ To try it out or for more information, such as API documentation, Docker image, 
 
 Instructions aimed at maintainers for deploying a new version: [Deployment](docs/deployment.md)
 
+### Security warning `CVE-2023-46809`
+
+When starting the Docker container, you may see a log line:
+
+    SECURITY WARNING: Reverting CVE-2023-46809: Marvin attack on PKCS#1 padding
+
+This is expected and can be safely ignored, as the Eufy client still requires `RSA_PKCS1_PADDING` for cloud decryption. No code or runtime behavior is changed.
+
 
 ## Changelog
 

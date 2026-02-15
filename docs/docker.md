@@ -45,3 +45,14 @@ docker run -it \
     -p 3000:3000 \
     bropat/eufy-security-ws:latest
 ```
+
+### Security warning regarding CVE-2023-46809
+
+When starting the Docker container, you may see the following log line:
+
+    SECURITY WARNING: Reverting CVE-2023-46809: Marvin attack on PKCS#1 padding
+
+This warning is expected and cannot be removed, because `eufy-security-client` still requires `RSA_PKCS1_PADDING` for Eufy cloud decryption. The Node.js security fix is intentionally reverted to keep the integration working.
+
+You can safely ignore this message; it does not indicate an error or security issue in your setup.
+
