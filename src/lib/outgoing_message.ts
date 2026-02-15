@@ -10,8 +10,10 @@ import { ServerEvent, OutgoingEventServer } from "./event.js";
 // https://github.com/microsoft/TypeScript/issues/1897#issuecomment-822032151
 export type JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue };
 
+export type ForwardSource = "driver" | "station" | "device" | "server";
+
 export interface OutgoingBaseEvent {
-  source: "driver" | "station" | "device" | "server";
+  source: ForwardSource;
   event: DeviceEvent | StationEvent | DriverEvent | ServerEvent;
 }
 

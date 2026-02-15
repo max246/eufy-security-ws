@@ -13,11 +13,10 @@ export const convertCamelCaseToSnakeCase = function (value: string | undefined):
   });
 };
 
-
 export const waitForEvent = function <T>(emitter: EventEmitter, event: string, timeout?: number): Promise<T> {
   return new Promise((resolve, reject) => {
     let internalTimeout: NodeJS.Timeout | undefined = undefined;
-    let fail: { (...args: any[]): void; (err: Error): void; (...args: any[]): void; (...args: any[]): void; };
+    let fail: { (...args: any[]): void; (err: Error): void; (...args: any[]): void; (...args: any[]): void };
 
     const success = (val: T): void => {
       emitter.off("error", fail);

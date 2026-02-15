@@ -33,7 +33,11 @@ import { DriverEvent } from "./driver/event.js";
 import { Client, ClientsController } from "./server.js";
 import { StationCommand } from "./station/command.js";
 import { DeviceCommand } from "./device/command.js";
-import {maxSchemaVersion as internalSchemaVersion, schemaForwardTopic} from "./const.js";
+import {
+  maxSchemaVersion as internalSchemaVersion,
+  schemaDeviceForwardTopic,
+  schemaStationForwardTopic,
+} from "./const.js";
 import { DeviceMessageHandler } from "./device/message_handler.js";
 import { DriverMessageHandler } from "./driver/message_handler.js";
 import { convertCamelCaseToSnakeCase } from "./utils.js";
@@ -402,9 +406,6 @@ export class EventForwarder {
           }
         });
     });
-
-
-
 
     this.clients.driver.on("user added", (device: Device, username: string, schedule?: Schedule) => {
       this.forwardEvent(
@@ -882,24 +883,23 @@ export class EventForwarder {
       }
     });
 
+    for (const { name, src, event, minSchemaVersion, map } of schemaStationForwardTopic) {
+      // Attach the listen and allow any args to be added
+      station.on(name, (...args: any[]) => {
+        const [item, ...rest] = args;
 
-      for (const { name, src, event, schema, map } of schemaForwardTopic) {
-
-          // Attach the listen and allow any args to be added
-          station.on(name, (...args: any[]) => {
-              const [item, ...rest] = args;
-
-              this.forwardEvent({
-                  source: src,
-                  event: event,
-                  serialNumber: item.getSerial(), //it can be a device or station
-                  // If map exists, use it. If not, default to the first extra arg as 'state'
-                  ...(map ? map(...args) : { state: rest[0] })
-              }, schema);
-          })
-      }
-
-
+        this.forwardEvent(
+          {
+            source: src,
+            event: event,
+            serialNumber: item.getSerial(), //it can be a device or station
+            // Cast 'args' as a tuple of [any, ...any[]] to satisfy the spread requirement
+            ...(map ? map(...(args as [any, ...any[]])) : { state: rest[0] }),
+          },
+          minSchemaVersion
+        );
+      });
+    }
 
     // station.on("alarm delay event", (station: Station, alarmDelayEvent: AlarmEvent, alarmDelay: number) => {
     //   this.forwardEvent(
@@ -937,17 +937,17 @@ export class EventForwarder {
     //   );
     // });
 
-    // station.on("device pin verified", (deviceSN: string, successfull: boolean) => {
-    //   this.forwardEvent(
-    //     {
-    //       source: "device",
-    //       event: DeviceEvent.pinVerified,
-    //       serialNumber: deviceSN,
-    //       successfull: successfull,
-    //     },
-    //     13
-    //   );
-    // });
+    station.on("device pin verified", (deviceSN: string, successfull: boolean) => {
+      this.forwardEvent(
+        {
+          source: "device",
+          event: DeviceEvent.pinVerified,
+          serialNumber: deviceSN,
+          successfull: successfull,
+        },
+        13
+      );
+    });
 
     // station.on(
     //   "database query latest",
@@ -1013,328 +1013,38 @@ export class EventForwarder {
     //   }
     // );
 
-  //   station.on("database delete", (station: Station, returnCode: DatabaseReturnCode, failedIds: Array<unknown>) => {
-  //     this.forwardEvent(
-  //       {
-  //         source: "station",
-  //         event: StationEvent.databaseDelete,
-  //         serialNumber: station.getSerial(),
-  //         returnCode: returnCode,
-  //         failedIds: failedIds,
-  //       },
-  //       18
-  //     );
-  //   });
+    station.on("database delete", (station: Station, returnCode: DatabaseReturnCode, failedIds: Array<unknown>) => {
+      this.forwardEvent(
+        {
+          source: "station",
+          event: StationEvent.databaseDelete,
+          serialNumber: station.getSerial(),
+          returnCode: returnCode,
+          failedIds: failedIds,
+        },
+        18
+      );
+    });
   }
 
   private setupDevice(device: Device): void {
+    for (const { name, src, event, minSchemaVersion, map } of schemaDeviceForwardTopic) {
+      // Attach the listen and allow any args to be added
+      device.on(name, (...args: any[]) => {
+        const [item, ...rest] = args;
 
-      for (const { name, src, event, schema, map } of schemaForwardTopic) {
-
-          // Attach the listen and allow any args to be added
-          device.on(name, (...args: any[]) => {
-              const [item, ...rest] = args;
-
-              this.forwardEvent({
-                  source: src,
-                  event: event,
-                  serialNumber: item.getSerial(), //it can be a device or station
-                  // If map exists, use it. If not, default to the first extra arg as 'state'
-                  ...(map ? map(...args) : { state: rest[0] })
-              }, schema);
-          })
-      }
-
-    //   device.on("motion detected", (device: Device, state: boolean) => {
-    //   this.forwardEvent(
-    //     {
-    //       source: "device",
-    //       event: DeviceEvent.motionDetected,
-    //       serialNumber: device.getSerial(),
-    //       state: state,
-    //     },
-    //     0
-    //   );
-    // });
-
-    device.on("person detected", (device: Device, state: boolean, person: string) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.personDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-          person: person,
-        },
-        0
-      );
-    });
-
-    device.on("crying detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.cryingDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        0
-      );
-    });
-
-    device.on("pet detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.petDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        0
-      );
-    });
-
-    device.on("vehicle detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.vehicleDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        14
-      );
-    });
-
-    device.on("sound detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.soundDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        0
-      );
-    });
-
-    device.on("rings", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.rings,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        0
-      );
-    });
-
-    device.on("package delivered", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.packageDelivered,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        13
-      );
-    });
-
-    device.on("package stranded", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.packageStranded,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        13
-      );
-    });
-
-    device.on("package taken", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.packageTaken,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        13
-      );
-    });
-
-    device.on("someone loitering", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.someoneLoitering,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        13
-      );
-    });
-
-    device.on("radar motion detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.radarMotionDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        13
-      );
-    });
-
-    device.on("open", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.sensorOpen,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        0
-      );
-    });
-
-    device.on("911 alarm", (device: Device, state: boolean, detail: SmartSafeAlarm911Event) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.alarm911,
-          serialNumber: device.getSerial(),
-          state: state,
-          detail: detail,
-        },
-        13
-      );
-    });
-
-    device.on("shake alarm", (device: Device, state: boolean, detail: SmartSafeShakeAlarmEvent) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.shakeAlarm,
-          serialNumber: device.getSerial(),
-          state: state,
-          detail: detail,
-        },
-        13
-      );
-    });
-
-    device.on("wrong try-protect alarm", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.wrongTryProtectAlarm,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        13
-      );
-    });
-
-    device.on("long time not close", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.LongTimeNotClose,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        13
-      );
-    });
-
-    device.on("jammed", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.jammed,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        13
-      );
-    });
-
-    device.on("low battery", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.lowBattery,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        13
-      );
-    });
-
-    device.on("locked", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.locked,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        0
-      );
-    });
-
-    device.on("stranger person detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.strangerPersonDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        15
-      );
-    });
-
-    device.on("dog detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.dogDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        15
-      );
-    });
-
-    device.on("dog lick detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.dogLickDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        15
-      );
-    });
-
-    device.on("dog poop detected", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.dogPoopDetected,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        15
-      );
-    });
+        this.forwardEvent(
+          {
+            source: src,
+            event: event,
+            serialNumber: item.getSerial(), //it can be a device or station
+            // If map exists, use it. If not, default to the first extra arg as 'state'
+            ...(map ? map(...(args as [any, ...any[]])) : { state: rest[0] }),
+          },
+          minSchemaVersion
+        );
+      });
+    }
 
     device.on("property changed", (device: Device, name: string, value: PropertyValue, ready: boolean) => {
       if (ready && !name.startsWith("hidden-")) {
@@ -1361,90 +1071,6 @@ export class EventForwarder {
           10
         );
       }
-    });
-
-    device.on("open", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.open,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        21
-      );
-    });
-
-    device.on("tampering", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.tampering,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        21
-      );
-    });
-
-    device.on("low temperature", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.lowTemperature,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        21
-      );
-    });
-
-    device.on("high temperature", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.highTemperature,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        21
-      );
-    });
-
-    device.on("pin incorrect", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.pinIncorrect,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        21
-      );
-    });
-
-    device.on("lid stuck", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.lidStuck,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        21
-      );
-    });
-
-    device.on("battery fully charged", (device: Device, state: boolean) => {
-      this.forwardEvent(
-        {
-          source: "device",
-          event: DeviceEvent.batteryFullyCharged,
-          serialNumber: device.getSerial(),
-          state: state,
-        },
-        21
-      );
     });
   }
 }
