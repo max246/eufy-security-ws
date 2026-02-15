@@ -1,7 +1,8 @@
 FROM node:20-alpine3.18 AS build
 WORKDIR /tmp
 COPY . .
-RUN npm ci && npm run build
+RUN npm ci --verbose --foreground-scripts
+RUN npm run build --verbose
 
 FROM node:20-alpine3.18 AS prod
 WORKDIR /tmp_prod
