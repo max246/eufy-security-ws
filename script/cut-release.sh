@@ -26,8 +26,12 @@ sed -i 's/version": .*/version": "'$VERSION'",/' package.json
 sed -i 's|<small>.*</small>|<small>'$VERSION'</small>|' docs/_coverpage.md
 sed -i 's/eufy-security-client": .*/eufy-security-client": "'$CLIENT_VERSION'",/' package.json
 
+# Make the package-lock update
+npm i
+
 # Add file to the branch and commit
 git add package.json
+git add package-lock.json
 git add docs/_coverpage.md
 git commit -m "Add new version"
 
