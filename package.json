@@ -7,7 +7,7 @@
   },
   "bin": {
     "eufy-security-server": "./dist/bin/server.js",
-    "eufy-security-client": "3.7.2",
+    "eufy-security-client": "./dist/bin/client.js"
   },
   "publishConfig": {
     "access": "public"
