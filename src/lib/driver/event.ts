@@ -22,8 +22,7 @@ export interface OutgoingEventDriverBase extends OutgoingBaseEvent {
   event: DriverEvent;
 }
 
-export interface OutgoingEventDriverCaptchaRequest
-  extends OutgoingEventDriverBase {
+export interface OutgoingEventDriverCaptchaRequest extends OutgoingEventDriverBase {
   source: "driver";
   event: DriverEvent.captchaRequest;
   captchaId: string;
@@ -42,8 +41,7 @@ export interface OutgoingEventDriverLogging extends OutgoingBaseEvent {
   message: LogMessage;
 }
 
-export interface OutgoingEventDriverConnectionError
-  extends OutgoingEventDriverBase {
+export interface OutgoingEventDriverConnectionError extends OutgoingEventDriverBase {
   source: "driver";
   event: DriverEvent.connectionError;
   error: Error;
