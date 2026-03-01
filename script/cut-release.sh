@@ -24,16 +24,16 @@ CLIENT_VERSION=$2
 # Update file
 jq --arg v "$VERSION" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
 sed -i 's|<small>.*</small>|<small>'$VERSION'</small>|' docs/_coverpage.md
-sed -i 's/eufy-security-client": .*/eufy-security-client": "'$CLIENT_VERSION'",/' package.json
+jq --arg v "$CLIENT_VERSION" '.dependencies["eufy-security-client"] = $v' package.json > package.json.tmp && mv package.json.tmp package.json
 
 # Make the package-lock update
 npm i
 
 # Add file to the branch and commit
-git add package.json
-git add package-lock.json
-git add docs/_coverpage.md
-git commit -m "Add new version"
-
-# Push
-git push --set-upstream origin "release/$VERSION"
+#git add package.json
+#git add package-lock.json
+#git add docs/_coverpage.md
+#git commit -m "Add new version"
+#
+## Push
+#git push --set-upstream origin "release/$VERSION"
