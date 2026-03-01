@@ -12,17 +12,17 @@ fi
 VERSION=$1
 CLIENT_VERSION=$2
 
-# Checkout develop
-git checkout develop
-
-# Pull the latest
-git pull origin develop
-
-# Make branch for the release
-git checkout -b "release/$VERSION" || exit 1
+## Checkout develop
+#git checkout develop
+#
+## Pull the latest
+#git pull origin develop
+#
+## Make branch for the release
+#git checkout -b "release/$VERSION" || exit 1
 
 # Update file
-sed -i 's/version": .*/version": "'$VERSION'",/' package.json
+jq --arg v "$VERSION" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
 sed -i 's|<small>.*</small>|<small>'$VERSION'</small>|' docs/_coverpage.md
 sed -i 's/eufy-security-client": .*/eufy-security-client": "'$CLIENT_VERSION'",/' package.json
 
