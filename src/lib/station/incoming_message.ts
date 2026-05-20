@@ -42,6 +42,14 @@ export interface IncomingCommandGetProperties extends IncomingCommandStationBase
   command: StationCommand.getProperties;
 }
 
+export interface IncomingCommandGetCameraInfo extends IncomingCommandStationBase {
+  command: StationCommand.getCameraInfo;
+}
+
+export interface IncomingCommandGetStorageInfo extends IncomingCommandStationBase {
+  command: StationCommand.getStorageInfo;
+}
+
 export interface IncomingCommandSetProperty extends IncomingCommandStationBase {
   command: StationCommand.setProperty;
   name: string;
@@ -124,6 +132,8 @@ export type IncomingMessageStation =
   | IncomingCommandDisconnect
   | IncomingCommandGetPropertiesMetadata
   | IncomingCommandGetProperties
+  | IncomingCommandGetCameraInfo
+  | IncomingCommandGetStorageInfo
   | IncomingCommandSetProperty
   | IncomingCommandTriggerAlarm
   | IncomingCommandResetAlarm

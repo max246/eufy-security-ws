@@ -5,6 +5,8 @@ export enum StationCommand {
   disconnect = "station.disconnect",
   getPropertiesMetadata = "station.get_properties_metadata",
   getProperties = "station.get_properties",
+  getCameraInfo = "station.get_camera_info",
+  getStorageInfo = "station.get_storage_info",
   setProperty = "station.set_property",
   hasProperty = "station.has_property",
   triggerAlarm = "station.trigger_alarm",

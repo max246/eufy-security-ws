@@ -16,6 +16,8 @@ export interface StationResultTypes {
     serialNumber?: string;
     properties: Record<string, unknown>;
   };
+  [StationCommand.getCameraInfo]: { async?: boolean };
+  [StationCommand.getStorageInfo]: { async?: boolean };
   [StationCommand.setProperty]: { async?: boolean };
   [StationCommand.triggerAlarm]: { async?: boolean };
   [StationCommand.resetAlarm]: { async?: boolean };

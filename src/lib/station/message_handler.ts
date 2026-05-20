@@ -66,16 +66,12 @@ export class StationMessageHandler {
           throw new UnknownCommandError(command);
         }
       }
-      /*case StationCommand.getCameraInfo:
-                await station.getCameraInfo().catch((error) => {
-                    throw error;
-                });
-                return client.schemaVersion >= 13 ? { async: true } : {};
-            case StationCommand.getStorageInfo:
-                await station.getStorageInfo().catch((error) => {
-                    throw error;
-                });
-                return client.schemaVersion >= 13 ? { async: true } : {};*/
+      case StationCommand.getCameraInfo:
+        await station.getCameraInfo();
+        return client.schemaVersion >= 13 ? { async: true } : {};
+      case StationCommand.getStorageInfo:
+        await station.getStorageInfoEx();
+        return client.schemaVersion >= 13 ? { async: true } : {};
       case StationCommand.connect:
         await station.connect().catch((error) => {
           throw error;
