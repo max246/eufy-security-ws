@@ -1,5 +1,6 @@
 import tseslint from "typescript-eslint";
 import { defineConfig } from "eslint/config";
+import eslintConfigPrettier from "eslint-config-prettier";
 
 export default defineConfig([
     tseslint.configs.recommended,
@@ -33,24 +34,8 @@ export default defineConfig([
             "no-empty": "off",
             "no-useless-escape": "off",
             "no-fallthrough": "off",
-            "indent": [
-                "error",
-                4,
-                {
-                    "SwitchCase": 1
-                }
-            ],
-            "quotes": [
-                "error",
-                "double",
-                {
-                    "avoidEscape": true,
-                    "allowTemplateLiterals": true
-                }
-            ],
             "no-var": "error",
             "prefer-const": "error",
-            "no-trailing-spaces": "error",
         },
         languageOptions : {
             ecmaVersion: 5,
@@ -62,6 +47,7 @@ export default defineConfig([
             "@typescript-eslint/explicit-function-return-type": "off"
         },
     },
+    eslintConfigPrettier,
     {
         ignores: ["./dist/**"],
     }
