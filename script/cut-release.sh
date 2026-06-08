@@ -13,13 +13,13 @@ VERSION=$1
 CLIENT_VERSION=$2
 
 ## Checkout develop
-#git checkout develop
-#
+git checkout develop
+
 ## Pull the latest
-#git pull origin develop
-#
+git pull origin develop
+
 ## Make branch for the release
-#git checkout -b "release/$VERSION" || exit 1
+git checkout -b "release/$VERSION" || exit 1
 
 # Update file
 jq --arg v "$VERSION" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
@@ -30,10 +30,10 @@ jq --arg v "$CLIENT_VERSION" '.dependencies["eufy-security-client"] = $v' packag
 npm i
 
 # Add file to the branch and commit
-#git add package.json
-#git add package-lock.json
-#git add docs/_coverpage.md
-#git commit -m "Add new version"
+git add package.json
+git add package-lock.json
+git add docs/_coverpage.md
+git commit -m "Add new version"
 #
 ## Push
 #git push --set-upstream origin "release/$VERSION"
